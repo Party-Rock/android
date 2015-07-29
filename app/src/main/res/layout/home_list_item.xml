@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:layout_margin="5dp"
+    card_view:cardCornerRadius="4dp">
+
+    <ImageView
+        android:id="@+id/house_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="House Image"
+        android:scaleType="centerCrop" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/text_border"
+            android:padding="2dp"
+            android:text="$9999"
+            android:textColor="@color/accent"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/room_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/text_border"
+            android:padding="2dp"
+            android:text="Cupo"
+            android:textColor="@color/accent"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/distance_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/text_border"
+            android:padding="2dp"
+            android:text="9999m away"
+            android:textColor="@color/accent"
+            android:textSize="22sp" />
+
+
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_rent"
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="@dimen/btn_height"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="10dp"
+        android:background="@drawable/generic_button"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="@string/Rent"
+        android:textColor="@color/toolbar_second_color"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/rating_image"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/btn_height"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="10dp"
+        android:contentDescription="Rating of the House"
+        />
+
+
+</android.support.v7.widget.CardView>
