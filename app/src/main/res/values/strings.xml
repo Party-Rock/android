@@ -10,4 +10,7 @@
     <string name="txt_view_string_room">Persons</string>
     <string name="search_text">Search</string>
     <string name="rent_confirmation_text">Confirm Rent</string>
+    <string name="previous_item">previous_item</string>
+    <string name="next_item">next item</string>
+    <string name="rent">Rent</string>
 </resources>
