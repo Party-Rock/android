@@ -64,7 +64,7 @@ public class HomeListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.recycler_view_home_fragment, container, false);
+        View view=inflater.inflate(R.layout.home_list_fragment, container, false);
         return view;
     }
 
