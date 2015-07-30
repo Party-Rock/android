@@ -29,3 +29,6 @@ proguard/
 
 # Log Files
 *.log
+
+# Remove build.gradle because @emirua is working on Android Studio’s beta. 
+app/build.gradle
