@@ -19,4 +19,5 @@
     <string name="sample_cost">$9999</string>
     <string name="capacity">capacity</string>
     <string name="sample_distance">9999m away</string>
+    <string name="house_image">House Image</string>
 </resources>
