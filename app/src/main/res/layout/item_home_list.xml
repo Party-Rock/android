@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="400dp"
     android:layout_margin="5dp"
-    card_view:cardCornerRadius="4dp">
+    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="4dp">
 
     <ImageView
         android:id="@+id/house_image"
@@ -24,60 +25,59 @@
 
         <TextView
             android:id="@+id/price_text"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@drawable/text_border"
+            android:gravity="end"
             android:padding="5dp"
-            android:text="$9999"
-            android:textColor="@android:color/black"
+            android:text="@string/sample_cost"
             android:textSize="22sp" />
 
         <TextView
             android:id="@+id/room_text"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@drawable/text_border"
+            android:gravity="end"
             android:padding="5dp"
-            android:text="Cupo"
-            android:textColor="@color/accent"
+            android:text="@string/capacity"
             android:textSize="22sp" />
 
         <TextView
             android:id="@+id/distance_text"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@drawable/text_border"
+            android:gravity="end"
             android:padding="5dp"
-            android:text="9999m away"
-            android:textColor="@color/accent"
+            android:text="@string/sample_distance"
             android:textSize="22sp" />
 
 
     </LinearLayout>
 
-    <android.support.v7.widget.AppCompatButton
+    <Button
         android:id="@+id/btn_rent"
         android:layout_width="@dimen/btn_width"
         android:layout_height="@dimen/btn_height"
         android:layout_gravity="bottom|end"
-        android:layout_margin="10dp"
-        android:background="@drawable/generic_button"
-        android:clickable="true"
-        android:gravity="center"
-        android:text="@string/Rent"
-        android:textColor="@color/toolbar_second_color"
-        android:textSize="20sp" />
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:background="@color/green"
+        android:text="@string/rent"
+        android:textColor="@color/white"/>
 
     <RatingBar
         android:id="@+id/rating_bar"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
-        android:contentDescription="Rating of the House"
-        android:numStars="5" />
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:contentDescription="@string/venue_rating"
+        android:numStars="5"
+        android:background="@color/white"/>
 
 
 </android.support.v7.widget.CardView>

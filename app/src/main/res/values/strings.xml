@@ -15,4 +15,8 @@
     <string name="rent">Rent</string>
     <string name="venue_image">Venue image</string>
     <string name="description_sample">Sample description</string>
+    <string name="venue_rating">Venue rating</string>
+    <string name="sample_cost">$9999</string>
+    <string name="capacity">capacity</string>
+    <string name="sample_distance">9999m away</string>
 </resources>
