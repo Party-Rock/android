@@ -1,74 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-
-        <ImageView
-            android:id="@+id/house_image"
-            android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:contentDescription="House Image"
-            android:scaleType="centerCrop"
-            android:src="@drawable/house_for_show"/>
-
-
-        <TextView
-            android:id="@+id/text_view_price"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginTop="20dp"
-            android:text="@string/txt_view_string_price"
-            android:textColor="#000"
-            android:textSize="24sp"
-            android:padding="5dp" />
+            android:orientation="vertical">
 
 
-
-        <TextView
-            android:id="@+id/text_view_room"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginTop="20dp"
-            android:text="@string/txt_view_string_room"
-            android:textColor="#000"
-            android:textSize="24sp"
-            android:padding="5dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/text_border"
-            android:id="@+id/house_description"
-            android:text="Description Sample "
-            android:padding="10dp"
-            android:textSize="20sp"
-            android:layout_margin="10dp"/>
+            <ImageView
+                android:id="@+id/house_image"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:contentDescription="@string/venue_image"
+                android:scaleType="centerInside"
+                android:src="@drawable/house_for_show" />
 
 
+            <TextView
+                android:id="@+id/text_view_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:padding="5dp"
+                android:text="@string/txt_view_string_price"
+                android:textColor="#000"
+                android:textSize="24sp" />
 
-    </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_view_room"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:padding="5dp"
+                android:text="@string/txt_view_string_room"
+                android:textColor="#000"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/house_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/text_border"
+                android:padding="10dp"
+                android:text="Description Sample "
+                android:textSize="20sp" />
+
+
+        </LinearLayout>
     </ScrollView>
 
-    <android.support.v7.widget.AppCompatButton
+    <Button
         android:id="@+id/btn_rent"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/lower_button_height"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:background="@drawable/generic_button"
-        android:clickable="true"
-        android:gravity="center"
-        android:text="@string/rent_confirmation_text"
-        android:textColor="@color/toolbar_second_color"
-        android:textSize="20sp" />
+        android:background="@color/green"
+        android:text="@string/rent"
+        android:textColor="@color/white"/>
 
 
 </FrameLayout>

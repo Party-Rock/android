@@ -13,4 +13,5 @@
     <string name="previous_item">previous_item</string>
     <string name="next_item">next item</string>
     <string name="rent">Rent</string>
+    <string name="venue_image">Venue image</string>
 </resources>
