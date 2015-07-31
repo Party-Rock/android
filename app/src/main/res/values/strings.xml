@@ -19,4 +19,7 @@
     <string name="sample_cost">$9999</string>
     <string name="capacity">capacity</string>
     <string name="sample_distance">9999m away</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
