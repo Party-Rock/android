@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:layout_marginTop="20dp"
-        android:text="@string/txt_view_string_price"
+        android:text="@string/price"
         android:textColor="#000"
         android:textSize="24sp"
         android:padding="5dp" />
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:layout_marginTop="20dp"
-        android:text="@string/txt_view_string_room"
+        android:text="@string/people"
         android:textColor="#000"
         android:textSize="24sp"
         android:padding="5dp" />
