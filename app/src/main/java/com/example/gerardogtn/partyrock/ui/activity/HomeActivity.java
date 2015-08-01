@@ -5,13 +5,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.gerardogtn.partyrock.ui.fragment.HomeListFragment;
+
 
 public class HomeActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        if (savedInstanceState == null) openHomeListFragment();
+    }
+
+    private void openHomeListFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, new HomeListFragment()).commit();
     }
 
     @Override
