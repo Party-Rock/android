@@ -9,6 +9,8 @@
     android:orientation="vertical"
     tools:context=".ui.activity.HomeActivity">
 
+    <include layout="@layout/partial_toolbar"/>
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
