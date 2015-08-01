@@ -20,6 +20,7 @@
     <string name="capacity">capacity</string>
     <string name="sample_distance">9999m away</string>
     <string name="house_image">House Image</string>
+
     <string name="address">Address</string>
     <string name="municipality">Municipality</string>
     <string name="distance">Distance</string>
