@@ -17,10 +17,11 @@
     <string name="description_sample">Sample description</string>
     <string name="venue_rating">Venue rating</string>
     <string name="sample_cost">$9999</string>
-    <string name="capacity">capacity</string>
+    <string name="capacity">Capacity</string>
     <string name="sample_distance">9999m away</string>
     <string name="house_image">House Image</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="address">Address</string>
+    <string name="municipality">Municipality</string>
+    <string name="distance">Distance</string>
 </resources>

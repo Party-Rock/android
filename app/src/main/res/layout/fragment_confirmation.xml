@@ -24,38 +24,9 @@
                 android:src="@drawable/house_for_show"
                 android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
 
-
-            <TextView
-                android:id="@+id/txt_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:padding="5dp"
-                android:text="@string/price"
-                android:textColor="#000"
-                android:textSize="24sp"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
-
-
-            <TextView
-                android:id="@+id/txt_capacity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:padding="5dp"
-                android:text="@string/people"
-                android:textColor="#000"
-                android:textSize="24sp"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
-
-            <TextView
-                android:id="@+id/txt_venue_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:background="@drawable/text_border"
-                android:text="@string/description_sample"
-                android:textSize="20sp"/>
+            <include
+                android:id="@+id/main_features"
+                layout="@layout/partial_main_features"/>
 
         </LinearLayout>
 
