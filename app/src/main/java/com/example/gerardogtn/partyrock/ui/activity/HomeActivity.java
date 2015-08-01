@@ -20,19 +20,16 @@ public class HomeActivity extends AppCompatActivity {
     Toolbar mToolbar;
 
 
+    // TODO: When a new fragment is created (pushed), increase count.
+    private int fragmentCount = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         setUpToolbar();
-    }
-
-    private void setUpToolbar() {
-        setSupportActionBar(mToolbar);
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -55,5 +52,21 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS:  Sets support action toolbar with mToolbar.
+    private void setUpToolbar() {
+        setSupportActionBar(mToolbar);
+    }
+
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS:  Draws back arrow in toolbar.
+    private void drawBackArrow(){
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 }
