@@ -30,6 +30,8 @@ proguard/
 # Log Files
 *.log
 
+*.iml
+
 # Remove build.gradle because @emirua is working on Android Studio’s beta. 
 app/build.gradle
 ||||||| merged common ancestors
