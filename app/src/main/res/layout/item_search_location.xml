@@ -14,7 +14,7 @@
         android:layout_height="50dp"
         android:paddingEnd="@dimen/activity_horizontal_margin"
         tools:ignore="RtlCompat,RtlSymmetry"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@drawable/ic_place_black_24dp"/>
 
     <LinearLayout
         android:layout_weight="0.85"
