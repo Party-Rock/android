@@ -17,6 +17,9 @@
     <string name="description_sample">Sample description</string>
     <string name="venue_rating">Venue rating</string>
     <string name="sample_cost">$9999</string>
-    <string name="capacity">capacity</string>
+    <string name="capacity">Capacity</string>
     <string name="sample_distance">9999m away</string>
+    <string name="house_image">House Image</string>
+    <string name="address">Address</string>
+    <string name="municipality">Municipality</string>
 </resources>

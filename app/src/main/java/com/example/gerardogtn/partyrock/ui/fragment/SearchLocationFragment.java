@@ -1,11 +1,6 @@
 package com.example.gerardogtn.partyrock.ui.fragment;
 
-<<<<<<< HEAD
-import android.app.Activity;
-import android.net.Uri;
-=======
 
->>>>>>> origin/develop
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,17 +12,11 @@ import com.example.gerardogtn.partyrock.R;
 
 /**
  * A simple {@link Fragment} subclass.
-<<<<<<< HEAD
- * Activities that contain this fragment must implement the
- * {@link DetailFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DetailFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
-public class DetailFragment extends Fragment {
+public class SearchLocationFragment extends Fragment {
 
 
-    public DetailFragment() {
+    public SearchLocationFragment() {
         // Required empty public constructor
     }
 
@@ -35,7 +24,7 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_location, container, false);
         return view;
     }
 
