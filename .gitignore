@@ -1,4 +1,4 @@
-/.idea/workspace.xml
+﻿/.idea/workspace.xml
 /.idea/libraries
 .DS_Store
 /captures
@@ -17,10 +17,6 @@
 bin/
 gen/
 
-# Gradle files
-.gradle/
-build/
-
 # Local configuration file (sdk path, etc)
 local.properties
 
@@ -29,13 +25,6 @@ proguard/
 
 # Log Files
 *.log
-
-*.iml
-
-# Remove build.gradle because @emirua is working on Android Studio’s beta. 
-app/build.gradle
-||||||| merged common ancestors
-=======
 
 
 # Built application files
@@ -52,9 +41,6 @@ app/build.gradle
 bin/
 gen/
 
-# Gradle files
-.gradle/
-build/
 
 # Local configuration file (sdk path, etc)
 local.properties
