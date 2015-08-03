@@ -1,11 +1,8 @@
 package com.example.gerardogtn.partyrock.ui.fragment;
 
-<<<<<<< HEAD
+import android.support.v4.app.Fragment;
 import android.app.Activity;
 import android.net.Uri;
-=======
-
->>>>>>> origin/develop
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;

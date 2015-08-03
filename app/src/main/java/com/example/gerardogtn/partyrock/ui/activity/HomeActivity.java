@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.gerardogtn.partyrock.ui.fragment.HomeListFragment;
+import com.example.gerardogtn.partyrock.ui.fragment.VenueListFragment;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -22,7 +22,7 @@ public class HomeActivity extends AppCompatActivity {
     private void openHomeListFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment_container, new HomeListFragment()).commit();
+                .add(R.id.fragment_container, new VenueListFragment()).commit();
     }
 
     @Override
