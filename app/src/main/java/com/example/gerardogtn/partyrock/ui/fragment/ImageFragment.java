@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.gerardogtn.partyrock.R;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -19,24 +20,29 @@ import butterknife.ButterKnife;
 public class ImageFragment extends Fragment {
 
 
-    public static final String KEY_IMG_RESOURCE = "IMG_ID";
+    public static final String KEY_IMG_URL = "IMG_URL";
 
     @Bind(R.id.img_detail)
-    ImageView image;
+    ImageView mImage;
 
     public ImageFragment() {
 
     }
 
+    // REQUIRES: None.
+    // MODIFIES: None.
+    // EFFECTS:  Returns a new instance with an empty imageUrl.
     public static ImageFragment newInstance() {
-        return newInstance(-1);
-
+        return newInstance("");
     }
 
-    public static ImageFragment newInstance(Integer imageResource) {
+    // REQUIRES: imageResource is a valid image resource.
+    // MODIFIES: None.
+    // EFFECTS:  Return a new instance of ImageFragment with an associated imageUrl.
+    public static ImageFragment newInstance(String imageUrl) {
         ImageFragment fragment = new ImageFragment();
         Bundle args = new Bundle();
-        args.putInt(KEY_IMG_RESOURCE, imageResource);
+        args.putString(KEY_IMG_URL, imageUrl);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,11 +65,16 @@ public class ImageFragment extends Fragment {
         return view;
     }
 
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS: Use picasso to populate mImage with the URL in this.getArguments
     private void setUpImage() {
-        int imgResource = getArguments().getInt(KEY_IMG_RESOURCE);
-        if (imgResource != -1){
-            image.setImageResource(imgResource);
-        }
+        String imageUrl = getArguments().getString(KEY_IMG_URL);
+        Picasso.with(getActivity())
+                .load(imageUrl)
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.drawable.house_for_show)
+                .into(mImage);
     }
 
 

@@ -38,12 +38,20 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         mActivity = activity;
     }
 
+
+    // REQUIRES: None.
+    // MODIFIES: None.
+    // EFFECTS: Returns a new inflated view for an item.
     @Override
     public HomeListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = mInflater.inflate(R.layout.item_home_list, parent, false);
         return new HomeListViewHolder(item);
     }
 
+
+    // REQUIRES: None.
+    // MODIFIES: None.
+    // EFFECTS:  Populates a view with the data of a Venue.
     @Override
     public void onBindViewHolder(HomeListViewHolder holder, int position) {
         holder.setData(mVenues.get(position));
@@ -68,34 +76,34 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         @Bind(R.id.txt_price)
         TextView mPrice;
 
-        private int mImageCount;
+        private List<String> mImageUrls;
 
         public HomeListViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
+        // REQUIRES: None.
+        // MODIFIES: this.
+        // EFFECTS:  Represents and visualizes venue data with views.
         public void setData(VenueDummy venueDummy) {
             mCapacity.setText(Integer.toString(venueDummy.getmCapacity()));
             mDistance.setText(Double.toString(venueDummy.getmDistance()));
             mPrice.setText(Double.toString(venueDummy.getmPrice()));
-            mImageCount = venueDummy.getmImageCount();
+            mImageUrls = venueDummy.getImageUrls();
             setUpViewPager(venueDummy.getImageResource());
         }
 
+
+        // REQUIRES: None.
+        // MODIFIES: this.
+        // EFFECTS:  If the imageResource is invalid(-1) add a new ImageFragment with default Image.
+        //           Otherwise, add a new ImageFragment with the specified image resource.
         private void setUpViewPager(Integer imageResource) {
             ImagePagerAdapter adapter = new ImagePagerAdapter(mActivity.getSupportFragmentManager());
-
-            if (imageResource == -1){
-                for(int i = 0; i < mImageCount; i++){
-                    adapter.addFragment(ImageFragment.newInstance());
-                }
-            } else {
-                for(int i = 0; i < mImageCount; i++){
-                    adapter.addFragment(ImageFragment.newInstance(imageResource));
-                }
+            for (String url : mImageUrls){
+                adapter.addFragment(ImageFragment.newInstance(url));
             }
-
             mImages.setAdapter(adapter);
         }
     }

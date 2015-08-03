@@ -15,7 +15,6 @@ import java.util.List;
 public class ImagePagerAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> mFragments;
-    private int mImageResource;
 
     public ImagePagerAdapter(FragmentManager fm) {
         super(fm);
@@ -35,7 +34,7 @@ public class ImagePagerAdapter extends FragmentPagerAdapter {
     // REQUIRES: None
     // MODIFIES: this
     // EFFECTS: Adds fragment to this.mFragments
-    public void addFragment(Fragment fragment){
+    public void addFragment(ImageFragment fragment){
         mFragments.add(fragment);
     }
 }

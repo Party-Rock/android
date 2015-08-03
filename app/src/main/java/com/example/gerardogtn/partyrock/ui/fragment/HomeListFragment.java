@@ -30,8 +30,18 @@ public class HomeListFragment extends Fragment {
 
     public HomeListFragment() {
         mVenues = new ArrayList<>();
-        mVenues.add(new VenueDummy("Casa Joselito", 200.00, 10, 11.2, 3));
-        mVenues.add(new VenueDummy("Casa Maria", 350.00, 30, 7.5, 2, R.drawable.house_for_show));
+
+        VenueDummy venueJoselito = new VenueDummy("Casa Joselito", 1800.0, 100, 13.2);
+        venueJoselito.addImageUrl("http://mlm-s1-p.mlstatic.com/excelente-casa-para-reuniones-y-fiestas-13295-MLM20075175773_042014-F.jpg");
+        venueJoselito.addImageUrl("http://mlm-s1-p.mlstatic.com/excelente-casa-para-reuniones-y-fiestas-20672-MLM20195551809_112014-F.jpg");
+
+        VenueDummy venueMaria = new VenueDummy("Jardin de bodas maria", 6500.0, 150, 27);
+        venueMaria.addImageUrl("http://mlm-s1-p.mlstatic.com/jardin-de-bodas-cuernavaca-19431-MLM20171605553_092014-O.jpg");
+        venueMaria.addImageUrl("http://mlm-s2-p.mlstatic.com/jardin-de-bodas-cuernavaca-19420-MLM20171605642_092014-O.jpg");
+
+        mVenues.add(venueJoselito);
+        mVenues.add(venueMaria);
+        mVenues.add(new VenueDummy("Casa paco", 300.0, 3, 8.2));
     }
 
     public static HomeListFragment newInstance() {

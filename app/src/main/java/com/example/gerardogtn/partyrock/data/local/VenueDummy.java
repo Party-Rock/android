@@ -1,5 +1,8 @@
 package com.example.gerardogtn.partyrock.data.local;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by gerardogtn on 8/1/15.
  */
@@ -9,29 +12,18 @@ public class VenueDummy {
     private double mPrice;
     private int mCapacity;
     private double mDistance;
-    private int mImageCount;
     private Integer mImageResource;
+    private List<String> mImageUrls;
 
-    public VenueDummy(String mName, double mPrice, int mCapacity, double mDistance, int imageCount) {
-        this(mName, mPrice, mCapacity, mDistance, imageCount, -1);
-    }
 
-    public VenueDummy(String mName, double mPrice, int mCapacity, double mDistance, int mImageCount, Integer mImageResource) {
+    public VenueDummy(String mName, double mPrice, int mCapacity, double mDistance) {
         this.mName = mName;
         this.mPrice = mPrice;
         this.mCapacity = mCapacity;
         this.mDistance = mDistance;
-        this.mImageCount = mImageCount;
-        this.mImageResource = mImageResource;
+        mImageUrls = new ArrayList<>();
     }
 
-    public int getmImageCount() {
-        return mImageCount;
-    }
-
-    public void setmImageCount(int mImageCount) {
-        this.mImageCount = mImageCount;
-    }
 
     public String getmName() {
         return mName;
@@ -73,15 +65,16 @@ public class VenueDummy {
         this.mImageResource = imageResource;
     }
 
-    @Override
-    public String toString() {
-        return "VenueDummy{" +
-                "mName='" + mName + '\'' +
-                ", mPrice=" + mPrice +
-                ", mCapacity=" + mCapacity +
-                ", mDistance=" + mDistance +
-                ", mImageCount=" + mImageCount +
-                '}';
+    public void addImageUrl(String url){
+        mImageUrls.add(url);
+    }
+
+    public List<String> getImageUrls(){
+        return mImageUrls;
+    }
+
+    public int getImageCount(){
+        return mImageUrls.size();
     }
 
 }
