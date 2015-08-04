@@ -25,6 +25,8 @@ public class ImageFragment extends Fragment {
     @Bind(R.id.img_detail)
     ImageView mImage;
 
+    private String url = "";
+
     public ImageFragment() {
 
     }
@@ -36,7 +38,7 @@ public class ImageFragment extends Fragment {
         return newInstance("");
     }
 
-    // REQUIRES: imageResource is a valid image resource.
+    // REQUIRES: None.
     // MODIFIES: None.
     // EFFECTS:  Return a new instance of ImageFragment with an associated imageUrl.
     public static ImageFragment newInstance(String imageUrl) {
@@ -61,6 +63,7 @@ public class ImageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.item_detail_image, container, false);
         ButterKnife.bind(this, view);
+        url = getArguments().getString(KEY_IMG_URL);
         setUpImage();
         return view;
     }
@@ -69,9 +72,9 @@ public class ImageFragment extends Fragment {
     // MODIFIES: this.
     // EFFECTS: Use picasso to populate mImage with the URL in this.getArguments
     private void setUpImage() {
-        String imageUrl = getArguments().getString(KEY_IMG_URL);
+        //String imageUrl = getArguments().getString(KEY_IMG_URL);
         Picasso.with(getActivity())
-                .load(imageUrl)
+                .load(url)
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.drawable.house_for_show)
                 .into(mImage);

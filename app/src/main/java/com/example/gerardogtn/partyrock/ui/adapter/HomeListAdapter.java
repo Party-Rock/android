@@ -27,15 +27,15 @@ import butterknife.ButterKnife;
  */
 public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeListViewHolder>{
 
-    private FragmentActivity mActivity;
+    private Context mContext;
     private List<VenueDummy> mVenues = new ArrayList<>();
     private LayoutInflater mInflater;
 
 
-    public HomeListAdapter(Context context, List<VenueDummy> venues, AppCompatActivity activity) {
+    public HomeListAdapter(Context context, List<VenueDummy> venues) {
         this.mVenues = venues;
         mInflater = LayoutInflater.from(context);
-        mActivity = activity;
+        mContext = context;
     }
 
 
@@ -91,7 +91,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
             mDistance.setText(Double.toString(venueDummy.getmDistance()));
             mPrice.setText(Double.toString(venueDummy.getmPrice()));
             mImageUrls = venueDummy.getImageUrls();
-            setUpViewPager(venueDummy.getImageResource());
+            setUpViewPager(venueDummy.getImageUrls());
         }
 
 
@@ -99,11 +99,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         // MODIFIES: this.
         // EFFECTS:  If the imageResource is invalid(-1) add a new ImageFragment with default Image.
         //           Otherwise, add a new ImageFragment with the specified image resource.
-        private void setUpViewPager(Integer imageResource) {
-            ImagePagerAdapter adapter = new ImagePagerAdapter(mActivity.getSupportFragmentManager());
-            for (String url : mImageUrls){
-                adapter.addFragment(ImageFragment.newInstance(url));
-            }
+        private void setUpViewPager(List<String> imageUrls) {
+            ImagePagerAdapter adapter = new ImagePagerAdapter(mContext, imageUrls);
             mImages.setAdapter(adapter);
         }
     }

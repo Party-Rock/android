@@ -1,40 +1,68 @@
 package com.example.gerardogtn.partyrock.ui.adapter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.content.Context;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
-import com.example.gerardogtn.partyrock.ui.fragment.ImageFragment;
+import com.example.gerardogtn.partyrock.R;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
- * Created by gerardogtn on 8/1/15.
+ * Created by Emilio on 02/08/2015.
  */
-public class ImagePagerAdapter extends FragmentPagerAdapter {
+public class ImagePagerAdapter extends PagerAdapter {
 
-    private List<Fragment> mFragments;
+    @Bind(R.id.img_detail)
+    ImageView mVenueImage;
 
-    public ImagePagerAdapter(FragmentManager fm) {
-        super(fm);
-        mFragments = new ArrayList<>();
+    private Context mContext;
+    private List<String> mImageUrls;
+    private LayoutInflater layoutInflater;
+
+    public ImagePagerAdapter(Context context, List<String> imageUrls) {
+        super();
+        this.mContext = context;
+        this.mImageUrls = imageUrls;
+        layoutInflater= LayoutInflater.from(context);
     }
 
-    @Override
-    public Fragment getItem(int position) {
-        return mFragments.get(position);
-    }
 
     @Override
     public int getCount() {
-        return mFragments.size();
+        return mImageUrls.size();
     }
 
-    // REQUIRES: None
-    // MODIFIES: this
-    // EFFECTS: Adds fragment to this.mFragments
-    public void addFragment(ImageFragment fragment){
-        mFragments.add(fragment);
+    @Override
+    public boolean isViewFromObject(View view, Object object) {
+        return view.equals(object);
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        LinearLayout layout = (LinearLayout) layoutInflater.inflate(R.layout.item_detail_image,container,false);
+        ButterKnife.bind(this, layout);
+
+        Picasso.with(mContext)
+                .load(mImageUrls.get(position))
+                .error(R.mipmap.ic_launcher)
+                .into(mVenueImage);
+
+        container.addView(layout);
+        return layout;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        ((ViewPager) container).removeView((View) object);
     }
 }

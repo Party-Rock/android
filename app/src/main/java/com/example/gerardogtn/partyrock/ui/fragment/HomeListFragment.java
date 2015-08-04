@@ -74,7 +74,7 @@ public class HomeListFragment extends Fragment {
         Context context = getActivity();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        HomeListAdapter homeListAdapter = new HomeListAdapter(context, mVenues, (AppCompatActivity) getActivity());
+        HomeListAdapter homeListAdapter = new HomeListAdapter(context, mVenues);
         mRecyclerView.setAdapter(homeListAdapter);
     }
 
