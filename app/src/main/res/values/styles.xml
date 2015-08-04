@@ -13,8 +13,8 @@
         <item name="android:textColor">@color/primary_text</item>
         <item name="android:textColorHint">@color/secondary_text</item>
 
-        <item name="android:navigationBarColor" tools:targetApi="21">@color/primary</item>
-        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@android:color/black</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">false</item>
 
 
     </style>

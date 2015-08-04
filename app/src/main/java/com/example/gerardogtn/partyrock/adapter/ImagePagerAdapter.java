@@ -1,4 +1,4 @@
-package com.example.gerardogtn.partyrock.ui.adapter;
+package com.example.gerardogtn.partyrock.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;

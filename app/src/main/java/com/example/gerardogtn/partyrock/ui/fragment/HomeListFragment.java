@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.local.VenueDummy;
-import com.example.gerardogtn.partyrock.ui.adapter.HomeListAdapter;
+import com.example.gerardogtn.partyrock.adapter.HomeListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,7 @@ public class HomeListFragment extends Fragment {
 
     private List<VenueDummy> mVenues;
 
-    @Bind(R.id.item_venue)
+    @Bind(R.id.recycler_view_venue)
     RecyclerView mRecyclerView;
 
     public HomeListFragment() {
@@ -64,7 +63,7 @@ public class HomeListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_venue_list, container, false);
         ButterKnife.bind(this, view);
         setUpRecycleView();
         return view;

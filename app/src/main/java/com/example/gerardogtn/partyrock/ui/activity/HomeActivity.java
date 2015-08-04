@@ -1,15 +1,12 @@
 package com.example.gerardogtn.partyrock.ui.activity;
 
-
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.ui.fragment.HomeListFragment;
@@ -31,7 +28,6 @@ public class HomeActivity extends AppCompatActivity implements HomeListFragment.
         setUpToolbar();
         addHomeListFragment();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
