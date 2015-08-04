@@ -1,10 +1,11 @@
-package com.example.gerardogtn.partyrock;
+package com.example.gerardogtn.partyrock.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.ui.fragment.VenueListFragment;
 
 

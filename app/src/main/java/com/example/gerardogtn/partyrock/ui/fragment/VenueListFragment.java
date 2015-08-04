@@ -77,7 +77,7 @@ public class VenueListFragment extends Fragment {
         LatLng[] latLngDummyValues={new LatLng(5.2,3.4),new LatLng(5.2,3.4),new LatLng(5.2,3.4),new LatLng(5.2,3.4),new LatLng(5.2,3.4)};
         ArrayList<ArrayList<String>> venueImages= new ArrayList<>();
         Double[] sizeDummyValues={123.0,1342.2,42.0,12344.12,2.0};
-        Double[] priceDummyValues={32.3,32.3,32.3,32.3,32.3};
+        Double[] priceDummyValues={3250.3,330.2,4500.1,10003.3,932.3};
         venueImages.add(gerryImgs);
         venueImages.add(emilioImgs);
         venueImages.add(mariaImgs);
@@ -87,7 +87,7 @@ public class VenueListFragment extends Fragment {
 
         for (int i=0; i<8;i++){
             for (int j=0;j<venueName.length;j++){
-                venueList.add(new Venue(venueName[j],latLngDummyValues[j],venueImages.get(j),sizeDummyValues[j],priceDummyValues[j]));
+                venueList.add(new Venue(venueName[j],latLngDummyValues[j],venueImages.get(j),sizeDummyValues[j].intValue(),priceDummyValues[j].intValue()));
             }
         }
         return venueList;

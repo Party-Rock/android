@@ -48,11 +48,11 @@ public class VenueRecyclerViewAdapter extends RecyclerView.Adapter<VenueRecycler
 
         public void setVenue(Venue venue, Context context) {
             //Values are obtained from a venue object
-            textCapacity.setText(venue.getSize().toString());
-            textPrice.setText(venue.getPrice().toString());
+            textCapacity.setText("Para "+ venue.getSize()+" amigos");
+            textPrice.setText("$"+venue.getPrice());
             //A calculation to get the distance according to the current position must be
             // implemented instead of current toString method.
-            textDistance.setText(venue.getLatLng().getLat().toString()+", "+venue.getLatLng().getLng().toString());
+            textDistance.setText(venue.getLatLng().getLat().toString()+"km.");
 
 
             //Setting up the PagerAdapter for the Images of the Venue

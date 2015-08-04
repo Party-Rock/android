@@ -8,10 +8,10 @@ public class Venue {
     String name;
     LatLng latLng;
     ArrayList<String> imageURL;
-    Double size;
-    Double price;
+    int size;
+    int price;
     ArrayList<Feature> features;
-    Double ratingAverage;
+    double ratingAverage;
     ArrayList<Integer> rating;
 
     public Venue() {
@@ -20,7 +20,7 @@ public class Venue {
         rating=new ArrayList<>();
     }
 
-    public Venue(String name, LatLng latLng, ArrayList<String> imageURL, Double size, Double price) {
+    public Venue(String name, LatLng latLng, ArrayList<String> imageURL, int size, int price) {
         this.name = name;
         this.latLng = latLng;
         this.imageURL = imageURL;
@@ -28,7 +28,7 @@ public class Venue {
         this.price = price;
     }
 
-    public Venue(String name, LatLng latLng, ArrayList<String> imageURL, Double size, Double price, ArrayList<Feature> features, Double ratingAverage, ArrayList<Integer> rating) {
+    public Venue(String name, LatLng latLng, ArrayList<String> imageURL, int size, int price, ArrayList<Feature> features, double ratingAverage, ArrayList<Integer> rating) {
         this.name = name;
         this.latLng = latLng;
         this.imageURL = imageURL;
@@ -63,19 +63,19 @@ public class Venue {
         this.imageURL = imageURL;
     }
 
-    public Double getSize() {
+    public int getSize() {
         return size;
     }
 
-    public void setSize(Double size) {
+    public void setSize(int size) {
         this.size = size;
     }
 
-    public Double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
