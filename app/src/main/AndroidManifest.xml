@@ -1,19 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gerardogtn.partyrock" >
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".HomeActivity"
+            android:name=".ui.activity.HomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.activity.DetailActivity"
+            android:label="Venue detail"
+            android:parentActivityName=".ui.activity.HomeActivity">
+        </activity>
+
+        <activity
+            android:name=".ui.activity.ConfirmationActivity"
+            android:label="Rent confirmation"
+            android:parentActivityName=".ui.activity.DetailActivity">
+        </activity>
+
+        <activity
+            android:name=".ui.activity.SearchVenueActivity"
+            android:label="Filter venues"
+            android:parentActivityName=".ui.activity.HomeActivity">
+        </activity>
+
+        <activity
+            android:name=".ui.activity.SearchLocationActivity"
+            android:label="Select location"
+            android:parentActivityName=".ui.activity.SearchVenueActivity">
         </activity>
     </application>
 

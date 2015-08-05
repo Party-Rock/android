@@ -6,4 +6,23 @@
 
     <string name="Rent">Rent</string>
     <string name="location_hint_text">Location</string>
+    <string name="price">Price</string>
+    <string name="people">People</string>
+    <string name="search_text">Search</string>
+    <string name="rent_confirmation_text">Confirm Rent</string>
+    <string name="previous_item">previous_item</string>
+    <string name="next_item">next item</string>
+    <string name="rent">Rent</string>
+    <string name="venue_image">Venue image</string>
+    <string name="description_sample">Sample description</string>
+    <string name="venue_rating">Venue rating</string>
+    <string name="sample_cost">$9999</string>
+    <string name="capacity">Capacity</string>
+    <string name="sample_distance">9999m away</string>
+    <string name="house_image">House Image</string>
+
+    <string name="address">Address</string>
+    <string name="municipality">Municipality</string>
+    <string name="distance">Distance</string>
+    <string name="share">Share</string>
 </resources>

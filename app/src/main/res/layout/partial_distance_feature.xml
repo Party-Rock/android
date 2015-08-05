@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/style_text_border_distance_feature">
+
+    <ImageView
+        android:id="@+id/img_distance"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_gravity="center"
+        android:src="@mipmap/ic_nav" />
+
+    <TextView
+        android:id="@+id/txt_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:paddingEnd="2dp"
+        android:text="@string/distance"
+        android:textSize="@dimen/txt_size_distance_feature"/>
+
+</LinearLayout>
+
+
+
+
+
