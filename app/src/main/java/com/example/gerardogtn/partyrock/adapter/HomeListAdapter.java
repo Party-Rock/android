@@ -1,10 +1,7 @@
-package com.example.gerardogtn.partyrock.ui.adapter;
+package com.example.gerardogtn.partyrock.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +10,6 @@ import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.local.VenueDummy;
-import com.example.gerardogtn.partyrock.ui.activity.HomeActivity;
-import com.example.gerardogtn.partyrock.ui.fragment.ImageFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +39,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
     // EFFECTS: Returns a new inflated view for an item.
     @Override
     public HomeListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View item = mInflater.inflate(R.layout.item_home_list, parent, false);
+        View item = mInflater.inflate(R.layout.item_venue_list, parent, false);
         return new HomeListViewHolder(item);
     }
 
@@ -87,9 +82,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         // MODIFIES: this.
         // EFFECTS:  Represents and visualizes venue data with views.
         public void setData(VenueDummy venueDummy) {
-            mCapacity.setText(Integer.toString(venueDummy.getmCapacity()));
-            mDistance.setText(Double.toString(venueDummy.getmDistance()));
-            mPrice.setText(Double.toString(venueDummy.getmPrice()));
+            mCapacity.setText("Para " + Integer.toString(venueDummy.getmCapacity())+" amigos");
+            mDistance.setText(Double.toString(venueDummy.getmDistance())+"km.");
+            mPrice.setText("$"+Double.toString(venueDummy.getmPrice()));
             mImageUrls = venueDummy.getImageUrls();
             setUpViewPager(venueDummy.getImageUrls());
         }
