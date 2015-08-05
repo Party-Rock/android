@@ -6,7 +6,7 @@
     tools:context="HomeListFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/item_venue"
+        android:id="@+id/recycler_view_venue"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

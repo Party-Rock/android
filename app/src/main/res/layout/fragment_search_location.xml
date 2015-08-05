@@ -19,7 +19,7 @@
             android:hint="@string/search_text"
             android:inputType="textAutoComplete"
             android:singleLine="true"
-            android:background="@drawable/text_border"
+            android:background="@drawable/style_text_border"
             android:padding="5dp" />
 
     </android.support.design.widget.TextInputLayout>
