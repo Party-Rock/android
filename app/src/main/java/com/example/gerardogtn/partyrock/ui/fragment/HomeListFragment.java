@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.adapter.HomeListAdapter;
@@ -83,11 +82,11 @@ public class HomeListFragment extends Fragment {
         homeListAdapter.setOnItemClickListener(new HomeListAdapter.OnVenueClickListener() {
             @Override
             public void onVenueClick(View item, int position) {
-                String venueName= mVenues.get(position).getmName();
-                Toast.makeText(context, venueName + " was clicked!", Toast.LENGTH_SHORT).show();
+//                String venueName= mVenues.get(position).getmName();
+//                Toast.makeText(context, venueName + " was clicked!", Toast.LENGTH_SHORT).show();
                 VenueEvent clickedVenue = new VenueEvent(mVenues.get(position));
-                EventBus.getDefault().post(clickedVenue);
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                EventBus.getDefault().postSticky(clickedVenue);
+                Intent intent = new Intent(context, DetailActivity.class);
                 startActivity(intent);
             }
         });
@@ -98,6 +97,7 @@ public class HomeListFragment extends Fragment {
 
     @Override
     public void onDetach() {
+        super.onDetach();
         ButterKnife.unbind(this);
     }
 }

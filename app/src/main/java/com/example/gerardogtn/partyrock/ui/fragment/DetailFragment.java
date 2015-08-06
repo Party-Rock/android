@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.adapter.ImagePagerAdapter;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 
 public class DetailFragment extends Fragment {
@@ -41,9 +43,12 @@ public class DetailFragment extends Fragment {
         return fragment;
     }
 
+    //EventBus method to receive events
     public void onEvent(VenueEvent clickedVenue){
+        Toast.makeText(getActivity(), "Venue received " + clickedVenue.getVenue().getmName(), Toast.LENGTH_SHORT).show();
         setUpViewPager(clickedVenue.getVenue().getImageUrls());
         setUpRecycleView(clickedVenue.getVenue());
+
     }
 
     @Override
@@ -61,6 +66,8 @@ public class DetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().registerSticky(this);
+
 
         return view;
     }
@@ -82,10 +89,32 @@ public class DetailFragment extends Fragment {
         mImages.setAdapter(adapter);
     }
 
+    /**
+     * Called when the Fragment is no longer resumed.  This is generally
+     * tied to {@link Activity#onPause() Activity.onPause} of the containing
+     * Activity's lifecycle.
+     */
+    @Override
+    public void onPause() {
+        EventBus.getDefault().unregister(this);
+        super.onPause();
+    }
+
+    /**
+     * Called when the fragment is visible to the user and actively running.
+     * This is generally
+     * tied to {@link Activity#onResume() Activity.onResume} of the containing
+     * Activity's lifecycle.
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     @Override
     public void onDetach() {
         ButterKnife.unbind(this);
+        super.onDetach();
     }
 
 }

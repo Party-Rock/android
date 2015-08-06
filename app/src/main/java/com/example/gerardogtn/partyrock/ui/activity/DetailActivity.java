@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
+import com.example.gerardogtn.partyrock.service.VenueEvent;
 import com.example.gerardogtn.partyrock.ui.fragment.DetailFragment;
 
 import butterknife.Bind;
@@ -21,6 +23,9 @@ public class DetailActivity extends AppCompatActivity{
     @Bind(R.id.toolbar_home)
     Toolbar mToolbar;
 
+    public void onEvent(VenueEvent clickedVenue){
+        Toast.makeText(this, "Venue received", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +33,8 @@ public class DetailActivity extends AppCompatActivity{
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         setUpToolbar();
-        addHomeListFragment();
+        if (savedInstanceState==null){
+        addHomeListFragment();}
     }
 
     @Override
@@ -59,6 +65,11 @@ public class DetailActivity extends AppCompatActivity{
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Draws a HomeListFragment on this.mFragmentContainer
@@ -68,4 +79,6 @@ public class DetailActivity extends AppCompatActivity{
         tm.replace(R.id.fragment_container, detailFragment);
         tm.commit();
     }
+
+
 }
