@@ -28,6 +28,7 @@ public class ConfirmationActivity extends AppCompatActivity{
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         setUpToolbar();
+        drawBackArrow();
         if (savedInstanceState==null){
             addHomeListFragment();}
     }
