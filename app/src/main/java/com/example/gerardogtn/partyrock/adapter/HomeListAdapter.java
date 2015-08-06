@@ -25,6 +25,17 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
     private Context mContext;
     private List<VenueDummy> mVenues = new ArrayList<>();
     private LayoutInflater mInflater;
+    private OnVenueClickListener listener;
+
+    //Listener interface
+    public interface OnVenueClickListener {
+        void onVenueClick(View item, int position);
+    }
+
+    // Method that allows the parent activity or fragment to define the listener
+    public void setOnItemClickListener(OnVenueClickListener listener) {
+        this.listener = listener;
+    }
 
 
     public HomeListAdapter(Context context, List<VenueDummy> venues) {
@@ -73,16 +84,24 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
 
         private List<String> mImageUrls;
 
-        public HomeListViewHolder(View itemView) {
+        public HomeListViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null){
+                        listener.onVenueClick(itemView, getLayoutPosition());
+                    }
+                }
+            });
         }
 
         // REQUIRES: None.
         // MODIFIES: this.
         // EFFECTS:  Represents and visualizes venue data with views.
         public void setData(VenueDummy venueDummy) {
-            mCapacity.setText("Para " + Integer.toString(venueDummy.getmCapacity())+" amigos");
+            mCapacity.setText(""+ Integer.toString(venueDummy.getmCapacity()));
             mDistance.setText(Double.toString(venueDummy.getmDistance())+"km.");
             mPrice.setText("$"+Double.toString(venueDummy.getmPrice()));
             mImageUrls = venueDummy.getImageUrls();

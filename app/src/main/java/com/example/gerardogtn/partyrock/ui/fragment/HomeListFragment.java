@@ -9,10 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
-import com.example.gerardogtn.partyrock.data.local.VenueDummy;
 import com.example.gerardogtn.partyrock.adapter.HomeListAdapter;
+import com.example.gerardogtn.partyrock.data.local.VenueDummy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,14 +71,25 @@ public class HomeListFragment extends Fragment {
     }
 
     private void setUpRecycleView() {
-        Context context = getActivity();
+        final Context context = getActivity();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         HomeListAdapter homeListAdapter = new HomeListAdapter(context, mVenues);
         mRecyclerView.setAdapter(homeListAdapter);
+        homeListAdapter.setOnItemClickListener(new HomeListAdapter.OnVenueClickListener() {
+            @Override
+            public void onVenueClick(View item, int position) {
+                String venueName= mVenues.get(position).getmName();
+                Toast.makeText(context, venueName + " was clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    public interface OnVenueSelectedListener {
-        void onVenueSelected(String name, int capacity, int price, int distance);
+
+
+
+    @Override
+    public void onDetach() {
+        ButterKnife.unbind(this);
     }
 }

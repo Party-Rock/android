@@ -9,10 +9,11 @@
 
     <ImageView
         android:id="@+id/img_distance"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
         android:layout_gravity="center"
-        android:src="@mipmap/ic_nav" />
+        android:src="@mipmap/ic_nav"
+        android:tint="@android:color/white"/>
 
     <TextView
         android:id="@+id/txt_distance"
@@ -22,6 +23,7 @@
         android:singleLine="true"
         android:textColor="@android:color/white"
         android:paddingEnd="2dp"
+        android:paddingRight="2dp"
         android:text="@string/distance"
         android:textSize="@dimen/txt_size_distance_feature"/>
 
