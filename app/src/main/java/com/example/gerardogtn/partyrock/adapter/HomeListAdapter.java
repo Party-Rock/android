@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
-import com.example.gerardogtn.partyrock.data.local.VenueDummy;
+import com.example.gerardogtn.partyrock.data.Venue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeListViewHolder>{
 
     private Context mContext;
-    private List<VenueDummy> mVenues = new ArrayList<>();
+    private List<Venue> mVenues = new ArrayList<>();
     private LayoutInflater mInflater;
     private OnVenueClickListener listener;
 
@@ -38,7 +38,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
     }
 
 
-    public HomeListAdapter(Context context, List<VenueDummy> venues) {
+    public HomeListAdapter(Context context, List<Venue> venues) {
         this.mVenues = venues;
         mInflater = LayoutInflater.from(context);
         mContext = context;
@@ -100,12 +100,12 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         // REQUIRES: None.
         // MODIFIES: this.
         // EFFECTS:  Represents and visualizes venue data with views.
-        public void setData(VenueDummy venueDummy) {
-            mCapacity.setText(""+ Integer.toString(venueDummy.getmCapacity()));
-            mDistance.setText(Double.toString(venueDummy.getmDistance())+"km.");
-            mPrice.setText("$"+Double.toString(venueDummy.getmPrice()));
-            mImageUrls = venueDummy.getImageUrls();
-            setUpViewPager(venueDummy.getImageUrls());
+        public void setData(Venue Venue) {
+            mCapacity.setText(""+ Integer.toString(Venue.getmCapacity()));
+            mDistance.setText(Double.toString(Venue.getmDistance())+"km.");
+            mPrice.setText("$"+Double.toString(Venue.getmPrice()));
+            mImageUrls = Venue.getImageUrls();
+            setUpViewPager(Venue.getImageUrls());
         }
 
 
