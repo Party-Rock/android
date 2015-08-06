@@ -2,6 +2,7 @@ package com.example.gerardogtn.partyrock.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -10,12 +11,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.adapter.ImagePagerAdapter;
 import com.example.gerardogtn.partyrock.data.Venue;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
+import com.example.gerardogtn.partyrock.ui.activity.ConfirmationActivity;
 
 import java.util.List;
 
@@ -32,6 +35,9 @@ public class DetailFragment extends Fragment {
     @Bind(R.id.venue_images)
     ViewPager mImages;
 
+    @Bind(R.id.btn_rent)
+    Button rentButton;
+
     public DetailFragment() {
         // Required empty public constructor
     }
@@ -43,7 +49,7 @@ public class DetailFragment extends Fragment {
         return fragment;
     }
 
-    //EventBus method to receive events
+    //EventBus method to receive Venue
     public void onEvent(VenueEvent clickedVenue){
         Toast.makeText(getActivity(), "Venue received " + clickedVenue.getVenue().getmName(), Toast.LENGTH_SHORT).show();
         setUpViewPager(clickedVenue.getVenue().getImageUrls());
@@ -67,6 +73,13 @@ public class DetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, view);
         EventBus.getDefault().registerSticky(this);
+        rentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ConfirmationActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         return view;
