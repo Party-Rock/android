@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.adapter.ImagePagerAdapter;
+import com.example.gerardogtn.partyrock.data.Venue;
+import com.example.gerardogtn.partyrock.service.VenueEvent;
 
 import java.util.List;
 
@@ -39,6 +41,11 @@ public class DetailFragment extends Fragment {
         return fragment;
     }
 
+    public void onEvent(VenueEvent clickedVenue){
+        setUpViewPager(clickedVenue.getVenue().getImageUrls());
+        setUpRecycleView(clickedVenue.getVenue());
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,16 +61,15 @@ public class DetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, view);
- //       setUpViewPager(venue.getImageUrls());
-        setUpRecycleView();
+
         return view;
     }
 
-    private void setUpRecycleView() {
+    private void setUpRecycleView(Venue venue) {
         Context context = getActivity();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-   //     FeatureRecyclerViewAdapter featureViewAdapter = new FeatureRecyclerViewAdapter(context, features);
+ //       FeatureRecyclerViewAdapter featureViewAdapter = new FeatureRecyclerViewAdapter(context, venue.getmFeatures());
   //      mRecyclerView.setAdapter(featureViewAdapter);
     }
 

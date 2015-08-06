@@ -2,6 +2,7 @@ package com.example.gerardogtn.partyrock.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,12 +15,15 @@ import android.widget.Toast;
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.adapter.HomeListAdapter;
 import com.example.gerardogtn.partyrock.data.Venue;
+import com.example.gerardogtn.partyrock.service.VenueEvent;
+import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 public class HomeListFragment extends Fragment {
 
@@ -81,6 +85,10 @@ public class HomeListFragment extends Fragment {
             public void onVenueClick(View item, int position) {
                 String venueName= mVenues.get(position).getmName();
                 Toast.makeText(context, venueName + " was clicked!", Toast.LENGTH_SHORT).show();
+                VenueEvent clickedVenue = new VenueEvent(mVenues.get(position));
+                EventBus.getDefault().post(clickedVenue);
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                startActivity(intent);
             }
         });
     }

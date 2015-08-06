@@ -100,12 +100,12 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         // REQUIRES: None.
         // MODIFIES: this.
         // EFFECTS:  Represents and visualizes venue data with views.
-        public void setData(Venue Venue) {
-            mCapacity.setText(""+ Integer.toString(Venue.getmCapacity()));
-            mDistance.setText(Double.toString(Venue.getmDistance())+"km.");
-            mPrice.setText("$"+Double.toString(Venue.getmPrice()));
-            mImageUrls = Venue.getImageUrls();
-            setUpViewPager(Venue.getImageUrls());
+        public void setData(Venue venue) {
+            mCapacity.setText(""+ Integer.toString(venue.getmCapacity()));
+            mDistance.setText(Double.toString(venue.getmDistance())+"km.");
+            mPrice.setText("$"+Double.toString(venue.getmPrice()));
+            mImageUrls = venue.getImageUrls();
+            setUpViewPager(venue.getImageUrls());
         }
 
 
