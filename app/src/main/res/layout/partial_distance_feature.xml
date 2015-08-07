@@ -5,7 +5,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@drawable/style_text_border_distance_feature">
+    android:background="@drawable/style_text_border_distance_feature"
+    android:visibility="gone">
 
     <ImageView
         android:id="@+id/img_distance"
