@@ -1,6 +1,7 @@
 package com.example.gerardogtn.partyrock.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,13 +10,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
-import com.example.gerardogtn.partyrock.data.local.VenueDummy;
+import com.example.gerardogtn.partyrock.data.Venue;
+import com.example.gerardogtn.partyrock.service.VenueEvent;
+import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by gerardogtn on 8/1/15.
@@ -23,11 +27,22 @@ import butterknife.ButterKnife;
 public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeListViewHolder>{
 
     private Context mContext;
-    private List<VenueDummy> mVenues = new ArrayList<>();
+    private List<Venue> mVenues = new ArrayList<>();
     private LayoutInflater mInflater;
+    private OnVenueClickListener listener;
+
+    //Listener interface
+    public interface OnVenueClickListener {
+        void onVenueClick(int position);
+    }
+
+    // Method that allows the parent activity or fragment to define the listener
+    public void setOnItemClickListener(OnVenueClickListener listener) {
+        this.listener = listener;
+    }
 
 
-    public HomeListAdapter(Context context, List<VenueDummy> venues) {
+    public HomeListAdapter(Context context, List<Venue> venues) {
         this.mVenues = venues;
         mInflater = LayoutInflater.from(context);
         mContext = context;
@@ -73,20 +88,30 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
 
         private List<String> mImageUrls;
 
-        public HomeListViewHolder(View itemView) {
+        public HomeListViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        listener.onVenueClick(getLayoutPosition());
+                    }
+                }
+            });
+
+
         }
 
         // REQUIRES: None.
         // MODIFIES: this.
         // EFFECTS:  Represents and visualizes venue data with views.
-        public void setData(VenueDummy venueDummy) {
-            mCapacity.setText("Para " + Integer.toString(venueDummy.getmCapacity())+" amigos");
-            mDistance.setText(Double.toString(venueDummy.getmDistance())+"km.");
-            mPrice.setText("$"+Double.toString(venueDummy.getmPrice()));
-            mImageUrls = venueDummy.getImageUrls();
-            setUpViewPager(venueDummy.getImageUrls());
+        public void setData(Venue venue) {
+            mCapacity.setText(""+ Integer.toString(venue.getmCapacity()));
+            mDistance.setText(Double.toString(venue.getmDistance())+"km.");
+            mPrice.setText("$"+Double.toString(venue.getmPrice()));
+            mImageUrls = venue.getImageUrls();
+            setUpViewPager(venue.getImageUrls());
         }
 
 
@@ -97,6 +122,24 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         private void setUpViewPager(List<String> imageUrls) {
             ImagePagerAdapter adapter = new ImagePagerAdapter(mContext, imageUrls);
             mImages.setAdapter(adapter);
+            adapter.setOnItemClickListener(new ImagePagerAdapter.OnVenueClickListener() {
+                @Override
+                public void onVenueClick() {
+                    VenueEvent clickedVenue = new VenueEvent(mVenues.get(getLayoutPosition()));
+                    EventBus.getDefault().postSticky(clickedVenue);
+                    Intent intent = new Intent(mContext, DetailActivity.class);
+                    mContext.startActivity(intent);
+                }
+            });
+//            mImages.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (listener != null) {
+//                        listener.onVenueClick(itemView, getLayoutPosition());
+//                    }
+//                }
+//
+//            });
         }
     }
 }
