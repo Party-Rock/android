@@ -81,7 +81,7 @@ public class HomeListFragment extends Fragment {
         mRecyclerView.setAdapter(homeListAdapter);
         homeListAdapter.setOnItemClickListener(new HomeListAdapter.OnVenueClickListener() {
             @Override
-            public void onVenueClick(View item, int position) {
+            public void onVenueClick(int position) {
 //                String venueName= mVenues.get(position).getmName();
 //                Toast.makeText(context, venueName + " was clicked!", Toast.LENGTH_SHORT).show();
                 VenueEvent clickedVenue = new VenueEvent(mVenues.get(position));

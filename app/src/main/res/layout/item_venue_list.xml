@@ -19,7 +19,6 @@
         tools:ignore="RtlHardcoded">
 
 
-
         <android.support.v4.view.ViewPager
             android:id="@+id/venue_images"
             android:layout_width="match_parent"
@@ -30,6 +29,8 @@
             layout="@layout/partial_main_features" />
 
     </LinearLayout>
+
+
     <include
         android:id="@+id/main_features"
         layout="@layout/partial_distance_feature"

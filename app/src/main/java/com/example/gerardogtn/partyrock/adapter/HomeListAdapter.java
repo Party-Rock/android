@@ -1,6 +1,7 @@
 package com.example.gerardogtn.partyrock.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,12 +11,15 @@ import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.Venue;
+import com.example.gerardogtn.partyrock.service.VenueEvent;
+import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by gerardogtn on 8/1/15.
@@ -29,7 +33,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
 
     //Listener interface
     public interface OnVenueClickListener {
-        void onVenueClick(View item, int position);
+        void onVenueClick(int position);
     }
 
     // Method that allows the parent activity or fragment to define the listener
@@ -90,11 +94,13 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listener != null){
-                        listener.onVenueClick(itemView, getLayoutPosition());
+                    if (listener != null) {
+                        listener.onVenueClick(getLayoutPosition());
                     }
                 }
             });
+
+
         }
 
         // REQUIRES: None.
@@ -116,6 +122,24 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         private void setUpViewPager(List<String> imageUrls) {
             ImagePagerAdapter adapter = new ImagePagerAdapter(mContext, imageUrls);
             mImages.setAdapter(adapter);
+            adapter.setOnItemClickListener(new ImagePagerAdapter.OnVenueClickListener() {
+                @Override
+                public void onVenueClick() {
+                    VenueEvent clickedVenue = new VenueEvent(mVenues.get(getLayoutPosition()));
+                    EventBus.getDefault().postSticky(clickedVenue);
+                    Intent intent = new Intent(mContext, DetailActivity.class);
+                    mContext.startActivity(intent);
+                }
+            });
+//            mImages.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (listener != null) {
+//                        listener.onVenueClick(itemView, getLayoutPosition());
+//                    }
+//                }
+//
+//            });
         }
     }
 }

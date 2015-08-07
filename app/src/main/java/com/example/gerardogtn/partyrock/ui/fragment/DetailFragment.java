@@ -97,9 +97,15 @@ public class DetailFragment extends Fragment {
     // MODIFIES: this.
     // EFFECTS:  If the imageResource is invalid(-1) add a new ImageFragment with default Image.
     //           Otherwise, add a new ImageFragment with the specified image resource.
-    private void setUpViewPager(List<String> imageUrls) {
+    private void setUpViewPager(final List<String> imageUrls) {
         ImagePagerAdapter adapter = new ImagePagerAdapter(getActivity(), imageUrls);
         mImages.setAdapter(adapter);
+        adapter.setOnItemClickListener(new ImagePagerAdapter.OnImageClickListener() {
+            @Override
+            public void onImageClick(int position) {
+               Toast.makeText(getActivity(),"This is Image No."+(position+1) +" of " + imageUrls.size(),Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
