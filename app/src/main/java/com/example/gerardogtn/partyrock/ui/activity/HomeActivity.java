@@ -14,7 +14,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class HomeActivity extends AppCompatActivity implements HomeListFragment.OnVenueSelectedListener {
+public class HomeActivity extends AppCompatActivity {
 
     @Bind(R.id.toolbar_home)
     Toolbar mToolbar;
@@ -57,8 +57,4 @@ public class HomeActivity extends AppCompatActivity implements HomeListFragment.
         tm.commit();
     }
 
-    @Override
-    public void onVenueSelected(String name, int capacity, int price, int distance) {
-
-    }
 }

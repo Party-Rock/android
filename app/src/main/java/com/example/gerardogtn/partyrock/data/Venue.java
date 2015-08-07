@@ -1,119 +1,148 @@
 package com.example.gerardogtn.partyrock.data;
 
 import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Emilio on 29/07/2015.
  */
 public class Venue {
-    String name;
-    LatLng latLng;
-    ArrayList<String> imageURL;
-    int size;
-    int price;
-    ArrayList<Feature> features;
-    double ratingAverage;
-    ArrayList<Integer> rating;
+    private String mName;
+    private double mPrice;
+    private int mCapacity;
+    private double mDistance;
+    private Integer mImageResource;
+    private ArrayList<String> mImageUrls;
+    private LatLng mLatLng;
+    private int mSize;
+    private ArrayList<Feature> mFeatures;
+    private double mRatingAverage;
+    private ArrayList<Integer> mRating;
 
     public Venue() {
-        imageURL=new ArrayList<>();
-        features=new ArrayList<>();
-        rating=new ArrayList<>();
+        mImageUrls = new ArrayList<>();
+        mFeatures=new ArrayList<>();
+        mRating=new ArrayList<>();
     }
 
-    public Venue(String name, LatLng latLng, ArrayList<String> imageURL, int size, int price) {
-        this.name = name;
-        this.latLng = latLng;
-        this.imageURL = imageURL;
-        this.size = size;
-        this.price = price;
+    public Venue(String mName, double mPrice, int mCapacity, double mDistance) {
+        this.mName = mName;
+        this.mPrice = mPrice;
+        this.mCapacity = mCapacity;
+        this.mDistance = mDistance;
+        mImageUrls = new ArrayList<>();
     }
 
-    public Venue(String name, LatLng latLng, ArrayList<String> imageURL, int size, int price, ArrayList<Feature> features, double ratingAverage, ArrayList<Integer> rating) {
-        this.name = name;
-        this.latLng = latLng;
-        this.imageURL = imageURL;
-        this.size = size;
-        this.price = price;
-        this.features = features;
-        this.ratingAverage = ratingAverage;
-        this.rating = rating;
+    public Venue(String mName, double mPrice, int mCapacity, double mDistance, Integer mImageResource, ArrayList<String> mImageUrls, LatLng mLatLng, int size, ArrayList<Feature> mFeatures, double mRatingAverage, ArrayList<Integer> mRating) {
+        this.mName = mName;
+        this.mPrice = mPrice;
+        this.mCapacity = mCapacity;
+        this.mDistance = mDistance;
+        this.mImageResource = mImageResource;
+        this.mImageUrls = mImageUrls;
+        this.mLatLng = mLatLng;
+        this.mSize = size;
+        this.mFeatures = mFeatures;
+        this.mRatingAverage = mRatingAverage;
+        this.mRating = mRating;
     }
 
-    public String getName() {
-        return name;
+    public String getmName() {
+        return mName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setmName(String mName) {
+        this.mName = mName;
     }
 
-    public LatLng getLatLng() {
-        return latLng;
+    public double getmPrice() {
+        return mPrice;
     }
 
-    public void setLatLng(LatLng latLng) {
-        this.latLng = latLng;
+    public void setmPrice(double mPrice) {
+        this.mPrice = mPrice;
     }
 
-    public ArrayList<String> getImageURL() {
-        return imageURL;
+    public int getmCapacity() {
+        return mCapacity;
     }
 
-    public void setImageURL(ArrayList<String> imageURL) {
-        this.imageURL = imageURL;
+    public void setmCapacity(int mCapacity) {
+        this.mCapacity = mCapacity;
     }
 
-    public int getSize() {
-        return size;
+    public double getmDistance() {
+        return mDistance;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setmDistance(double mDistance) {
+        this.mDistance = mDistance;
     }
 
-    public int getPrice() {
-        return price;
+    public Integer getImageResource() {
+        return this.mImageResource;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setImageResource(Integer imageResource){
+        this.mImageResource = imageResource;
     }
 
-    public ArrayList<Feature> getFeatures() {
-        return features;
+    public void addImageUrl(String url){
+        mImageUrls.add(url);
     }
 
-    public void setFeatures(ArrayList<Feature> features) {
-        this.features = features;
+    public List<String> getImageUrls(){
+        return mImageUrls;
     }
 
-    public Double getRatingAverage() {
-        return ratingAverage;
+    public int getImageCount(){
+        return mImageUrls.size();
     }
 
-    public void setRatingAverage(Double ratingAverage) {
-        this.ratingAverage = ratingAverage;
+    public LatLng getmLatLng() {
+        return mLatLng;
     }
 
-    public ArrayList<Integer> getRating() {
-        return rating;
+    public void setmLatLng(LatLng mLatLng) {
+        this.mLatLng = mLatLng;
     }
 
-    public void setRating(ArrayList<Integer> rating) {
-        this.rating = rating;
+    public int getmSize() {
+        return mSize;
     }
 
-    @Override
-    public String toString() {
-        return "Venue{" +
-                "name='" + name + '\'' +
-                ", latLng=" + latLng.toString() +
-                ", imageURL=" + imageURL +
-                ", size=" + size +
-                ", price=" + price +
-                ", features=" + features +
-                ", ratingAverage=" + ratingAverage +
-                ", rating=" + rating +
-                '}';
+    public void setmSize(int mSize) {
+        this.mSize = mSize;
+    }
+
+    public ArrayList<Feature> getmFeatures() {
+        return mFeatures;
+    }
+
+    public void setmFeatures(ArrayList<Feature> mFeatures) {
+        this.mFeatures = mFeatures;
+    }
+
+    public void addFeatures(Feature mFeatures) {
+        this.mFeatures.add(mFeatures);
+    }
+
+    public double getmRatingAverage() {
+        return mRatingAverage;
+    }
+
+    public void setmRatingAverage(double mRatingAverage) {
+        this.mRatingAverage = mRatingAverage;
+    }
+
+    public ArrayList<Integer> getmRating() {
+        return mRating;
+    }
+
+    public void setmRating(ArrayList<Integer> mRating) {
+        this.mRating = mRating;
+    }
+    public void addRating(Integer mRating) {
+        this.mRating.add(mRating);
     }
 }

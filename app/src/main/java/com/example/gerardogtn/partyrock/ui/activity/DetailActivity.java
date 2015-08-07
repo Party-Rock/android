@@ -1,15 +1,20 @@
 package com.example.gerardogtn.partyrock.ui.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.gerardogtn.partyrock.R;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.example.gerardogtn.partyrock.ui.fragment.DetailFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import com.google.android.gms.maps.SupportMapFragment;
 
 /**
  * Created by gerardogtn on 8/1/15.
@@ -30,6 +35,24 @@ public class DetailActivity extends AppCompatActivity{
         setUpMapFragment();
     }
 
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     // REQUIRES: None.
     // MODIFIES: this.
