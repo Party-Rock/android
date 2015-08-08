@@ -1,13 +1,15 @@
-package com.example.gerardogtn.partyrock.data;
+package com.example.gerardogtn.partyrock.data.model;
 
 /**
  * Created by Emilio on 30/07/2015.
  */
 public class LatLng {
-    Double lat;
-    Double lng;
+
+    private Double lat;
+    private Double lng;
 
     public LatLng() {
+
     }
 
     public LatLng(Double lat, Double lng) {
