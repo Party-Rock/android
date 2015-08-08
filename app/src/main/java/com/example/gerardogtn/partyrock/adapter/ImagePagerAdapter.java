@@ -12,7 +12,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.gerardogtn.partyrock.R;
-import com.example.gerardogtn.partyrock.ui.fragment.DetailFragment;
+import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
+import com.example.gerardogtn.partyrock.ui.activity.HomeActivity;
 import com.example.gerardogtn.partyrock.ui.fragment.HomeListFragment;
 import com.squareup.picasso.Picasso;
 
@@ -31,37 +32,25 @@ public class ImagePagerAdapter extends PagerAdapter {
 
     private Context mContext;
     private List<String> mImageUrls;
-    private LayoutInflater layoutInflater;
-    //listener for the RecyclerView in HomeListFragment
-    private OnVenueClickListener mListener1;
-    //listener for the ViewPager in DetailFragment
-    private OnImageClickListener mListener2;
-
-
-    //Listener interface for the RecyclerView in HomeListFragment
-    public interface OnVenueClickListener {
-        void onVenueClick();
-    }
-    //Listener interface for the ViewPager in DetailFragment
-    public interface OnImageClickListener{
-        void onImageClick(int position);
-    }
-
-    // Method that allows the parent activity or fragment to define the listener
-    public void setOnItemClickListener(OnVenueClickListener listener) {
-        this.mListener1 = listener;
-    }
-
-    // Method that allows the parent activity or fragment to define the listener
-    public void setOnItemClickListener(OnImageClickListener listener) {
-        this.mListener2 = listener;
-    }
+    private LayoutInflater mInflater;
+    private OnVenueClickListener mVenueListener;
+    private OnImageClickListener mImageListener;
 
     public ImagePagerAdapter(Context context, List<String> imageUrls) {
         super();
         this.mContext = context;
         this.mImageUrls = imageUrls;
-        layoutInflater= LayoutInflater.from(context);
+        mInflater = LayoutInflater.from(context);
+    }
+
+    // Method that allows the parent activity or fragment to define the listener
+    public void setOnVenueListener(OnVenueClickListener listener) {
+        this.mVenueListener = listener;
+    }
+
+    // Method that allows the parent activity or fragment to define the listener
+    public void setOnImageListener(OnImageClickListener listener) {
+        this.mImageListener = listener;
     }
 
 
@@ -76,38 +65,16 @@ public class ImagePagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, final int position) {
-        LinearLayout layout = (LinearLayout) layoutInflater.inflate(R.layout.item_detail_image,container,false);
-
-        //Method to identify the fragment where the Recyclerview is being executed.
-        Fragment fragment = ((AppCompatActivity) mContext).getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (fragment instanceof HomeListFragment){
-        layout.setOnClickListener(new LinearLayout.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                mListener1.onVenueClick();
-            }
-        });} else if (fragment instanceof DetailFragment){
-            layout.setOnClickListener(new LinearLayout.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                  mListener2.onImageClick(position);
-                }
-            });
-        }
-
+    public Object instantiateItem(ViewGroup container, int position) {
+        LinearLayout layout = (LinearLayout) mInflater.inflate(R.layout.item_detail_image, container, false);
+        setUpListener(layout, position);
         ButterKnife.bind(this, layout);
-
         Picasso.with(mContext)
                 .load(mImageUrls.get(position))
                 .error(R.mipmap.ic_launcher)
                 .into(mVenueImage);
-
-
-
-
         container.addView(layout);
+
         return layout;
     }
 
@@ -115,4 +82,39 @@ public class ImagePagerAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         ((ViewPager) container).removeView((View) object);
     }
+
+
+    // REQUIRES: position is valid.
+    // MODIFIES: this.
+    // EFFECTS: If the context of this activity is a HomeActivity, sets the mVenueListener. Else if
+    //          the context of this activity is a DetailActivity, sets the mImageListener.
+    private void setUpListener(LinearLayout layout, final int position) {
+        if (mContext.getClass() == HomeActivity.class) {
+            layout.setOnClickListener(new LinearLayout.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mVenueListener.onVenueClick();
+                }
+            });
+
+        } else if (mContext.getClass() == DetailActivity.class) {
+            layout.setOnClickListener(new LinearLayout.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mImageListener.onImageClick(position);
+                }
+            });
+
+        }
+    }
+
+
+    public interface OnVenueClickListener {
+        void onVenueClick();
+    }
+
+    public interface OnImageClickListener {
+        void onImageClick(int position);
+    }
+
 }

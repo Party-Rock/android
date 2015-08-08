@@ -72,7 +72,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         return mVenues.size();
     }
 
-    public class HomeListViewHolder extends RecyclerView.ViewHolder {
+    public class HomeListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @Bind(R.id.venue_images)
         ViewPager mImages;
@@ -91,14 +91,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         public HomeListViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        listener.onVenueClick(getLayoutPosition());
-                    }
-                }
-            });
+            itemView.setOnClickListener(this);
 
 
         }
@@ -122,7 +115,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         private void setUpViewPager(List<String> imageUrls) {
             ImagePagerAdapter adapter = new ImagePagerAdapter(mContext, imageUrls);
             mImages.setAdapter(adapter);
-            adapter.setOnItemClickListener(new ImagePagerAdapter.OnVenueClickListener() {
+            adapter.setOnVenueListener(new ImagePagerAdapter.OnVenueClickListener() {
                 @Override
                 public void onVenueClick() {
                     VenueEvent clickedVenue = new VenueEvent(mVenues.get(getLayoutPosition()));
@@ -131,15 +124,13 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
                     mContext.startActivity(intent);
                 }
             });
-//            mImages.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (listener != null) {
-//                        listener.onVenueClick(itemView, getLayoutPosition());
-//                    }
-//                }
-//
-//            });
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (listener != null){
+                listener.onVenueClick(getLayoutPosition());
+            }
         }
     }
 }
