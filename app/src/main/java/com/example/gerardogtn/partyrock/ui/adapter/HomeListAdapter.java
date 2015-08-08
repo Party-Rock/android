@@ -1,4 +1,4 @@
-package com.example.gerardogtn.partyrock.adapter;
+package com.example.gerardogtn.partyrock.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
-import com.example.gerardogtn.partyrock.data.Venue;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
 

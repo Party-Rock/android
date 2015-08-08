@@ -1,4 +1,4 @@
-package com.example.gerardogtn.partyrock.adapter;
+package com.example.gerardogtn.partyrock.ui.adapter;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
