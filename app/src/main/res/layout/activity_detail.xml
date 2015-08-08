@@ -29,12 +29,10 @@
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="50dp" />-->
 
-            <fragment
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:id="@+id/map"
+            <include
+                layout="@layout/partial_lite_map"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                map:liteMode="true"/>
+                android:layout_height="300dp" />
 
         </LinearLayout>
 
