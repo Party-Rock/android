@@ -60,8 +60,6 @@ public class ConfirmationFragment extends Fragment {
         Venue venue = clickedVenue.getVenue();
         Toast.makeText(getActivity(), "Venue received " + clickedVenue.getVenue().getmName(), Toast.LENGTH_SHORT).show();
         setLayoutDetails(venue);
-
-
     }
 
     public void setLayoutDetails(Venue venue) {
@@ -91,7 +89,9 @@ public class ConfirmationFragment extends Fragment {
         return view;
     }
 
+    //Method to call a DatePicker Dialog when TextView is clicked.
     public void setCalendar() {
+        //Define the format in which the date is shown.
         mSimpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
         datePickerText.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +100,8 @@ public class ConfirmationFragment extends Fragment {
                 mDatePickerDialog.show();
             }
         });
+
+        //Get the selected date from the dialog
         Calendar newCalendar = Calendar.getInstance();
         mDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -109,17 +111,18 @@ public class ConfirmationFragment extends Fragment {
                 datePickerText.setText(mSimpleDateFormat.format(newDate.getTime()));
             }
         }, newCalendar.get(Calendar.YEAR),newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        //Customization of the Calendar View
         long currentTime = System.currentTimeMillis();
         mDatePicker = mDatePickerDialog.getDatePicker();
         mDatePicker.setMinDate(currentTime - 1000);
-        long dateMax = (currentTime/100) + currentTime;
+        long dateMax = (currentTime/90) + currentTime;
         mDatePicker.setMaxDate(dateMax);
-
     }
 
     @Override
-    public void onPause() {
+    public void onDetach() {
         EventBus.getDefault().unregister(this);
-        super.onPause();
+        super.onDetach();
     }
 }

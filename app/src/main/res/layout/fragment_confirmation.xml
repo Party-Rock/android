@@ -69,6 +69,7 @@
                     android:elevation="@dimen/fab_elevation"
                     android:padding="@dimen/navigation_padding_bottom"
                     android:gravity="center"
+                    android:clickable="true"
                     android:text="@string/date_format"
                     android:textSize="@dimen/abc_text_size_headline_material"
                     android:background="@drawable/style_text_border_date" />
