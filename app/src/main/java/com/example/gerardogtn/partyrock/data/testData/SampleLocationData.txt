@@ -1,0 +1,8 @@
+Citi center
+19.363749, -99.181745
+
+Barranca del Muerto (cerca de Citi Center)
+19.361704, -99.184427
+
+Plateros (Insurgentes Sur, cerca de Citi Center)
+19.366694, -99.182528
