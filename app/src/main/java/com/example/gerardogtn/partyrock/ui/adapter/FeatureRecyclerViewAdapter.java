@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
-import com.example.gerardogtn.partyrock.data.Feature;
+import com.example.gerardogtn.partyrock.data.model.Feature;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

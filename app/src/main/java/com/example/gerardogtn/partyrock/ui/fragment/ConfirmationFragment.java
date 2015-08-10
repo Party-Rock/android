@@ -24,7 +24,7 @@ public class ConfirmationFragment extends Fragment {
     }
     //EventBus method to receive Venue
     public void onEvent(VenueEvent clickedVenue){
-        Toast.makeText(getActivity(), "Venue received " + clickedVenue.getVenue().getmName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Venue received " + clickedVenue.getVenue().getName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

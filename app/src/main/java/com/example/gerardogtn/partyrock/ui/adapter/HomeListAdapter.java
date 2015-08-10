@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
+import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
 
@@ -79,9 +80,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         @Bind(R.id.txt_capacity)
         TextView mCapacity;
 
-        @Bind(R.id.txt_distance)
-        TextView mDistance;
-
         @Bind(R.id.txt_price)
         TextView mPrice;
 
@@ -99,9 +97,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         // MODIFIES: this.
         // EFFECTS:  Represents and visualizes venue data with views.
         public void setData(Venue venue) {
-            mCapacity.setText(""+ Integer.toString(venue.getmCapacity()));
-            mDistance.setText(Double.toString(venue.getmDistance())+"km.");
-            mPrice.setText("$"+Double.toString(venue.getmPrice()));
+            mCapacity.setText(""+ Integer.toString(venue.getCapacity()));
+            mPrice.setText("$"+Double.toString(venue.getPrice()));
             mImageUrls = venue.getImageUrls();
             setUpViewPager(venue.getImageUrls());
         }

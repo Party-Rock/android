@@ -1,43 +1,67 @@
 package com.example.gerardogtn.partyrock.data.model;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 /**
  * Created by Emilio on 29/07/2015.
  */
 public class Venue {
 
-    private int size;
-    private int price;
+    private int capacity;
+    private double price;
+    private double size;
     private double ratingAverage;
     private String name;
     private LatLng latLng;
-    private ArrayList<String> imageURL;
+    private ArrayList<String> imageUrls;
     private ArrayList<Integer> rating;
     private ArrayList<Feature> features;
 
     public Venue() {
-        imageURL=new ArrayList<>();
+        imageUrls =new ArrayList<>();
         features=new ArrayList<>();
         rating=new ArrayList<>();
     }
 
-    public Venue(String name, LatLng latLng, ArrayList<String> imageURL, int size, int price) {
+    public Venue(String name, LatLng latLng, ArrayList<String> imageUrls, int capacity, double price) {
         this.name = name;
         this.latLng = latLng;
-        this.imageURL = imageURL;
-        this.size = size;
+        this.imageUrls = imageUrls;
+        this.capacity = capacity;
         this.price = price;
     }
 
-    public Venue(String name, LatLng latLng, ArrayList<String> imageURL, int size, int price, ArrayList<Feature> features, double ratingAverage, ArrayList<Integer> rating) {
-        this.name = name;
-        this.latLng = latLng;
-        this.imageURL = imageURL;
-        this.size = size;
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
         this.price = price;
-        this.features = features;
+    }
+
+    public double getSize() {
+        return size;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
+    }
+
+    public double getRatingAverage() {
+        return ratingAverage;
+    }
+
+    public void setRatingAverage(double ratingAverage) {
         this.ratingAverage = ratingAverage;
-        this.rating = rating;
     }
 
     public String getName() {
@@ -56,44 +80,12 @@ public class Venue {
         this.latLng = latLng;
     }
 
-    public ArrayList<String> getImageURL() {
-        return imageURL;
+    public ArrayList<String> getImageUrls() {
+        return imageUrls;
     }
 
-    public void setImageURL(ArrayList<String> imageURL) {
-        this.imageURL = imageURL;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public ArrayList<Feature> getFeatures() {
-        return features;
-    }
-
-    public void setFeatures(ArrayList<Feature> features) {
-        this.features = features;
-    }
-
-    public Double getRatingAverage() {
-        return ratingAverage;
-    }
-
-    public void setRatingAverage(Double ratingAverage) {
-        this.ratingAverage = ratingAverage;
+    public void setImageUrls(ArrayList<String> imageUrls) {
+        this.imageUrls = imageUrls;
     }
 
     public ArrayList<Integer> getRating() {
@@ -104,17 +96,12 @@ public class Venue {
         this.rating = rating;
     }
 
-    @Override
-    public String toString() {
-        return "Venue{" +
-                "name='" + name + '\'' +
-                ", latLng=" + latLng.toString() +
-                ", imageURL=" + imageURL +
-                ", size=" + size +
-                ", price=" + price +
-                ", features=" + features +
-                ", ratingAverage=" + ratingAverage +
-                ", rating=" + rating +
-                '}';
+    public ArrayList<Feature> getFeatures() {
+        return features;
     }
+
+    public void setFeatures(ArrayList<Feature> features) {
+        this.features = features;
+    }
+
 }

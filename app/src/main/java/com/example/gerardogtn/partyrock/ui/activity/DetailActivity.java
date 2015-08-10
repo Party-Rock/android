@@ -1,6 +1,7 @@
 package com.example.gerardogtn.partyrock.ui.activity;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -14,15 +15,19 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
-import com.example.gerardogtn.partyrock.adapter.ImagePagerAdapter;
-import com.example.gerardogtn.partyrock.data.Venue;
+import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapter;
+import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
@@ -44,6 +49,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     Button rentButton;
 
     private SupportMapFragment mMapFragment;
+    private Venue venue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +58,8 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         ButterKnife.bind(this);
         EventBus.getDefault().registerSticky(this);
         setUpToolbar();
-        setUpMapFragment();
         setUpRentButton();
-
+        setUpMapFragment();
     }
 
     private void setUpRentButton() {
@@ -83,12 +88,36 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         super.onDestroy();
     }
 
+    // REQUIRES: Position is valid.
+    // MODIFIES: None.
+    // EFFECTS:  Displays via a Toast the position of the image as a list in the viewpager.
+    @Override
+    public void onImageClick(int position) {
+        String toastDisplay = "This is Image No." + (position + 1) + " of " + mImages.getAdapter().getCount();
+        Toast.makeText(DetailActivity.this, toastDisplay, Toast.LENGTH_SHORT).show();
+    }
+
+
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS:  Sets up the map fragment.
     private void setUpMapFragment() {
         mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mMapFragment.getMap().setMyLocationEnabled(true);
+        centerOnVenueLocation();
+        addVenueMarker();
+    }
+
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS: Center the map to the venue's location.
+    private void centerOnVenueLocation(){
+        mMapFragment.getMap().animateCamera(CameraUpdateFactory.newLatLng(venue.getLatLng()));
+    }
+
+    private void addVenueMarker(){
+        MarkerOptions marker = new MarkerOptions().position(venue.getLatLng()).title(venue.getName());
+        this.mMapFragment.getMap().addMarker(marker);
     }
 
     // REQUIRES: None.
@@ -108,12 +137,16 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS: Receives a Venue Event, sets the viewpager and mapfragment with the Venue's data.
     //EventBus method to receive Venue
-    public void onEvent(VenueEvent clickedVenue){
-        Toast.makeText(this, "Venue received " + clickedVenue.getVenue().getmName(), Toast.LENGTH_SHORT).show();
-        setUpViewPager(clickedVenue.getVenue().getImageUrls());
-        //setUpRecycleView(clickedVenue.getVenue());
-
+    // TODO: Set up the Recycle view of the Venue's features.
+    public void onEvent(VenueEvent venueEvent){
+        this.venue = venueEvent.getVenue();
+        Toast.makeText(this, "Venue received " + venue.getName(), Toast.LENGTH_SHORT).show();
+        setUpViewPager(venue.getImageUrls());
+        //setUpRecycleView(venueEvent.getVenue());
     }
 
 
@@ -127,6 +160,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     }
 
 
+    // TODO: Set up the Venue's features recycleview.
     private void setUpRecycleView(Venue venue) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         //mFeatures.setLayoutManager(linearLayoutManager);
@@ -134,12 +168,6 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         //      mRecyclerView.setAdapter(featureViewAdapter);
     }
 
-    // REQUIRES: Position is valid.
-    // MODIFIES: None.
-    // EFFECTS:  Displays via a Toast the position of the image as a list in the viewpager.
-    @Override
-    public void onImageClick(int position) {
-        String toastDisplay = "This is Image No." + (position + 1) + " of " + mImages.getAdapter().getCount();
-        Toast.makeText(DetailActivity.this, toastDisplay, Toast.LENGTH_SHORT).show();
-    }
+
+
 }
