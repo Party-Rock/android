@@ -93,7 +93,7 @@ public class ConfirmationFragment extends Fragment {
     public void setCalendar() {
         //Define the format in which the date is shown.
         mSimpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-
+        //OnClick listener
         datePickerText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
