@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_horizontal_margin">
+
+    <ImageView
+        android:layout_weight="0.15"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        tools:ignore="RtlCompat,RtlSymmetry"
+        android:src="@mipmap/ic_place_black"/>
+
+    <LinearLayout
+        android:layout_weight="0.85"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_location_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/address"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/txt_location_secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/municipality"/>
+
+    </LinearLayout>
+
+</LinearLayout>
