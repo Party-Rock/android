@@ -145,4 +145,18 @@ public class Venue {
     public void addRating(Integer mRating) {
         this.mRating.add(mRating);
     }
+
+    @Override
+    public String toString() {
+        return "Venue:" +
+                "mName='" + mName + '\'' +
+                ", mPrice=" + mPrice +
+                ", mCapacity=" + mCapacity +
+                ", mDistance=" + mDistance +
+                ", mSize=" + mSize +
+                ", mFeatures=" + mFeatures +
+                ", mRatingAverage=" + mRatingAverage +
+                ", mRating=" + mRating +
+                '}';
+    }
 }

@@ -4,7 +4,7 @@
     android:id="@+id/toolbar_home"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/primary"
+    android:background="@color/accent"
     android:theme="@style/ToolbarTheme"
     app:popupTheme="@style/AppTheme"
     android:elevation="4dp"/>
