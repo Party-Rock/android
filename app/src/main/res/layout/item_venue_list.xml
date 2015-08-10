@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:orientation="vertical"
-        tools:ignore="RtlHardcoded">
+        tools:ignore="RtlHardcoded"
+        android:background="@android:color/white">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/venue_images"
