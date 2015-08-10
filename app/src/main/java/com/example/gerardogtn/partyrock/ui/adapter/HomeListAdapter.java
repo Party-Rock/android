@@ -14,6 +14,8 @@ import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,12 +95,33 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
 
         }
 
+        @Override
+        public void onClick(View v) {
+            if (listener != null){
+                listener.onVenueClick(getLayoutPosition());
+            }
+        }
+
+        // REQUIRES: None.
+        // MODIFIES: None.
+        // EFFECTS: If places is less than zero, return a new IllegalArgumentException. Else,
+        // create a new BigDecimal with value, rounds up to places and returns the double value.
+        public double round(double value, int places) {
+            if (places < 0) {
+                throw new IllegalArgumentException();
+            }
+
+            BigDecimal bd = new BigDecimal(value);
+            bd = bd.setScale(places, RoundingMode.HALF_UP);
+            return bd.doubleValue();
+        }
+
         // REQUIRES: None.
         // MODIFIES: this.
         // EFFECTS:  Represents and visualizes venue data with views.
         public void setData(Venue venue) {
             mCapacity.setText(""+ Integer.toString(venue.getCapacity()));
-            mPrice.setText("$"+Double.toString(venue.getPrice()));
+            mPrice.setText("$"+Double.toString(round(venue.getPrice(), 2)));
             mImageUrls = venue.getImageUrls();
             setUpViewPager(venue.getImageUrls());
         }
@@ -122,11 +145,5 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
             });
         }
 
-        @Override
-        public void onClick(View v) {
-            if (listener != null){
-                listener.onVenueClick(getLayoutPosition());
-            }
-        }
     }
 }
