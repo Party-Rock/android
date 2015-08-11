@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Venue;
+import com.example.gerardogtn.partyrock.service.SearchVenueEvent;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
 import com.example.gerardogtn.partyrock.ui.adapter.HomeListAdapter;
@@ -31,6 +32,7 @@ import de.greenrobot.event.EventBus;
 public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenueClickListener {
 
     private List<Venue> mVenues;
+    private final String FTAG = "fragment_search_venue";
 
     @Bind(R.id.recycler_view_venue)
     RecyclerView mRecyclerView;
@@ -77,14 +79,19 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_venue_list, container, false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         setUpRecycleView();
+        setUpFABClick();
+        return view;
+    }
+
+    private void setUpFABClick() {
         FAB_Search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showSearchDialog();
             }
         });
-        return view;
     }
 
     @Override
@@ -123,10 +130,19 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
 
         FragmentManager fm = getFragmentManager();
 
-        SearchVenueFragment searchDialog = new SearchVenueFragment();
+            SearchVenueFragment searchDialog = new SearchVenueFragment();
 
-        searchDialog.show(fm, "fragment_search_venue");
+            searchDialog.show(fm, FTAG);
 
+
+    }
+
+    //EventBus method to receive Search Parameters
+    public void onEvent(SearchVenueEvent searchVenueEvent) {
+        String location = searchVenueEvent.getLocation();
+        int price = searchVenueEvent.getPrice();
+        int capacity = searchVenueEvent.getCapacity();
+        Toast.makeText(getActivity(), "Search received " + location + " " + price + " " + capacity, Toast.LENGTH_SHORT).show();
     }
 
 }
