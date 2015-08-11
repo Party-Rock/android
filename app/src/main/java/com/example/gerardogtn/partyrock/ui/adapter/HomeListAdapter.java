@@ -1,4 +1,4 @@
-package com.example.gerardogtn.partyrock.adapter;
+package com.example.gerardogtn.partyrock.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
-import com.example.gerardogtn.partyrock.data.Venue;
+import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,16 +74,13 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         return mVenues.size();
     }
 
-    public class HomeListViewHolder extends RecyclerView.ViewHolder {
+    public class HomeListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @Bind(R.id.venue_images)
         ViewPager mImages;
 
         @Bind(R.id.txt_capacity)
         TextView mCapacity;
-
-        @Bind(R.id.txt_distance)
-        TextView mDistance;
 
         @Bind(R.id.txt_price)
         TextView mPrice;
@@ -91,25 +90,38 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         public HomeListViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        listener.onVenueClick(getLayoutPosition());
-                    }
-                }
-            });
+            itemView.setOnClickListener(this);
 
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (listener != null){
+                listener.onVenueClick(getLayoutPosition());
+            }
+        }
+
+        // REQUIRES: None.
+        // MODIFIES: None.
+        // EFFECTS: If places is less than zero, return a new IllegalArgumentException. Else,
+        // create a new BigDecimal with value, rounds up to places and returns the double value.
+        public double round(double value, int places) {
+            if (places < 0) {
+                throw new IllegalArgumentException();
+            }
+
+            BigDecimal bd = new BigDecimal(value);
+            bd = bd.setScale(places, RoundingMode.HALF_UP);
+            return bd.doubleValue();
         }
 
         // REQUIRES: None.
         // MODIFIES: this.
         // EFFECTS:  Represents and visualizes venue data with views.
         public void setData(Venue venue) {
-            mCapacity.setText(""+ Integer.toString(venue.getmCapacity()));
-            mDistance.setText(Double.toString(venue.getmDistance())+"km.");
-            mPrice.setText("$"+Double.toString(venue.getmPrice()));
+            mCapacity.setText(""+ Integer.toString(venue.getCapacity()));
+            mPrice.setText("$"+Double.toString(round(venue.getPrice(), 2)));
             mImageUrls = venue.getImageUrls();
             setUpViewPager(venue.getImageUrls());
         }
@@ -122,7 +134,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         private void setUpViewPager(List<String> imageUrls) {
             ImagePagerAdapter adapter = new ImagePagerAdapter(mContext, imageUrls);
             mImages.setAdapter(adapter);
-            adapter.setOnItemClickListener(new ImagePagerAdapter.OnVenueClickListener() {
+            adapter.setOnVenueListener(new ImagePagerAdapter.OnVenueClickListener() {
                 @Override
                 public void onVenueClick() {
                     VenueEvent clickedVenue = new VenueEvent(mVenues.get(getLayoutPosition()));
@@ -131,15 +143,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
                     mContext.startActivity(intent);
                 }
             });
-//            mImages.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (listener != null) {
-//                        listener.onVenueClick(itemView, getLayoutPosition());
-//                    }
-//                }
-//
-//            });
         }
+
     }
 }

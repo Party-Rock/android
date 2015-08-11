@@ -1,4 +1,4 @@
-package com.example.gerardogtn.partyrock.adapter;
+package com.example.gerardogtn.partyrock.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
-import com.example.gerardogtn.partyrock.data.Feature;
+import com.example.gerardogtn.partyrock.data.model.Feature;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

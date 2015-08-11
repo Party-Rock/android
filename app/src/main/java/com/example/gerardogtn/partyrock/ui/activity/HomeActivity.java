@@ -2,7 +2,6 @@ package com.example.gerardogtn.partyrock.ui.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -46,15 +45,6 @@ public class HomeActivity extends AppCompatActivity {
     // EFFECTS:  Sets support action toolbar with mToolbar.
     private void setUpToolbar() {
         setSupportActionBar(mToolbar);
-    }
-
-    // REQUIRES: None.
-    // MODIFIES: this.
-    // EFFECTS:  Draws back arrow in toolbar.
-    private void drawBackArrow(){
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     // REQUIRES: None.

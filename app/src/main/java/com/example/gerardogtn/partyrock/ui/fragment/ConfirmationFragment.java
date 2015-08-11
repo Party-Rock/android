@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
-import com.example.gerardogtn.partyrock.data.Venue;
+import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
 import com.squareup.picasso.Picasso;
 
@@ -58,7 +58,7 @@ public class ConfirmationFragment extends Fragment {
     //EventBus method to receive Venue
     public void onEvent(VenueEvent clickedVenue){
         Venue venue = clickedVenue.getVenue();
-        Toast.makeText(getActivity(), "Venue received " + clickedVenue.getVenue().getmName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Venue received " + clickedVenue.getVenue().getName(), Toast.LENGTH_SHORT).show();
         setLayoutDetails(venue);
     }
 
@@ -67,9 +67,9 @@ public class ConfirmationFragment extends Fragment {
                 .load(venue.getImageUrls().get(0))
                 .error(R.mipmap.ic_launcher)
                 .into(mMainVenueImage);
-        mNameText.setText(getActivity().getString(R.string.venue) + ": " + venue.getmName());
-        mCapacityText.setText(getActivity().getString(R.string.capacity)+": " + Integer.toString(venue.getmCapacity()));
-        mPriceText.setText("$" + Double.toString(venue.getmPrice()));
+        mNameText.setText(getActivity().getString(R.string.venue) + ": " + venue.getName());
+        mCapacityText.setText(getActivity().getString(R.string.capacity)+": " + Integer.toString(venue.getCapacity()));
+        mPriceText.setText("$" + Double.toString(venue.getPrice()));
         mVenueText.setText(venue.toString());
     }
 

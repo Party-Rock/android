@@ -1,6 +1,6 @@
 package com.example.gerardogtn.partyrock.service;
 
-import com.example.gerardogtn.partyrock.data.Venue;
+import com.example.gerardogtn.partyrock.data.model.Venue;
 
 /**
  * Created by Emilio on 05/08/2015.
