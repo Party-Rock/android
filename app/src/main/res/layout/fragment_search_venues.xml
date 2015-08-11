@@ -2,11 +2,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/btn_height">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/btn_height"
         android:orientation="vertical"
         android:paddingEnd="30dp"
         android:paddingStart="30dp">
@@ -147,6 +150,8 @@
 
 
     </LinearLayout>
+
+</ScrollView>
 
     <Button
         android:id="@+id/btn_search"
