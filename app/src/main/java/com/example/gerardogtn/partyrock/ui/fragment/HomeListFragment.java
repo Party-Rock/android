@@ -80,7 +80,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         View view = inflater.inflate(R.layout.fragment_venue_list, container, false);
         ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
-        setUpRecycleView();
+        setUpRecycleView(mVenues);
         setUpFABClick();
         return view;
     }
@@ -116,11 +116,11 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Creates a vertical recycleview filled with mVenues, each view using a HomeListAdapter.
-    private void setUpRecycleView() {
+    private void setUpRecycleView(List<Venue> venues) {
         Context context = getActivity();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        HomeListAdapter homeListAdapter = new HomeListAdapter(context, mVenues);
+        HomeListAdapter homeListAdapter = new HomeListAdapter(context, venues);
         mRecyclerView.setAdapter(homeListAdapter);
         homeListAdapter.setOnItemClickListener(this);
     }
@@ -139,9 +139,12 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
 
     //EventBus method to receive Search Parameters
     public void onEvent(SearchVenueEvent searchVenueEvent) {
+
         String location = searchVenueEvent.getLocation();
         int price = searchVenueEvent.getPrice();
         int capacity = searchVenueEvent.getCapacity();
+
+        //TODO: Do the query using search API and refill the RecyclerView on success.
         Toast.makeText(getActivity(), "Search received " + location + " " + price + " " + capacity, Toast.LENGTH_SHORT).show();
     }
 
