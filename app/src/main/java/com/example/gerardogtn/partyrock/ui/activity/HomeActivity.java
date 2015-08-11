@@ -2,7 +2,6 @@ package com.example.gerardogtn.partyrock.ui.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -15,7 +14,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class HomeActivity extends AppCompatActivity implements HomeListFragment.OnVenueSelectedListener {
+public class HomeActivity extends AppCompatActivity {
 
     @Bind(R.id.toolbar_home)
     Toolbar mToolbar;
@@ -50,15 +49,6 @@ public class HomeActivity extends AppCompatActivity implements HomeListFragment.
 
     // REQUIRES: None.
     // MODIFIES: this.
-    // EFFECTS:  Draws back arrow in toolbar.
-    private void drawBackArrow(){
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-    }
-
-    // REQUIRES: None.
-    // MODIFIES: this.
     // EFFECTS: Draws a HomeListFragment on this.mFragmentContainer
     private void addHomeListFragment() {
         FragmentTransaction tm = getSupportFragmentManager().beginTransaction();
@@ -67,8 +57,4 @@ public class HomeActivity extends AppCompatActivity implements HomeListFragment.
         tm.commit();
     }
 
-    @Override
-    public void onVenueSelected(String name, int capacity, int price, int distance) {
-
-    }
 }
