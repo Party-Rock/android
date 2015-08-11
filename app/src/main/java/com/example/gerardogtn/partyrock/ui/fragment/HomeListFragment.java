@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,10 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
-import com.example.gerardogtn.partyrock.ui.adapter.HomeListAdapter;
 import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
+import com.example.gerardogtn.partyrock.ui.adapter.HomeListAdapter;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -32,6 +34,8 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
 
     @Bind(R.id.recycler_view_venue)
     RecyclerView mRecyclerView;
+    @Bind(R.id.FAB_Search)
+    FloatingActionButton FAB_Search;
 
     public HomeListFragment() {
         LatLng latLngJoselito = new LatLng(19.361704, -99.184427);
@@ -74,6 +78,12 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         View view = inflater.inflate(R.layout.fragment_venue_list, container, false);
         ButterKnife.bind(this, view);
         setUpRecycleView();
+        FAB_Search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSearchDialog();
+            }
+        });
         return view;
     }
 
@@ -106,6 +116,17 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         HomeListAdapter homeListAdapter = new HomeListAdapter(context, mVenues);
         mRecyclerView.setAdapter(homeListAdapter);
         homeListAdapter.setOnItemClickListener(this);
+    }
+
+    //FAB Button OnClick Method
+    private void showSearchDialog() {
+
+        FragmentManager fm = getFragmentManager();
+
+        SearchVenueFragment searchDialog = new SearchVenueFragment();
+
+        searchDialog.show(fm, "fragment_search_venue");
+
     }
 
 }
