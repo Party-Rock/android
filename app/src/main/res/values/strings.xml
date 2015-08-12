@@ -28,5 +28,7 @@
     <string name="distance">Distance</string>
     <string name="share">Share</string>
     <string name="txt_party_date">Please, select the date of your party:</string>
+    <string name="txt_party_share">Check out this house at Party Rock!</string>
+    <string name="txt_share">Share with:</string>
     <string name="date_format">dd/mm/yyyy</string>
 </resources>

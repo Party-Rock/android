@@ -18,15 +18,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
-import com.example.gerardogtn.partyrock.ui.adapter.FeatureAdapter;
-import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapter;
 import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
+import com.example.gerardogtn.partyrock.ui.adapter.FeatureAdapter;
 import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
@@ -61,7 +58,6 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
         EventBus.getDefault().registerSticky(this);
-        setUpToolbar();
         setUpRentButton();
         setUpMapFragment();
     }
@@ -100,7 +96,18 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         return super.onOptionsItemSelected(item);
     }
 
+    //Method to share the Venue Party Rock's website.
     private void shareIntent() {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        //TODO: Change link for a party rock web link.
+        String HTTPlink = venue.getImageUrls().get(0);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.txt_party_share));
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, HTTPlink);
+        startActivity(Intent.createChooser(sharingIntent, getString(R.string.txt_share)));
+    }
+    //A method in case we want to share a photo in the future.
+    private void shareIntentPhoto() {
         View view = getWindow().getDecorView().getRootView();
         view.setDrawingCacheEnabled(true);
         Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
@@ -190,6 +197,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         Toast.makeText(this, "Venue received " + venue.getName(), Toast.LENGTH_SHORT).show();
         setUpViewPager(venue.getImageUrls());
         setUpRecycleView();
+        setUpToolbar();
     }
 
 
