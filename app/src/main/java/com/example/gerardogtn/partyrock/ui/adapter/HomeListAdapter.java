@@ -121,7 +121,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         // EFFECTS:  Represents and visualizes venue data with views.
         public void setData(Venue venue) {
             mCapacity.setText(""+ Integer.toString(venue.getCapacity()));
-            mPrice.setText("$"+Double.toString(round(venue.getPrice(), 2)));
+            mPrice.setText(venue.getFormattedPrice());
             mImageUrls = venue.getImageUrls();
             setUpViewPager(venue.getImageUrls());
         }

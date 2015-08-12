@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
+import com.example.gerardogtn.partyrock.data.model.Feature;
+import com.example.gerardogtn.partyrock.data.model.Position;
+import com.example.gerardogtn.partyrock.ui.adapter.HomeListAdapter;
 import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.service.SearchVenueEvent;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
@@ -40,17 +43,37 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     FloatingActionButton FAB_Search;
 
     public HomeListFragment() {
-        LatLng latLngJoselito = new LatLng(19.361704, -99.184427);
+
+        Feature alcoholAllowed = new Feature("alcohol", true);
+        Feature alcoholNotAllowed = new Feature("alcohol", false);
+        Feature smokeNotAllowed = new Feature("smoke", false);
+
+
+        Position positionJoselito = new Position(new LatLng(19.361704, -99.184427), "Crédito Constructor");
+
         ArrayList<String> imagesJoselito = new ArrayList<>();
         imagesJoselito.add("http://mlm-s1-p.mlstatic.com/excelente-casa-para-reuniones-y-fiestas-13295-MLM20075175773_042014-F.jpg");
         imagesJoselito.add("http://mlm-s1-p.mlstatic.com/excelente-casa-para-reuniones-y-fiestas-20672-MLM20195551809_112014-F.jpg");
-        Venue venueJoselito = new Venue("Casa Joselito", latLngJoselito, imagesJoselito, 50, 1800.0);
 
-        LatLng latLngMaria = new LatLng(19.366694, -99.182528);
+        ArrayList<Feature> featuresJoselito = new ArrayList<>();
+        featuresJoselito.add(alcoholNotAllowed);
+        featuresJoselito.add(smokeNotAllowed);
+
+        Venue venueJoselito = new Venue("Casa Joselito", positionJoselito, imagesJoselito, 50, 1800.0);
+        venueJoselito.setFeatures(featuresJoselito);
+
+
+        Position positionMaria = new Position(new LatLng(19.366694, -99.182528), "Crédito Constructor");
+
         ArrayList<String> imagesMaria = new ArrayList<>();
         imagesMaria.add("http://mlm-s1-p.mlstatic.com/jardin-de-bodas-cuernavaca-19431-MLM20171605553_092014-O.jpg");
         imagesMaria.add("http://mlm-s2-p.mlstatic.com/jardin-de-bodas-cuernavaca-19420-MLM20171605642_092014-O.jpg");
-        Venue venueMaria = new Venue("Jardin de bodas Maria", latLngMaria, imagesMaria, 150, 6500.0);
+
+        ArrayList<Feature> featuresMaria = new ArrayList<>();
+        featuresMaria.add(alcoholAllowed);
+        featuresMaria.add(smokeNotAllowed);
+        Venue venueMaria = new Venue("Jardin de bodas Maria", positionMaria, imagesMaria, 150, 6500.0);
+        venueMaria.setFeatures(featuresMaria);
 
         mVenues = new ArrayList<>();
         mVenues.add(venueJoselito);

@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,11 +18,15 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
+import com.example.gerardogtn.partyrock.ui.adapter.FeatureAdapter;
+import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapter;
 import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
 import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
@@ -41,8 +46,8 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     @Bind(R.id.venue_images)
     ViewPager mImages;
 
-//    @Bind(R.id.venue_features)
-//    RecyclerView mFeatures;
+    @Bind(R.id.venue_features)
+    RecyclerView mFeatures;
 
     @Bind(R.id.btn_rent)
     Button rentButton;
@@ -62,6 +67,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     }
 
     private void setUpRentButton() {
+        setRentButtonText();
         rentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +75,12 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
                 startActivity(intent);
             }
         });
+    }
+
+    private void setRentButtonText() {
+        String buttonText;
+        buttonText = "Throw your party here for: " + venue.getFormattedPrice();
+        rentButton.setText(buttonText);
     }
 
     @Override
@@ -134,6 +146,10 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         mMapFragment.getMap().animateCamera(CameraUpdateFactory.newLatLng(venue.getLatLng()));
     }
 
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS: Adds a new marker to mMapFragment at a venue position with the venue name as
+    // title.
     private void addVenueMarker(){
         MarkerOptions marker = new MarkerOptions().position(venue.getLatLng()).title(venue.getName());
         this.mMapFragment.getMap().addMarker(marker);
@@ -144,7 +160,15 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     // EFFECTS:  Sets support action toolbar with mToolbar.
     private void setUpToolbar() {
         setSupportActionBar(mToolbar);
+        drawVenueTitle();
         drawBackArrow();
+    }
+
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS: Sets the Toolbar title to the venue's name.
+    private void drawVenueTitle() {
+        getSupportActionBar().setTitle(venue.getName());
     }
 
     // REQUIRES: None.
@@ -165,7 +189,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         this.venue = venueEvent.getVenue();
         Toast.makeText(this, "Venue received " + venue.getName(), Toast.LENGTH_SHORT).show();
         setUpViewPager(venue.getImageUrls());
-        //setUpRecycleView(venueEvent.getVenue());
+        setUpRecycleView();
     }
 
 
@@ -180,11 +204,11 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
 
 
     // TODO: Set up the Venue's features recycleview.
-    private void setUpRecycleView(Venue venue) {
+    private void setUpRecycleView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        //mFeatures.setLayoutManager(linearLayoutManager);
-        //       FeatureRecyclerViewAdapter featureViewAdapter = new FeatureRecyclerViewAdapter(context, venue.getmFeatures());
-        //      mRecyclerView.setAdapter(featureViewAdapter);
+        mFeatures.setLayoutManager(linearLayoutManager);
+               FeatureAdapter featureViewAdapter = new FeatureAdapter(this, venue.getFeatures());
+               mFeatures.setAdapter(featureViewAdapter);
     }
 
 
