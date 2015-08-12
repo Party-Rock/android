@@ -65,6 +65,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     }
 
     private void setUpRentButton() {
+        setRentButtonText();
         rentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +73,12 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
                 startActivity(intent);
             }
         });
+    }
+
+    private void setRentButtonText() {
+        String buttonText;
+        buttonText = "Throw your party here for: " + venue.getFormattedPrice();
+        rentButton.setText(buttonText);
     }
 
     @Override
@@ -131,7 +138,15 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     // EFFECTS:  Sets support action toolbar with mToolbar.
     private void setUpToolbar() {
         setSupportActionBar(mToolbar);
+        drawVenueTitle();
         drawBackArrow();
+    }
+
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS: Sets the Toolbar title to the venue's name.
+    private void drawVenueTitle() {
+        getSupportActionBar().setTitle(venue.getName());
     }
 
     // REQUIRES: None.

@@ -2,7 +2,10 @@ package com.example.gerardogtn.partyrock.data.model;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
+
 /**
  * Created by Emilio on 29/07/2015.
  */
@@ -46,6 +49,10 @@ public class Venue {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getFormattedPrice(){
+        return (NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(this.price));
     }
 
     public double getSize() {
@@ -107,4 +114,5 @@ public class Venue {
     public void setPosition(Position position) {
         this.position = position;
     }
+
 }
