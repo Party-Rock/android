@@ -12,25 +12,73 @@ public class Feature {
     public static final String KEY_ALCOHOL = "alcohol";
     public static final String KEY_SMOKE = "smoke";
 
-    private static HashMap<String, Integer> sFeatureAllowed = new HashMap<>();
-    private static HashMap<String, Integer> sFeatureNotAllowed = new HashMap<>();
+    public static final String DESCRIPTION_ALLOWED_ALCOHOL = "Drinking alcohol is allowed.";
+    public static final String DESCRIPTION_ALLOWED_SMOKE = "Smoking is allowed.";
+    public static final String DESCRIPTION_NALLOWED_ALCOHOL = "Drinking alcohol is NOT allowed.";
+    public static final String DESCRIPTION_NALLOWED_SMOKE = "Smoking is NOT allowed.";
 
+    private static HashMap<String, Integer> sFeatureIconsAllowed = new HashMap<>();
+    private static HashMap<String, Integer> sFeatureIconsNotAllowed = new HashMap<>();
+
+    private static HashMap<String, String> sFeatureDescriptionAllowed = new HashMap<>();
+    private static HashMap<String, String> sFeatureDescriptionNotAllowed = new HashMap<>();
+
+    private String tag;
     private String mFeatureName;
     private boolean mIsAvailable;
 
     public Feature(){
-        setUpAllowedFeatures();
-        setUpNotAllowedFeatures();
+        setUpFeatureDefaults();
     }
 
-    private static void setUpAllowedFeatures(){
-        sFeatureAllowed.put(KEY_ALCOHOL, R.mipmap.alcohol);
-        sFeatureAllowed.put(KEY_SMOKE, R.mipmap.smoke);
+    public Feature(String name, boolean isAvailable){
+        setUpFeatureDefaults();
+        setFeatureName(name);
+        setAvailable(isAvailable);
     }
 
-    private static void setUpNotAllowedFeatures(){
-        sFeatureNotAllowed.put(KEY_ALCOHOL, R.mipmap.no_alcohol);
-        sFeatureNotAllowed.put(KEY_SMOKE, R.mipmap.no_smoke);
+    public String getFeatureName() {
+        return mFeatureName;
+    }
+
+    public void setFeatureName(String mFeatureName) {
+        this.mFeatureName = mFeatureName;
+        this.tag = this.mFeatureName.toLowerCase().replaceAll("\\s+","");
+    }
+
+    public boolean isAvailable() {
+        return mIsAvailable;
+    }
+
+    public void setAvailable(boolean mIsAvailable) {
+        this.mIsAvailable = mIsAvailable;
+    }
+
+    private static void setUpFeatureDefaults(){
+        setUpAllowedFeatureIcons();
+        setUpNotAllowedFeatureIcons();
+        setUpAllowedFeatureDescriptions();
+        setUpNotAllowedFeatureDescriptions();
+    }
+
+    private static void setUpAllowedFeatureIcons(){
+        sFeatureIconsAllowed.put(KEY_ALCOHOL, R.mipmap.alcohol);
+        sFeatureIconsAllowed.put(KEY_SMOKE, R.mipmap.smoke);
+    }
+
+    private static void setUpNotAllowedFeatureIcons(){
+        sFeatureIconsNotAllowed.put(KEY_ALCOHOL, R.mipmap.no_alcohol);
+        sFeatureIconsNotAllowed.put(KEY_SMOKE, R.mipmap.no_smoke);
+    }
+
+    private static void setUpAllowedFeatureDescriptions(){
+        sFeatureDescriptionAllowed.put(KEY_ALCOHOL, DESCRIPTION_ALLOWED_ALCOHOL);
+        sFeatureDescriptionAllowed.put(KEY_SMOKE, DESCRIPTION_ALLOWED_SMOKE);
+    }
+
+    private static void setUpNotAllowedFeatureDescriptions(){
+        sFeatureDescriptionNotAllowed.put(KEY_ALCOHOL, DESCRIPTION_NALLOWED_ALCOHOL);
+        sFeatureDescriptionNotAllowed.put(KEY_SMOKE, DESCRIPTION_NALLOWED_SMOKE);
     }
 
     // REQUIRES: None.
@@ -39,16 +87,31 @@ public class Feature {
     // resource. Else, return a default image resource.
     public int getImageResource(){
         Integer output;
-        String nameToTag = this.mFeatureName.toLowerCase().replaceAll("\\s+","");
 
         if (this.mIsAvailable){
-            output = sFeatureAllowed.get(nameToTag);
+            output = sFeatureIconsAllowed.get(tag);
         } else {
-            output = sFeatureNotAllowed.get(nameToTag);
+            output = sFeatureIconsNotAllowed.get(tag);
         }
 
         if (output == null){
             return R.mipmap.ic_launcher;
+        }
+
+        return output;
+    }
+
+    public String getDescription(){
+        String output;
+
+        if (this.mIsAvailable){
+            output = sFeatureDescriptionAllowed.get(tag);
+        } else {
+            output = sFeatureDescriptionNotAllowed.get(tag);
+        }
+
+        if (output == null){
+            return "Description not available.";
         }
 
         return output;

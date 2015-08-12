@@ -2,7 +2,10 @@ package com.example.gerardogtn.partyrock.data.model;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
+
 /**
  * Created by Emilio on 29/07/2015.
  */
@@ -13,7 +16,7 @@ public class Venue {
     private double size;
     private double ratingAverage;
     private String name;
-    private LatLng latLng;
+    private Position position;
     private ArrayList<String> imageUrls;
     private ArrayList<Integer> rating;
     private ArrayList<Feature> features;
@@ -24,10 +27,10 @@ public class Venue {
         rating=new ArrayList<>();
     }
 
-    public Venue(String name, LatLng latLng, ArrayList<String> imageUrls, int capacity, double price) {
+    public Venue(String name, Position position, ArrayList<String> imageUrls, int capacity, double price) {
         this.name = name;
-        this.latLng = latLng;
         this.imageUrls = imageUrls;
+        this.position = position;
         this.capacity = capacity;
         this.price = price;
     }
@@ -46,6 +49,10 @@ public class Venue {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getFormattedPrice(){
+        return (NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(this.price));
     }
 
     public double getSize() {
@@ -73,11 +80,7 @@ public class Venue {
     }
 
     public LatLng getLatLng() {
-        return latLng;
-    }
-
-    public void setLatLng(LatLng latLng) {
-        this.latLng = latLng;
+        return new LatLng(position.getLatitude(), position.getLongitude());
     }
 
     public ArrayList<String> getImageUrls() {
@@ -102,6 +105,14 @@ public class Venue {
 
     public void setFeatures(ArrayList<Feature> features) {
         this.features = features;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
 }

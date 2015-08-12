@@ -36,7 +36,7 @@
         android:id="@+id/txt_price"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_green_light"
+        android:background="@color/green"
         android:gravity="center"
         android:layout_gravity="center"
         android:text="@string/price"
