@@ -1,7 +1,6 @@
 package com.example.gerardogtn.partyrock.ui.activity;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -26,9 +25,7 @@ import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
@@ -48,10 +45,10 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     RecyclerView mFeatures;
 
     @Bind(R.id.btn_rent)
-    Button rentButton;
+    Button mRentButton;
 
     private SupportMapFragment mMapFragment;
-    private Venue venue;
+    private Venue mVenue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,23 +59,6 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         setUpToolbar();
         setUpRentButton();
         setUpMapFragment();
-    }
-
-    private void setUpRentButton() {
-        setRentButtonText();
-        rentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetailActivity.this, ConfirmationActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void setRentButtonText() {
-        String buttonText;
-        buttonText = "Throw your party here for: " + venue.getFormattedPrice();
-        rentButton.setText(buttonText);
     }
 
     @Override
@@ -106,6 +86,15 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         Toast.makeText(DetailActivity.this, toastDisplay, Toast.LENGTH_SHORT).show();
     }
 
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS: Receives a Venue Event, sets the viewpager and mapfragment with the Venue's data.
+    //EventBus method to receive Venue
+    public void onEvent(VenueEvent venueEvent){
+        this.mVenue = venueEvent.getVenue();
+        setUpViewPager(mVenue.getImageUrls());
+        setUpRecycleView();
+    }
 
     // REQUIRES: None.
     // MODIFIES: this.
@@ -119,17 +108,17 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
 
     // REQUIRES: None.
     // MODIFIES: this.
-    // EFFECTS: Center the map to the venue's location.
+    // EFFECTS: Center the map to the mVenue's location.
     private void centerOnVenueLocation(){
-        mMapFragment.getMap().animateCamera(CameraUpdateFactory.newLatLng(venue.getLatLng()));
+        mMapFragment.getMap().animateCamera(CameraUpdateFactory.newLatLng(mVenue.getLatLng()));
     }
 
     // REQUIRES: None.
     // MODIFIES: this.
-    // EFFECTS: Adds a new marker to mMapFragment at a venue position with the venue name as
+    // EFFECTS: Adds a new marker to mMapFragment at a venue position with the mVenue name as
     // title.
     private void addVenueMarker(){
-        MarkerOptions marker = new MarkerOptions().position(venue.getLatLng()).title(venue.getName());
+        MarkerOptions marker = new MarkerOptions().position(mVenue.getLatLng()).title(mVenue.getName());
         this.mMapFragment.getMap().addMarker(marker);
     }
 
@@ -146,7 +135,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     // MODIFIES: this.
     // EFFECTS: Sets the Toolbar title to the venue's name.
     private void drawVenueTitle() {
-        getSupportActionBar().setTitle(venue.getName());
+        getSupportActionBar().setTitle(mVenue.getName());
     }
 
     // REQUIRES: None.
@@ -160,19 +149,6 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
 
     // REQUIRES: None.
     // MODIFIES: this.
-    // EFFECTS: Receives a Venue Event, sets the viewpager and mapfragment with the Venue's data.
-    //EventBus method to receive Venue
-    // TODO: Set up the Recycle view of the Venue's features.
-    public void onEvent(VenueEvent venueEvent){
-        this.venue = venueEvent.getVenue();
-        Toast.makeText(this, "Venue received " + venue.getName(), Toast.LENGTH_SHORT).show();
-        setUpViewPager(venue.getImageUrls());
-        setUpRecycleView();
-    }
-
-
-    // REQUIRES: None.
-    // MODIFIES: this.
     // EFFECTS: Sets mImages to a new adapter with imageUrls as images. Sets this as onClickListener.
     private void setUpViewPager(final List<String> imageUrls) {
         ImagePagerAdapter adapter = new ImagePagerAdapter(this, imageUrls);
@@ -180,15 +156,37 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         adapter.setOnImageListener(this);
     }
 
-
-    // TODO: Set up the Venue's features recycleview.
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS: Sets up a horizontal recycleview, with FeatureAdapter as view and with mFeatures data.
     private void setUpRecycleView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mFeatures.setLayoutManager(linearLayoutManager);
-               FeatureAdapter featureViewAdapter = new FeatureAdapter(this, venue.getFeatures());
+               FeatureAdapter featureViewAdapter = new FeatureAdapter(this, mVenue.getFeatures());
                mFeatures.setAdapter(featureViewAdapter);
     }
 
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS: Sets the button display text and sets up the Intent for navigating to ConfirmationActivity.
+    private void setUpRentButton() {
+        setRentButtonText();
+        mRentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailActivity.this, ConfirmationActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS: Sets mRentButton's text to copywrite plus mVenue price.
+    private void setRentButtonText() {
+        String buttonText;
+        buttonText = "Throw your party here for: " + mVenue.getFormattedPrice();
+        mRentButton.setText(buttonText);
+    }
 
 }
