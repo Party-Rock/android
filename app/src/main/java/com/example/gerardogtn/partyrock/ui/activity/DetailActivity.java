@@ -58,8 +58,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
         EventBus.getDefault().registerSticky(this);
-        setUpRentButton();
-        setUpMapFragment();
+
     }
 
     private void setUpRentButton() {
@@ -121,9 +120,21 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         startActivity(Intent.createChooser(shareIntent, "Share image using"));
     }
 
+
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
+    protected void onPostResume() {
+        setUpViewPager(venue.getImageUrls());
+        setUpRecycleView();
+        setUpToolbar();
+        setUpRentButton();
+        setUpMapFragment();
+        super.onPostResume();
     }
 
     // REQUIRES: Position is valid.
@@ -192,12 +203,14 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     // EFFECTS: Receives a Venue Event, sets the viewpager and mapfragment with the Venue's data.
     //EventBus method to receive Venue
     // TODO: Set up the Recycle view of the Venue's features.
-    public void onEvent(VenueEvent venueEvent){
+    public void onEventMainThread(VenueEvent venueEvent){
         this.venue = venueEvent.getVenue();
-        Toast.makeText(this, "Venue received " + venue.getName(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "Venue received " + venue.getName(), Toast.LENGTH_SHORT).show();
         setUpViewPager(venue.getImageUrls());
         setUpRecycleView();
         setUpToolbar();
+        setUpRentButton();
+        setUpMapFragment();
     }
 
 

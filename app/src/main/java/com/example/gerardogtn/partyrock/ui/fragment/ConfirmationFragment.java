@@ -118,6 +118,7 @@ public class ConfirmationFragment extends Fragment {
         mDatePicker.setMinDate(currentTime - 1000);
         long dateMax = (currentTime/90) + currentTime;
         mDatePicker.setMaxDate(dateMax);
+
     }
 
     @Override
