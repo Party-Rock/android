@@ -11,108 +11,90 @@ import java.util.Locale;
  */
 public class Venue {
 
-    private int capacity;
-    private double price;
-    private double size;
-    private double ratingAverage;
-    private String name;
-    private Position position;
-    private ArrayList<String> imageUrls;
-    private ArrayList<Integer> rating;
-    private ArrayList<Feature> features;
+
+    private int mCapacity;
+    private double mPrice;
+    private double mSize;
+    private String mName;
+    private Position mPosition;
+    private ArrayList<String> mImageUrls;
+    private ArrayList<Feature> mFeatures;
 
     public Venue() {
-        imageUrls =new ArrayList<>();
-        features=new ArrayList<>();
-        rating=new ArrayList<>();
+        mImageUrls =new ArrayList<>();
+        mFeatures =new ArrayList<>();
     }
 
     public Venue(String name, Position position, ArrayList<String> imageUrls, int capacity, double price) {
-        this.name = name;
-        this.imageUrls = imageUrls;
-        this.position = position;
-        this.capacity = capacity;
-        this.price = price;
+        this.mName = name;
+        this.mImageUrls = imageUrls;
+        this.mPosition = position;
+        this.mCapacity = capacity;
+        this.mPrice = price;
     }
 
     public int getCapacity() {
-        return capacity;
+        return mCapacity;
     }
 
     public void setCapacity(int capacity) {
-        this.capacity = capacity;
+        this.mCapacity = capacity;
     }
 
     public double getPrice() {
-        return price;
+        return mPrice;
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        this.mPrice = price;
     }
 
     public String getFormattedPrice(){
-        return (NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(this.price));
+        return (NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(this.mPrice));
     }
 
     public double getSize() {
-        return size;
+        return mSize;
     }
 
     public void setSize(double size) {
-        this.size = size;
-    }
-
-    public double getRatingAverage() {
-        return ratingAverage;
-    }
-
-    public void setRatingAverage(double ratingAverage) {
-        this.ratingAverage = ratingAverage;
+        this.mSize = size;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String mName) {
+        this.mName = mName;
     }
 
     public LatLng getLatLng() {
-        return new LatLng(position.getLatitude(), position.getLongitude());
+        return new LatLng(mPosition.getLatitude(), mPosition.getLongitude());
     }
 
     public ArrayList<String> getImageUrls() {
-        return imageUrls;
+        return mImageUrls;
     }
 
     public void setImageUrls(ArrayList<String> imageUrls) {
-        this.imageUrls = imageUrls;
-    }
-
-    public ArrayList<Integer> getRating() {
-        return rating;
-    }
-
-    public void setRating(ArrayList<Integer> rating) {
-        this.rating = rating;
+        this.mImageUrls = imageUrls;
     }
 
     public ArrayList<Feature> getFeatures() {
-        return features;
+        return mFeatures;
     }
 
     public void setFeatures(ArrayList<Feature> features) {
-        this.features = features;
+        this.mFeatures = features;
     }
 
     public Position getPosition() {
-        return position;
+        return mPosition;
     }
 
     public void setPosition(Position position) {
-        this.position = position;
+        this.mPosition = position;
     }
 
 }
