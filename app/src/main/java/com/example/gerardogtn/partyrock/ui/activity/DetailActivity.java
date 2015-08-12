@@ -1,8 +1,10 @@
 package com.example.gerardogtn.partyrock.ui.activity;
 
 import android.content.Intent;
-import android.location.Location;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,21 +17,18 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
-import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapter;
 import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
+import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapter;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.List;
 
 /**
  * Created by gerardogtn on 8/1/15.
@@ -74,13 +73,33 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home, menu);
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_bar_share) {
+            shareIntent();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void shareIntent() {
+        View view = getWindow().getDecorView().getRootView();
+        view.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+        view.setDrawingCacheEnabled(false);
+
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,"Title","Description");
+        Uri uri = Uri.parse(path);
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("*/*");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivity(Intent.createChooser(shareIntent, "Share image using"));
     }
 
     @Override
