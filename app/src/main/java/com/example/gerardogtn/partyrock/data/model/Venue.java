@@ -2,6 +2,7 @@ package com.example.gerardogtn.partyrock.data.model;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -9,7 +10,7 @@ import java.util.Locale;
 /**
  * Created by Emilio on 29/07/2015.
  */
-public class Venue {
+public class Venue implements Serializable {
 
     private int capacity;
     private double price;

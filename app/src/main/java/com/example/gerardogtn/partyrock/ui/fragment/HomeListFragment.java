@@ -19,7 +19,6 @@ import com.example.gerardogtn.partyrock.data.model.Feature;
 import com.example.gerardogtn.partyrock.data.model.Position;
 import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.service.SearchVenueEvent;
-import com.example.gerardogtn.partyrock.service.VenueEvent;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
 import com.example.gerardogtn.partyrock.ui.adapter.HomeListAdapter;
 import com.google.android.gms.maps.model.LatLng;
@@ -129,9 +128,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     public void onVenueClick(int position) {
         Context context = getActivity();
         Venue clickedVenue = mVenues.get(position);
-        Toast.makeText(context, clickedVenue.getName() + " was clicked!", Toast.LENGTH_SHORT).show();
-        VenueEvent venueEvent = new VenueEvent(clickedVenue);
-        EventBus.getDefault().postSticky(venueEvent);
+        EventBus.getDefault().postSticky(clickedVenue);
         startActivity(new Intent(context, DetailActivity.class));
     }
 
