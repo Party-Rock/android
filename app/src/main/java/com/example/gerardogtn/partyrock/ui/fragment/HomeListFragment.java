@@ -38,7 +38,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     @Bind(R.id.recycler_view_venue)
     RecyclerView mRecyclerView;
     @Bind(R.id.FAB_Search)
-    FloatingActionButton FAB_Search;
+    FloatingActionButton fabSearch;
 
     public HomeListFragment() {
 
@@ -102,12 +102,12 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
         setUpRecycleView(mVenues);
-        setUpFABClick();
+        setUpFabClick();
         return view;
     }
 
-    private void setUpFABClick() {
-        FAB_Search.setOnClickListener(new View.OnClickListener() {
+    private void setUpFabClick() {
+        fabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showSearchDialog();

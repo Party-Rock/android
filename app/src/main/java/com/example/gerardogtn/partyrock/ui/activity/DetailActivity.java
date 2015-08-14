@@ -1,10 +1,7 @@
 package com.example.gerardogtn.partyrock.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,17 +12,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
+import com.example.gerardogtn.partyrock.data.model.Feature;
 import com.example.gerardogtn.partyrock.data.model.Venue;
-import com.example.gerardogtn.partyrock.service.VenueEvent;
 import com.example.gerardogtn.partyrock.ui.adapter.FeatureAdapter;
-import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapter;
+import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapterCenterImage;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -35,7 +32,9 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by gerardogtn on 8/1/15.
  */
-public class DetailActivity extends AppCompatActivity implements ImagePagerAdapter.OnImageClickListener {
+public class DetailActivity extends AppCompatActivity implements ImagePagerAdapterCenterImage.OnImageClickListener {
+
+    public static final String LOG = DetailActivity.class.getSimpleName();
 
     @Bind(R.id.toolbar_home)
     Toolbar mToolbar;
@@ -60,6 +59,11 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         mVenue = EventBus.getDefault().removeStickyEvent(Venue.class);
         if (mVenue == null) {
             mVenue = (Venue) savedInstanceState.getSerializable("lastVenue");
+            ArrayList<Feature> features = new ArrayList<>();
+            for (Feature f : mVenue.getFeatures()){
+                features.add(new Feature(f.getFeatureName(), f.isAvailable()));
+            }
+            mVenue.setFeatures(features);
         }
         setUpViewPager(mVenue.getImageUrls());
         setUpRecycleView();
@@ -72,26 +76,8 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     protected void onSaveInstanceState(Bundle outState) {
         EventBus.getDefault().postSticky(mVenue);
         outState.putSerializable("lastVenue", mVenue);
+        outState.putSerializable("venueFeatures", mVenue.getFeatures());
         super.onSaveInstanceState(outState);
-    }
-
-
-    private void setUpRentButton() {
-        setRentButtonText();
-        rentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().postSticky(mVenue);
-                Intent intent = new Intent(DetailActivity.this, ConfirmationActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void setRentButtonText() {
-        String buttonText;
-        buttonText = "Throw your party here for: " + mVenue.getFormattedPrice();
-        rentButton.setText(buttonText);
     }
 
     @Override
@@ -111,6 +97,18 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         return super.onOptionsItemSelected(item);
     }
 
+    // REQUIRES: Position is valid.
+    // MODIFIES: None.
+    // EFFECTS:  Displays via a Toast the position of the image as a list in the viewpager.
+    @Override
+    public void onImageClick(int position) {
+        //TODO: Implement Fullscreen Viewpager
+        EventBus.getDefault().postSticky(mVenue);
+        Intent intent = new Intent(DetailActivity.this, ViewPagerFullScreenActivity.class);
+        startActivity(intent);
+
+    }
+
     //Method to share the Venue Party Rock's website.
     private void shareIntent() {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
@@ -122,30 +120,29 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         startActivity(Intent.createChooser(sharingIntent, getString(R.string.txt_share)));
     }
 
-    //A method in case we want to share a photo in the future.
-    private void shareIntentPhoto() {
-        View view = getWindow().getDecorView().getRootView();
-        view.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
-        view.setDrawingCacheEnabled(false);
 
-        String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Title", "Description");
-        Uri uri = Uri.parse(path);
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("*/*");
-        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        startActivity(Intent.createChooser(shareIntent, "Share image using"));
+
+
+
+
+
+
+    private void setUpRentButton() {
+        setRentButtonText();
+        rentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().postSticky(mVenue);
+                Intent intent = new Intent(DetailActivity.this, ConfirmationActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
-
-    // REQUIRES: Position is valid.
-    // MODIFIES: None.
-    // EFFECTS:  Displays via a Toast the position of the image as a list in the viewpager.
-    @Override
-    public void onImageClick(int position) {
-        //TODO: Implement Fullscreen Viewpager
-        String toastDisplay = "This is Image No." + (position + 1) + " of " + mImages.getAdapter().getCount();
-        Toast.makeText(DetailActivity.this, toastDisplay, Toast.LENGTH_SHORT).show();
+    private void setRentButtonText() {
+        String buttonText;
+        buttonText = "Throw your party here for: " + mVenue.getFormattedPrice();
+        rentButton.setText(buttonText);
     }
 
 
@@ -202,21 +199,9 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
 
     // REQUIRES: None.
     // MODIFIES: this.
-    // EFFECTS: Receives a Venue Event, sets the viewpager and mapfragment with the Venue's data.
-    //EventBus method to receive Venue
-    // TODO: Set up the Recycle view of the Venue's features.
-    public void onEventMainThread(VenueEvent venueEvent) {
-        // this.mVenue = venueEvent.getVenue();
-        // Toast.makeText(this, "Venue received " + mVenue.getName(), Toast.LENGTH_SHORT).show();
-
-    }
-
-
-    // REQUIRES: None.
-    // MODIFIES: this.
     // EFFECTS: Sets mImages to a new adapter with imageUrls as images. Sets this as onClickListener.
     private void setUpViewPager(final List<String> imageUrls) {
-        ImagePagerAdapter adapter = new ImagePagerAdapter(this, imageUrls);
+        ImagePagerAdapterCenterImage adapter = new ImagePagerAdapterCenterImage(this, imageUrls);
         mImages.setAdapter(adapter);
         adapter.setOnImageListener(this);
     }

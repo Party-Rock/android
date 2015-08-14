@@ -3,7 +3,30 @@
     android:layout_height="match_parent"
     tools:context="com.example.gerardogtn.partyrock.ui.activity.ViewPagerFullScreenActivity">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/venue_images"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginBottom="@dimen/half_horizontal_margin"
+        android:layout_marginTop="@dimen/half_horizontal_margin"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:textColor="@android:color/white"
+        android:id="@+id/text_for_numbers"
+        android:layout_gravity="right|bottom" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Share"
+        android:src="@android:drawable/ic_menu_share"
+        android:background="@android:color/transparent"
+        android:id="@+id/button"
+        android:layout_gravity="right|top" />
 
 </FrameLayout>

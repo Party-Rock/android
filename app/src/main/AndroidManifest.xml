@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.gerardogtn.partyrock" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -57,7 +56,8 @@
         <activity
             android:name=".ui.activity.ViewPagerFullScreenActivity"
             android:label="@string/title_activity_view_pager_full_screen"
-            android:parentActivityName=".ui.activity.DetailActivity" >
+            android:parentActivityName=".ui.activity.DetailActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.gerardogtn.partyrock.ui.activity.DetailActivity" />

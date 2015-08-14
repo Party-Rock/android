@@ -7,7 +7,7 @@ import android.view.View;
 /**
  * Created by Emilio on 11/08/2015.
  */
-public class RepeatListener implements View.OnTouchListener {
+public class ClickRepeatListener implements View.OnTouchListener {
 
     private Handler handler = new Handler();
 
@@ -31,8 +31,8 @@ public class RepeatListener implements View.OnTouchListener {
      * @param clickListener The OnClickListener, that will be called
      *       periodically
      */
-    public RepeatListener(int initialInterval, int normalInterval,
-                          View.OnClickListener clickListener) {
+    public ClickRepeatListener(int initialInterval, int normalInterval,
+                               View.OnClickListener clickListener) {
         if (clickListener == null)
             throw new IllegalArgumentException("null runnable");
         if (initialInterval < 0 || normalInterval < 0)

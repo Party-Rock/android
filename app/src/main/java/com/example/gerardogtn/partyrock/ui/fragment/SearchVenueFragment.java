@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.service.SearchVenueEvent;
-import com.example.gerardogtn.partyrock.ui.adapter.RepeatListener;
+import com.example.gerardogtn.partyrock.ui.adapter.ClickRepeatListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -137,7 +137,7 @@ public class SearchVenueFragment extends DialogFragment {
 
         //Images OnClick listeners
         //Money Increase
-        mMoreMoneyImg.setOnTouchListener(new RepeatListener(400, 100, new View.OnClickListener() {
+        mMoreMoneyImg.setOnTouchListener(new ClickRepeatListener(400, 100, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Max Price validation
@@ -149,7 +149,7 @@ public class SearchVenueFragment extends DialogFragment {
             }
         }));
         //Money Decrease
-        mLessMoneyImg.setOnTouchListener(new RepeatListener(400, 100, new View.OnClickListener() {
+        mLessMoneyImg.setOnTouchListener(new ClickRepeatListener(400, 100, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mPriceProgress > 500) {
@@ -186,7 +186,7 @@ public class SearchVenueFragment extends DialogFragment {
 
         //Images OnClick listeners
         //People Increase
-        mMorePeopleImg.setOnTouchListener(new RepeatListener(400, 100, new View.OnClickListener(){
+        mMorePeopleImg.setOnTouchListener(new ClickRepeatListener(400, 100, new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 if (mPeopleProgress<mMaxPeople-10){
@@ -195,7 +195,7 @@ public class SearchVenueFragment extends DialogFragment {
             }
         }));
         //People Decrease
-        mLessPeopleImg.setOnTouchListener(new RepeatListener(400, 100, new View.OnClickListener() {
+        mLessPeopleImg.setOnTouchListener(new ClickRepeatListener(400, 100, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mPeopleProgress > 15) {

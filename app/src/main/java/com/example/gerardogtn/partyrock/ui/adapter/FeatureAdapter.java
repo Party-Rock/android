@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Feature;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,6 @@ import butterknife.ButterKnife;
  * Created by Emilio on 05/08/2015.
  */
 public class FeatureAdapter extends RecyclerView.Adapter<FeatureAdapter.FeatureViewHolder> {
-    private Context mContext;
     private List<Feature> mFeatures = new ArrayList<>();
     private LayoutInflater mInflater;
 
@@ -30,7 +28,6 @@ public class FeatureAdapter extends RecyclerView.Adapter<FeatureAdapter.FeatureV
     public FeatureAdapter(Context context, List<Feature> features) {
         this.mFeatures = features;
         mInflater = LayoutInflater.from(context);
-        mContext = context;
     }
 
 
