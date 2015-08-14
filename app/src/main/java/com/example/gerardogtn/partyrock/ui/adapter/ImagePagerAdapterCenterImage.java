@@ -62,7 +62,7 @@ public class ImagePagerAdapterCenterImage extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        LinearLayout layout = (LinearLayout) mInflater.inflate(R.layout.item_detail_image2, container, false);
+        LinearLayout layout = (LinearLayout) mInflater.inflate(R.layout.item_detail_image_center_image, container, false);
         setUpListener(layout, position);
         ButterKnife.bind(this, layout);
         Picasso.with(mContext)
