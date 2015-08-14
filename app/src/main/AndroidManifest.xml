@@ -1,66 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.gerardogtn.partyrock">
+    package="com.example.gerardogtn.partyrock" >
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
-        android:required="true"/>
+        android:required="true" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
-
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/API_KEY"/>
+            android:value="@string/API_KEY" />
 
         <activity
             android:name=".ui.activity.HomeActivity"
             android:label="@string/app_name" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".ui.activity.DetailActivity"
             android:label="Venue detail"
-            android:parentActivityName=".ui.activity.HomeActivity">
+            android:parentActivityName=".ui.activity.HomeActivity" >
         </activity>
-
         <activity
             android:name=".ui.activity.ConfirmationActivity"
             android:label="Rent confirmation"
-            android:parentActivityName=".ui.activity.DetailActivity">
+            android:parentActivityName=".ui.activity.DetailActivity" >
         </activity>
-
         <activity
             android:name=".ui.activity.SearchVenueActivity"
             android:label="Filter venues"
-            android:parentActivityName=".ui.activity.HomeActivity">
+            android:parentActivityName=".ui.activity.HomeActivity" >
         </activity>
-
         <activity
             android:name=".ui.activity.SearchLocationActivity"
             android:label="Select location"
-            android:parentActivityName=".ui.activity.SearchVenueActivity">
+            android:parentActivityName=".ui.activity.SearchVenueActivity" >
+        </activity>
+        <activity
+            android:name=".ui.activity.ViewPagerFullScreenActivity"
+            android:label="@string/title_activity_view_pager_full_screen"
+            android:parentActivityName=".ui.activity.DetailActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar.FullScreen">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.gerardogtn.partyrock.ui.activity.DetailActivity" />
         </activity>
     </application>
 

@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -36,8 +37,8 @@ public class ConfirmationFragment extends Fragment {
     @Bind(R.id.img_venue_main)
     ImageView mMainVenueImage;
 
-    @Bind(R.id.txt_name)
-    TextView mNameText;
+    @Bind(R.id.txt_address)
+    TextView mAddressText;
     @Bind(R.id.txt_price)
     TextView mPriceText;
     @Bind(R.id.txt_capacity)
@@ -52,14 +53,40 @@ public class ConfirmationFragment extends Fragment {
     private DatePicker mDatePicker;
     private DatePickerDialog mDatePickerDialog;
     private SimpleDateFormat mSimpleDateFormat;
+    private Date mDateSelected;
+    private Venue mVenue;
+
     public ConfirmationFragment() {
         // Required empty public constructor
     }
+
     //EventBus method to receive Venue
-    public void onEvent(VenueEvent clickedVenue){
+    public void onEvent(VenueEvent clickedVenue) {
         Venue venue = clickedVenue.getVenue();
-        Toast.makeText(getActivity(), "Venue received " + clickedVenue.getVenue().getName(), Toast.LENGTH_SHORT).show();
         setLayoutDetails(venue);
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_confirmation, container, false);
+        ButterKnife.bind(this, view);
+        mVenue = EventBus.getDefault().removeStickyEvent(Venue.class);
+        if (mVenue == null) {
+            mVenue = (Venue) savedInstanceState.getSerializable("lastVenue");
+        }
+        setLayoutDetails(mVenue);
+        setUpRentButton();
+        setCalendar();
+        return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        EventBus.getDefault().postSticky(mVenue);
+        outState.putSerializable("lastVenue", mVenue);
+        super.onSaveInstanceState(outState);
     }
 
     public void setLayoutDetails(Venue venue) {
@@ -67,26 +94,22 @@ public class ConfirmationFragment extends Fragment {
                 .load(venue.getImageUrls().get(0))
                 .error(R.mipmap.ic_launcher)
                 .into(mMainVenueImage);
-        mNameText.setText(getActivity().getString(R.string.venue) + ": " + venue.getName());
-        mCapacityText.setText(getActivity().getString(R.string.capacity)+": " + Integer.toString(venue.getCapacity()));
+        mAddressText.setText(getString(R.string.address) + ": " + venue.getName());
+        mCapacityText.setText(getString(R.string.capacity) + ": " +
+                Integer.toString(venue.getCapacity())+ getString(R.string.persons));
         mPriceText.setText("$" + Double.toString(venue.getPrice()));
-        mVenueText.setText(venue.toString());
+        mVenueText.setVisibility(View.INVISIBLE);
+
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_confirmation, container, false);
-        ButterKnife.bind(this, view);
-        EventBus.getDefault().registerSticky(this);
+
+    private void setUpRentButton() {
         rentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Venue rented!", Toast.LENGTH_SHORT).show();
             }
         });
-        setCalendar();
-        return view;
     }
 
     //Method to call a DatePicker Dialog when TextView is clicked.
@@ -108,21 +131,23 @@ public class ConfirmationFragment extends Fragment {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                datePickerText.setText(mSimpleDateFormat.format(newDate.getTime()));
+                mDateSelected= newDate.getTime();
+                datePickerText.setText(mSimpleDateFormat.format(mDateSelected));
+                mVenueText.setVisibility(View.VISIBLE);
+                mVenueText.setText(getString(R.string.date_alert) + " " +
+                        (mSimpleDateFormat.format(mDateSelected)) + ". "
+                        + getString(R.string.TOS_alert));
             }
-        }, newCalendar.get(Calendar.YEAR),newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
         //Customization of the Calendar View
         long currentTime = System.currentTimeMillis();
         mDatePicker = mDatePickerDialog.getDatePicker();
         mDatePicker.setMinDate(currentTime - 1000);
-        long dateMax = (currentTime/90) + currentTime;
+        long dateMax = (currentTime / 90) + currentTime;
         mDatePicker.setMaxDate(dateMax);
+
     }
 
-    @Override
-    public void onDetach() {
-        EventBus.getDefault().unregister(this);
-        super.onDetach();
-    }
+
 }

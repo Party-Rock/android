@@ -7,11 +7,11 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by Emilio on 10/08/2015.
+ * Created by Emilio on 11/08/2015.
  */
-public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
+public class ScrollAwareFabBehavior extends FloatingActionButton.Behavior {
 
-    public ScrollAwareFABBehavior(Context context, AttributeSet attrs) {
+    public ScrollAwareFabBehavior(Context context, AttributeSet attrs) {
         super();
     }
 

@@ -2,12 +2,13 @@ package com.example.gerardogtn.partyrock.data.model;
 
 import com.example.gerardogtn.partyrock.R;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * Created by gerardogtn on 8/6/15.
  */
-public class Feature {
+public class Feature implements Serializable {
 
     public static final String KEY_ALCOHOL = "alcohol";
     public static final String KEY_SMOKE = "smoke";

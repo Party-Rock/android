@@ -8,7 +8,7 @@
     <string name="price">Price</string>
     <string name="price_text">I\'m not paying more than</string>
     <string name="alt_price_text">I\'m paying more than</string>
-    <string name="people">I need room for</string>
+    <string name="capacity_search_text">I need room for</string>
     <string name="search_text">Go find it!</string>
     <string name="rent_confirmation_text">Confirm Rent</string>
     <string name="previous_item">previous_item</string>
@@ -22,11 +22,23 @@
     <string name="sample_distance">9999m away</string>
     <string name="house_image">House Image</string>
     <string name="venue">Place</string>
+    <string name="persons">persons</string>
+    <string name="TOS_alert">If you agree to our ToS, review your pay form and go ahead with your party!</string>
+    <string name="date_alert">You have selected this place to rent it on the following date:</string>
 
     <string name="address">Address</string>
     <string name="municipality">Municipality</string>
     <string name="distance">Distance</string>
     <string name="share">Share</string>
-    <string name="txt_party_date">Please, select the date of your party:</string>
-    <string name="date_format">dd/MM/yyyy</string>
+    <string name="txt_party_date">Please, select the date of your event:</string>
+    <string name="txt_party_share">Check out this house at Party Rock!</string>
+    <string name="txt_share">Share with:</string>
+    <string name="date_format">dd/mm/yyyy</string>
+    <string name="title_activity_view_pager_full_screen">ViewPagerFullScreenActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Address">Address</string>
 </resources>
