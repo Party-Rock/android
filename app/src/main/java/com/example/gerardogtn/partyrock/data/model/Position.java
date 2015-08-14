@@ -1,14 +1,20 @@
 package com.example.gerardogtn.partyrock.data.model;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by gerardogtn on 8/10/15.
  */
 public class Position {
 
+    @SerializedName("lat")
     private double latitude;
+
+    @SerializedName("long")
     private double longitude;
+
+    @SerializedName("colonia")
     private String colonia;
 
     public Position() {

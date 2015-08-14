@@ -1,6 +1,7 @@
 package com.example.gerardogtn.partyrock.data.model;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.annotations.SerializedName;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -11,13 +12,25 @@ import java.util.Locale;
  */
 public class Venue {
 
-
+    @SerializedName("capacity")
     private int mCapacity;
+
+    @SerializedName("price")
     private double mPrice;
+
+    @SerializedName("size")
     private double mSize;
+
+    @SerializedName("name")
     private String mName;
+
+    @SerializedName("position")
     private Position mPosition;
+
+    @SerializedName("imageURL")
     private ArrayList<String> mImageUrls;
+
+    @SerializedName("features")
     private ArrayList<Feature> mFeatures;
 
     public Venue() {
