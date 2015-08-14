@@ -17,7 +17,7 @@
             android:paddingStart="@dimen/activity_vertical_margin">
 
             <TextView
-                android:id="@+id/txt_name"
+                android:id="@+id/txt_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -41,7 +41,7 @@
                     android:ems="10"
                     android:hint="@string/location_hint_text"
                     android:inputType="textAutoComplete"
-                    android:padding="5dp"
+                    android:padding="@dimen/abc_dialog_padding_material"
                     android:singleLine="true"
                     android:textColor="#000"
                     android:textColorHighlight="#fff"
@@ -51,21 +51,30 @@
             </android.support.design.widget.TextInputLayout>
 
 
+
             <TextView
                 android:id="@+id/text_view_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:padding="5dp"
+                android:padding="@dimen/abc_dialog_list_padding_vertical_material"
                 android:text="@string/price_text"
                 android:textSize="@dimen/abc_text_size_medium_material" />
 
-
+            <SeekBar
+                android:id="@+id/price_slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/abc_action_bar_overflow_padding_start_material"
+                android:progressTint="@color/accent"
+                android:thumbTint="@color/accent"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin">
 
                 <ImageView
                     android:id="@+id/money_less"
@@ -73,14 +82,18 @@
                     android:layout_height="wrap_content"
                     android:src="@mipmap/ic_coins" />
 
-                <SeekBar
-                    android:id="@+id/price_slider"
-                    android:layout_width="0dp"
+
+                <TextView
+                    android:id="@+id/text_price"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:layout_weight="1"
-                    android:progressTint="@color/accent"
-                    android:thumbTint="@color/accent"/>
+                    android:layout_gravity="center"
+                    android:text="@string/price"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="@dimen/abc_text_size_large_material" />
+
 
                 <ImageView
                     android:id="@+id/money_plus"
@@ -91,32 +104,30 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/text_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/price"
-                android:textColor="@color/secondary_text"
-                android:textSize="@dimen/abc_text_size_large_material" />
 
 
             <TextView
                 android:id="@+id/text_view_room"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="@string/people"
+                android:padding="@dimen/abc_dialog_list_padding_vertical_material"
+                android:text="@string/capacity_search_text"
                 android:textSize="@dimen/abc_text_size_medium_material" />
 
+            <SeekBar
+                android:id="@+id/people_slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/abc_action_bar_overflow_padding_start_material"
+                android:progressTint="@color/accent"
+                android:thumbTint="@color/accent"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -126,14 +137,17 @@
                     android:src="@mipmap/ic_people_few" />
 
 
-                <SeekBar
-                    android:id="@+id/people_slider"
+                <TextView
+                    android:id="@+id/text_room"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:progressTint="@color/accent"
-                    android:thumbTint="@color/accent"/>
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="@string/capacity"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="@dimen/abc_text_size_large_material" />
+
 
                 <ImageView
                     android:id="@+id/people_plus"
@@ -143,16 +157,6 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/text_room"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/capacity"
-                android:textColor="@color/secondary_text"
-                android:textSize="@dimen/abc_text_size_large_material" />
 
 
         </LinearLayout>

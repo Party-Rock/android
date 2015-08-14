@@ -67,7 +67,7 @@
                     android:layout_margin="@dimen/activity_vertical_margin"
                     android:text="@string/description_sample"
                     android:textColor="@color/secondary_text"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/abc_text_size_medium_material"
                     />
 
 
@@ -83,12 +83,12 @@
                 android:paddingStart="@dimen/abc_control_padding_material">
 
                 <TextView
-                    android:id="@+id/txt_name"
+                    android:id="@+id/txt_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:padding="5dp"
-                    android:text="Name"
+                    android:text="@string/Address"
                     android:textColor="@color/primary_text"
                     android:textSize="@dimen/abc_text_size_large_material" />
 
@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:padding="5dp"
-                    android:text="@string/people"
+                    android:text="@string/capacity"
                     android:textColor="@color/secondary_text"
                     android:textSize="@dimen/abc_text_size_medium_material" />
             </LinearLayout>
