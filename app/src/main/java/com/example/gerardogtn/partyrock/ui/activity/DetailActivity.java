@@ -58,12 +58,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         ButterKnife.bind(this);
         mVenue = EventBus.getDefault().removeStickyEvent(Venue.class);
         if (mVenue == null) {
-            mVenue = (Venue) savedInstanceState.getSerializable("lastVenue");
-            ArrayList<Feature> features = new ArrayList<>();
-            for (Feature f : mVenue.getFeatures()){
-                features.add(new Feature(f.getFeatureName(), f.isAvailable()));
-            }
-            mVenue.setFeatures(features);
+            rebuildVenue(savedInstanceState);
         }
         setUpViewPager(mVenue.getImageUrls());
         setUpRecycleView();
@@ -97,6 +92,15 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         return super.onOptionsItemSelected(item);
     }
 
+    private void rebuildVenue(Bundle savedInstanceState) {
+        mVenue = (Venue) savedInstanceState.getSerializable("lastVenue");
+        ArrayList<Feature> features = new ArrayList<>();
+        for (Feature f : mVenue.getFeatures()) {
+            features.add(new Feature(f.getFeatureName(), f.isAvailable()));
+        }
+        mVenue.setFeatures(features);
+    }
+
     // REQUIRES: Position is valid.
     // MODIFIES: None.
     // EFFECTS:  Displays via a Toast the position of the image as a list in the viewpager.
@@ -119,12 +123,6 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, HTTPlink);
         startActivity(Intent.createChooser(sharingIntent, getString(R.string.txt_share)));
     }
-
-
-
-
-
-
 
 
     private void setUpRentButton() {
