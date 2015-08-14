@@ -17,7 +17,7 @@ import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Feature;
 import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.ui.adapter.FeatureAdapter;
-import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapterCenterImage;
+import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -32,7 +32,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by gerardogtn on 8/1/15.
  */
-public class DetailActivity extends AppCompatActivity implements ImagePagerAdapterCenterImage.OnImageClickListener {
+public class DetailActivity extends AppCompatActivity implements ImagePagerAdapter.OnImageClickListener {
 
     public static final String LOG = DetailActivity.class.getSimpleName();
 
@@ -199,7 +199,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     // MODIFIES: this.
     // EFFECTS: Sets mImages to a new adapter with imageUrls as images. Sets this as onClickListener.
     private void setUpViewPager(final List<String> imageUrls) {
-        ImagePagerAdapterCenterImage adapter = new ImagePagerAdapterCenterImage(this, imageUrls);
+        ImagePagerAdapter adapter = new ImagePagerAdapter(this, imageUrls);
         mImages.setAdapter(adapter);
         adapter.setOnImageListener(this);
     }

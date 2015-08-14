@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Venue;
-import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapterCenterImage;
+import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -107,7 +107,7 @@ public class ViewPagerFullScreenActivity extends AppCompatActivity {
     }
 
     private void setUpViewPager(final List<String> imageUrls) {
-        ImagePagerAdapterCenterImage adapter = new ImagePagerAdapterCenterImage(this, imageUrls);
+        ImagePagerAdapter adapter = new ImagePagerAdapter(this, imageUrls);
         mImages.setAdapter(adapter);
         mImages.setPageTransformer(true, new ViewPager.PageTransformer() {
             private static final float MIN_SCALE = 0.85f;
@@ -157,7 +157,7 @@ public class ViewPagerFullScreenActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                numberTxt.setText((position+1) + "/" + mVenue.getImageUrls().size());
+                numberTxt.setText((position + 1) + "/" + mVenue.getImageUrls().size());
                 mBitmap = getBitmapFromURL(mVenue.getImageUrls().get(position));
             }
 
