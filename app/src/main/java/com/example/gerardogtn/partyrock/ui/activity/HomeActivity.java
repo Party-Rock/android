@@ -109,14 +109,6 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
         setSupportActionBar(mToolbar);
     }
 
-    // REQUIRES: None.
-    // MODIFIES: this.
-    // EFFECTS:  Draws back arrow in toolbar.
-    private void drawBackArrow() {
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-    }
 
     // REQUIRES: None.
     // MODIFIES: this.
