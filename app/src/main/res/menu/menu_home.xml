@@ -9,6 +9,6 @@
         android:title="@string/search"
         app:showAsAction="ifRoom"
         android:visible="true"
-        android:icon="@android:drawable/ic_menu_search"/>
+        android:icon="@mipmap/ic_search"/>
 
 </menu>
