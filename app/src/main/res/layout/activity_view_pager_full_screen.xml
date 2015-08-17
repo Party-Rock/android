@@ -3,10 +3,10 @@
     android:layout_height="match_parent"
     tools:context="com.example.gerardogtn.partyrock.ui.activity.ViewPagerFullScreenActivity">
 
-    <android.support.v4.view.ViewPager
+    <com.example.gerardogtn.partyrock.ui.adapter.FullScreenCustomViewPager
         android:id="@+id/venue_images"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/half_horizontal_margin"
         android:layout_marginTop="@dimen/half_horizontal_margin"
         android:layout_gravity="center"/>

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +22,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
@@ -38,8 +36,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private boolean mResolvingError = false;
 
-    @Bind(R.id.toolbar_home)
-    Toolbar mToolbar;
+
 
 
 
@@ -57,7 +54,6 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
         setContentView(R.layout.activity_home);
         buildGoogleApiClient();
         ButterKnife.bind(this);
-        setUpToolbar();
         addHomeListFragment();
     }
 
@@ -117,14 +113,10 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Toast.makeText(this, "Failed to get location", Toast.LENGTH_LONG).show();
+
     }
 
-    // REQUIRES: None.
-    // MODIFIES: this.
-    // EFFECTS:  Sets support action toolbar with mToolbar.
-    private void setUpToolbar() {
-        setSupportActionBar(mToolbar);
-    }
+
 
 
     // REQUIRES: None.

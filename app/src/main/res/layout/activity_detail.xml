@@ -1,56 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <include layout="@layout/partial_toolbar"/>
-
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
-        android:paddingEnd="@dimen/activity_horizontal_margin">
+        android:scrollbars="none"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/venue_images"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:layout_marginBottom="@dimen/half_horizontal_margin"
-                android:layout_marginTop="@dimen/half_horizontal_margin"/>
+                android:layout_marginBottom="@dimen/half_horizontal_margin" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/venue_features"
+            <include
+                layout="@layout/partial_feature_list"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginBottom="@dimen/half_horizontal_margin"
-                android:layout_marginTop="@dimen/half_horizontal_margin"/>
-
-            <!--<android.support.v7.widget.RecyclerView-->
-                <!--android:id="@+id/venue_features"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:layout_marginBottom="@dimen/half_horizontal_margin"-->
-                <!--android:layout_marginTop="@dimen/half_horizontal_margin"/>-->
+                android:layout_height="@dimen/features_height_size"/>
 
             <include
                 layout="@layout/partial_lite_map"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_marginBottom="@dimen/half_horizontal_margin"
-                android:layout_marginTop="@dimen/half_horizontal_margin"/>
+                android:layout_marginTop="@dimen/half_horizontal_margin" />
 
         </LinearLayout>
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <include layout="@layout/partial_toolbar" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <Button
         android:id="@+id/btn_rent"
@@ -59,6 +57,6 @@
         android:layout_gravity="bottom"
         android:background="@color/accent"
         android:text="@string/rent"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white" />
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

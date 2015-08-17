@@ -11,5 +11,6 @@
     <dimen name="txt_size_distance_feature">14sp</dimen>
     <dimen name="size_confitmation_image">150dp</dimen>
     <dimen name="select_date_edit_text">150dp</dimen>
+    <dimen name="features_height_size">100dp</dimen>
 
 </resources>

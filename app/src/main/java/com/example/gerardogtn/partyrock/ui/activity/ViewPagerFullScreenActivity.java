@@ -149,6 +149,7 @@ public class ViewPagerFullScreenActivity extends AppCompatActivity {
 
 
         });
+
         mImages.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -163,6 +164,7 @@ public class ViewPagerFullScreenActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
+
 
             }
         });

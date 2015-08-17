@@ -2,10 +2,11 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="100dp"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/half_vertical_margin"
-    android:layout_marginStart="@dimen/half_vertical_margin">
+    android:layout_marginStart="@dimen/half_vertical_margin"
+    android:layout_gravity="center">
 
     <ImageView
         android:id="@+id/feature_image"
@@ -16,9 +17,11 @@
 
     <TextView
         android:id="@+id/feature_text"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/notification_large_icon_width"
         android:layout_height="0dp"
         android:layout_weight="0.5"
+        android:textSize="@dimen/abc_text_size_caption_material"
+        android:textStyle="bold"
         android:text="@string/description_sample"
         android:gravity="center|center"/>
 
