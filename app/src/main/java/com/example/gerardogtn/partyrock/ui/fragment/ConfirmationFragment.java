@@ -96,7 +96,7 @@ public class ConfirmationFragment extends Fragment {
                 .into(mMainVenueImage);
         mAddressText.setText(getString(R.string.address) + ": " + venue.getName());
         mCapacityText.setText(getString(R.string.capacity) + ": " +
-                Integer.toString(venue.getCapacity())+ getString(R.string.persons));
+                Integer.toString(venue.getCapacity()) + getString(R.string.persons));
         mPriceText.setText("$" + Double.toString(venue.getPrice()));
         mVenueText.setVisibility(View.INVISIBLE);
 
@@ -107,7 +107,11 @@ public class ConfirmationFragment extends Fragment {
         rentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Venue rented!", Toast.LENGTH_SHORT).show();
+                if (mDateSelected == null) {
+                    Toast.makeText(getActivity(), "Please, select a date first.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Venue rented!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -131,7 +135,7 @@ public class ConfirmationFragment extends Fragment {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                mDateSelected= newDate.getTime();
+                mDateSelected = newDate.getTime();
                 datePickerText.setText(mSimpleDateFormat.format(mDateSelected));
                 mVenueText.setVisibility(View.VISIBLE);
                 mVenueText.setText(getString(R.string.date_alert) + " " +
