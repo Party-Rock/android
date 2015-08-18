@@ -2,22 +2,23 @@ package com.example.gerardogtn.partyrock.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Space;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Feature;
 import com.example.gerardogtn.partyrock.data.model.Venue;
-import com.example.gerardogtn.partyrock.ui.adapter.FeatureAdapter;
 import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapter;
+import com.example.gerardogtn.partyrock.ui.fragment.FeaturesFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -35,6 +36,7 @@ import de.greenrobot.event.EventBus;
 public class DetailActivity extends AppCompatActivity implements ImagePagerAdapter.OnImageClickListener {
 
     public static final String LOG = DetailActivity.class.getSimpleName();
+    private static final String FTAG = "feats";
 
     @Bind(R.id.toolbar_home)
     Toolbar mToolbar;
@@ -42,11 +44,21 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     @Bind(R.id.venue_images)
     ViewPager mImages;
 
-    @Bind(R.id.venue_features)
-    RecyclerView mFeatures;
 
     @Bind(R.id.btn_rent)
     Button rentButton;
+
+    @Bind(R.id.btn_features)
+    Button featButton;
+
+    @Bind(R.id.btn_more_features)
+    Button moreFeatsButton;
+
+    @Bind({R.id.feature_image1, R.id.feature_image2, R.id.feature_image3, R.id.feature_image4, R.id.feature_image5})
+    List<ImageView> featureIcons;
+
+    @Bind({R.id.feature_space1, R.id.feature_space2, R.id.feature_space3, R.id.feature_space4, R.id.feature_space5})
+    List<Space> featureSpaces;
 
     private SupportMapFragment mMapFragment;
     private Venue mVenue;
@@ -61,11 +73,12 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
             rebuildVenue(savedInstanceState);
         }
         setUpViewPager(mVenue.getImageUrls());
-        setUpRecycleView();
+        setUpFeatures();
         setUpToolbar();
         setUpRentButton();
         setUpMapFragment();
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -106,8 +119,8 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     // EFFECTS:  Displays via a Toast the position of the image as a list in the viewpager.
     @Override
     public void onImageClick(int position) {
-        //TODO: Implement Fullscreen Viewpager
         EventBus.getDefault().postSticky(mVenue);
+        EventBus.getDefault().postSticky(position);
         Intent intent = new Intent(DetailActivity.this, ViewPagerFullScreenActivity.class);
         startActivity(intent);
 
@@ -122,6 +135,48 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.txt_party_share));
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, HTTPlink);
         startActivity(Intent.createChooser(sharingIntent, getString(R.string.txt_share)));
+    }
+
+    private void setUpFeatures() {
+        if (mVenue.getFeatures().size() <= 5) {
+            for (int i = 0; i < mVenue.getFeatures().size(); i++) {
+                featureIcons.get(i).setVisibility(View.VISIBLE);
+                featureIcons.get(i).setImageResource(mVenue.getFeatures().get(i).getImageResource());
+                featureSpaces.get(i).setVisibility(View.VISIBLE);
+            }
+        } else {
+            for (int i = 0; i < 4; i++) {
+                featureIcons.get(i).setVisibility(View.VISIBLE);
+                featureIcons.get(i).setImageResource(mVenue.getFeatures().get(i).getImageResource());
+                featureSpaces.get(i).setVisibility(View.VISIBLE);
+            }
+            featureSpaces.get(4).setVisibility(View.VISIBLE);
+            moreFeatsButton.setVisibility(View.VISIBLE);
+            moreFeatsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showFeaturesDialog();
+                }
+            });
+        }
+        featButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFeaturesDialog();
+            }
+        });
+
+    }
+
+    private void showFeaturesDialog() {
+        EventBus.getDefault().postSticky(mVenue.getFeatures());
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        FeaturesFragment featuresFragment = new FeaturesFragment();
+
+        featuresFragment.show(fm, FTAG);
+
     }
 
 
@@ -202,15 +257,6 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         ImagePagerAdapter adapter = new ImagePagerAdapter(this, imageUrls);
         mImages.setAdapter(adapter);
         adapter.setOnImageListener(this);
-    }
-
-
-    // TODO: Set up the Venue's features recycleview.
-    private void setUpRecycleView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mFeatures.setLayoutManager(linearLayoutManager);
-        FeatureAdapter featureViewAdapter = new FeatureAdapter(this, mVenue.getFeatures());
-        mFeatures.setAdapter(featureViewAdapter);
     }
 
 

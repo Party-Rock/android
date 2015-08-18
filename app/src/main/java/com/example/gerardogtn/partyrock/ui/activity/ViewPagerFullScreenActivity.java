@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -37,6 +38,7 @@ public class ViewPagerFullScreenActivity extends AppCompatActivity {
 
     private Venue mVenue;
     private Bitmap mBitmap;
+    private int mPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +46,17 @@ public class ViewPagerFullScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_pager_full_screen);
         ButterKnife.bind(this);
         mVenue = EventBus.getDefault().removeStickyEvent(Venue.class);
+        try {
+            mPosition = EventBus.getDefault().removeStickyEvent(Integer.class);
+        } catch (Exception e){e.printStackTrace();}
         if (mVenue == null) {
             mVenue = (Venue) savedInstanceState.getSerializable("lastVenue");
         }
         setUpViewPager(mVenue.getImageUrls());
         setUpShareButton();
         setUpInitialText();
-        setUpInitialShare();
 
     }
-
 
 
     public static Bitmap getBitmapFromURL(String src) {
@@ -63,22 +66,15 @@ public class ViewPagerFullScreenActivity extends AppCompatActivity {
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
+            return BitmapFactory.decodeStream(input);
         } catch (IOException e) {
             // Log exception
             return null;
         }
     }
 
-
-
-    private void setUpInitialShare() {
-        mBitmap = getBitmapFromURL(mVenue.getImageUrls().get(0));
-    }
-
     private void setUpInitialText() {
-        numberTxt.setText("1/"+mVenue.getImageUrls().size());
+        numberTxt.setText((mPosition) + "/" + mVenue.getImageUrls().size());
     }
 
 
@@ -86,8 +82,8 @@ public class ViewPagerFullScreenActivity extends AppCompatActivity {
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String path = MediaStore.Images.Media.insertImage(getContentResolver(), mBitmap, getString(R.string.txt_party_share)+ "App", null);
+                mBitmap = getBitmapFromURL(mVenue.getImageUrls().get(mPosition-1));
+                String path = MediaStore.Images.Media.insertImage(getContentResolver(), mBitmap, getString(R.string.txt_party_share) + "App", null);
                 Uri uri = Uri.parse(path);
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("image/*");
@@ -107,8 +103,19 @@ public class ViewPagerFullScreenActivity extends AppCompatActivity {
     }
 
     private void setUpViewPager(final List<String> imageUrls) {
-        ImagePagerAdapter adapter = new ImagePagerAdapter(this, imageUrls);
+        //Add a new List for infinite scrolling. (This way, the imageUrls list is not modified)
+        List<String> infiniteList = new ArrayList<>();
+        //Infinite scrolling is created using dummy list elements at the first and last position.
+        infiniteList.addAll(imageUrls);
+        infiniteList.add(imageUrls.get(0));
+        infiniteList.add(0, infiniteList.get(imageUrls.size() - 1));
+        //Update the position of the selected image
+        mPosition++;
+        ImagePagerAdapter adapter = new ImagePagerAdapter(this, infiniteList);
         mImages.setAdapter(adapter);
+        mImages.setCurrentItem(mPosition);
+
+        //Add the animation effect between scrolls.
         mImages.setPageTransformer(true, new ViewPager.PageTransformer() {
             private static final float MIN_SCALE = 0.85f;
             private static final float MIN_ALPHA = 0.5f;
@@ -150,7 +157,9 @@ public class ViewPagerFullScreenActivity extends AppCompatActivity {
 
         });
 
+        //A Page change listener is used to create Infinite scrolling and to update screen elements.
         mImages.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -158,15 +167,33 @@ public class ViewPagerFullScreenActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                numberTxt.setText((position + 1) + "/" + mVenue.getImageUrls().size());
-                mBitmap = getBitmapFromURL(mVenue.getImageUrls().get(position));
+                //Elements on the screen are updated according to the current position.
+                //('else' elements are used only for a smooth transition)
+                if (position != 0 & position!=mVenue.getImageUrls().size()+1) {
+                    numberTxt.setText((position) + "/" + mVenue.getImageUrls().size());
+                } else if (position==0){
+                    numberTxt.setText(mVenue.getImageUrls().size()+ "/" + mVenue.getImageUrls().size());
+                } else {
+                    numberTxt.setText(1+ "/" + mVenue.getImageUrls().size());
+                }
+                mPosition = position;
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
-
+                //If positioned in the dummyvalues, the viewpager is redirected to the original item.
+                if (state == ViewPager.SCROLL_STATE_IDLE) { //this is triggered when the switch to a new page is complete
+                    final int lastPosition = mImages.getAdapter().getCount() - 1;
+                    if (mPosition == lastPosition) {
+                        mImages.setCurrentItem(1, false); //false so we don't animate
+                        mPosition = 1;
+                    } else if (mPosition == 0) {
+                        mImages.setCurrentItem(lastPosition - 1, false);
+                        mPosition = lastPosition - 1;
+                    }
+                }
             }
+
         });
     }
 

@@ -6,11 +6,11 @@
     <dimen name="half_vertical_margin">8dp</dimen>
 
     <dimen name="btn_width">150dp</dimen>
-    <dimen name="btn_height">36dp</dimen>
+    <dimen name="btn_height">44dp</dimen>
     <dimen name="lower_button_height">70dp</dimen>
     <dimen name="txt_size_distance_feature">14sp</dimen>
     <dimen name="size_confitmation_image">150dp</dimen>
     <dimen name="select_date_edit_text">150dp</dimen>
-    <dimen name="features_height_size">100dp</dimen>
+    <dimen name="features_height_size">300dp</dimen>
 
 </resources>

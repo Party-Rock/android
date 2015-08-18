@@ -61,4 +61,20 @@
     <item name="android:layout_width">match_parent</item>
     </style>
 
+    <style name="text_button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/btn_height</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:background">@drawable/style_generic_button</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/navigation_padding_bottom</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textSize">@dimen/abc_text_size_medium_material</item>
+
+
+    </style>
+
 </resources>
