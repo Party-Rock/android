@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Feature;
 import com.example.gerardogtn.partyrock.data.model.Position;
+import com.example.gerardogtn.partyrock.service.PartyRockApiClient;
+import com.example.gerardogtn.partyrock.ui.adapter.HomeListAdapter;
 import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.service.SearchVenueEvent;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
@@ -32,9 +35,14 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
-public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenueClickListener {
+public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenueClickListener,
+        Callback<List<Venue>> {
 
+    public static final String LOG_TAG = HomeListFragment.class.getSimpleName();
     private List<Venue> mVenues;
     private final String FTAG = "fragment_search_venue";
 
@@ -81,14 +89,15 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         mVenues = new ArrayList<>();
         mVenues.add(venueJoselito);
         mVenues.add(venueMaria);
-        mVenues.add(venueJoselito);
-        mVenues.add(venueMaria);
+       
+        PartyRockApiClient.getInstance().getAllVenues(this);
+
     }
 
     public static HomeListFragment newInstance() {
         HomeListFragment fragment = new HomeListFragment();
         Bundle args = new Bundle();
-        fragment.setArguments(args);
+                fragment.setArguments(args);
         return fragment;
     }
 
@@ -110,7 +119,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         ButterKnife.bind(this, view);
         setUpToolbar();
         EventBus.getDefault().register(this);
-        setUpRecycleView(mVenues);
+        setUpRecycleView();
         setUpFabClick();
         return view;
     }
@@ -162,12 +171,30 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
 
     // REQUIRES: None.
     // MODIFIES: this.
+    // EFFECTS: Sets this.mVenues to venues.
+    @Override
+    public void success(List<Venue> venues, Response response) {
+        this.mVenues = venues;
+        setUpRecycleView();
+    }
+
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS: Notifies a connection error and prints the stack of the error.
+    @Override
+    public void failure(RetrofitError error) {
+        Log.e(LOG_TAG, "Error getting venues");
+        error.printStackTrace();
+    }
+
+    // REQUIRES: None.
+    // MODIFIES: this.
     // EFFECTS: Creates a vertical recycleview filled with mVenues, each view using a HomeListAdapter.
-    private void setUpRecycleView(List<Venue> venues) {
+    private void setUpRecycleView() {
         Context context = getActivity();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        HomeListAdapter homeListAdapter = new HomeListAdapter(context, venues);
+        HomeListAdapter homeListAdapter = new HomeListAdapter(context, mVenues);
         mRecyclerView.setAdapter(homeListAdapter);
         homeListAdapter.setOnItemClickListener(this);
     }

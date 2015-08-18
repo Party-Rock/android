@@ -1,6 +1,7 @@
 package com.example.gerardogtn.partyrock.data.model;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
@@ -9,8 +10,13 @@ import java.io.Serializable;
  */
 public class Position implements Serializable {
 
+    @SerializedName("lat")
     private double latitude;
+
+    @SerializedName("long")
     private double longitude;
+
+    @SerializedName("colonia")
     private String colonia;
 
     public Position() {

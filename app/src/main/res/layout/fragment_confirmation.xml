@@ -23,7 +23,7 @@
                 android:layout_marginBottom="@dimen/activity_horizontal_margin"
                 android:contentDescription="@string/venue_image"
                 android:scaleType="centerCrop"
-                android:src="@drawable/house_for_show" />
+                android:src="@drawable/house_for_show"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,7 +47,7 @@
                     android:textSize="@dimen/abc_text_size_medium_material" />
 
                 <TextView
-                    style="@style/text_button"
+                    style="@style/text_date_picker"
                     android:id="@+id/datePickerText"
                     android:text="@string/date_format"/>
 
