@@ -24,6 +24,9 @@ public class Venue {
     @SerializedName("name")
     private String mName;
 
+    @SerializedName("_id")
+    private String mId;
+
     @SerializedName("position")
     private Position mPosition;
 
@@ -80,6 +83,14 @@ public class Venue {
 
     public void setName(String mName) {
         this.mName = mName;
+    }
+
+    public String getId(){
+        return this.mId;
+    }
+
+    public void setId(String id){
+        this.mId = id;
     }
 
     public LatLng getLatLng() {
