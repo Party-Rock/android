@@ -21,9 +21,8 @@ import android.widget.Toast;
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Feature;
 import com.example.gerardogtn.partyrock.data.model.Position;
-import com.example.gerardogtn.partyrock.service.PartyRockApiClient;
-import com.example.gerardogtn.partyrock.ui.adapter.HomeListAdapter;
 import com.example.gerardogtn.partyrock.data.model.Venue;
+import com.example.gerardogtn.partyrock.service.PartyRockApiClient;
 import com.example.gerardogtn.partyrock.service.SearchVenueEvent;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
 import com.example.gerardogtn.partyrock.ui.adapter.HomeListAdapter;
@@ -90,7 +89,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         mVenues.add(venueJoselito);
         mVenues.add(venueMaria);
        
-        PartyRockApiClient.getInstance().getAllVenues(this);
+
 
     }
 
@@ -116,6 +115,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_venue_list, container, false);
+        PartyRockApiClient.getInstance().getAllVenues(this);
         ButterKnife.bind(this, view);
         setUpToolbar();
         EventBus.getDefault().register(this);
@@ -174,8 +174,8 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     // EFFECTS: Sets this.mVenues to venues.
     @Override
     public void success(List<Venue> venues, Response response) {
-        this.mVenues = venues;
-        setUpRecycleView();
+        this.mVenues.addAll(venues);
+
     }
 
     // REQUIRES: None.

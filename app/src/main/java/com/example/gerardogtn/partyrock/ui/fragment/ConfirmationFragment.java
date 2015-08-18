@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Venue;
-import com.example.gerardogtn.partyrock.service.VenueEvent;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -49,10 +48,10 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     @Bind(R.id.txt_capacity)
     TextView mCapacityText;
 
-    @Bind(R.id.txt_venue_description)
-    TextView mVenueText;
+    @Bind(R.id.txt_checkout)
+    TextView mCheckoutText;
 
-    @Bind(R.id.txt_date_picker)
+    @Bind(R.id.datePickerText)
     TextView mDatePickerText;
 
     private DatePicker mDatePicker;
@@ -74,9 +73,8 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
         if (mVenue == null) {
             mVenue = (Venue) savedInstanceState.getSerializable("lastVenue");
         }
-        setLayoutDetails();
-        setUpRentButton();
-        setCalendar();
+        setUpCalendar();
+        setUpLayout();
         return view;
     }
 
@@ -89,7 +87,7 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
 
     @Override
     public void onDetach() {
-        EventBus.getDefault().unregister(this);
+        ButterKnife.unbind(this);
         super.onDetach();
     }
 
@@ -97,7 +95,12 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         Calendar newDate = Calendar.getInstance();
         newDate.set(year, monthOfYear, dayOfMonth);
-        mDatePickerText.setText(mSimpleDateFormat.format(newDate.getTime()));
+        mDateSelected=newDate.getTime();
+        mDatePickerText.setText(mSimpleDateFormat.format(mDateSelected));
+        mCheckoutText.setVisibility(View.VISIBLE);
+        mCheckoutText.setText(getString(R.string.date_alert) + " " +
+                (mSimpleDateFormat.format(mDateSelected)) + ". "
+                + getString(R.string.TOS_alert));
     }
 
     @OnClick(R.id.btn_rent)
@@ -112,13 +115,10 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Shows the date picker dialog.
-    @OnClick(R.id.txt_date_picker)
+    @OnClick(R.id.datePickerText)
     public void onClickDatePicker(){
         mDatePickerDialog.show();
-        mVenueText.setVisibility(View.VISIBLE);
-        mVenueText.setText(getString(R.string.date_alert) + " " +
-                (mSimpleDateFormat.format(mDateSelected)) + ". "
-                + getString(R.string.TOS_alert));
+
 
     }
 
@@ -127,33 +127,43 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Display the venue data in this.fields
-    public void setUpLayout(Venue venue) {
+    public void setUpLayout() {
         Activity parentActivity = getActivity();
         Picasso.with(getActivity())
-                .load(venue.getImageUrls().get(0))
+                .load(mVenue.getImageUrls().get(0))
                 .error(R.mipmap.ic_launcher)
                 .into(mMainVenueImage);
-        mAddressText.setText(getString(R.string.address) + ": " + venue.getName());
+        mAddressText.setText(getString(R.string.address) + ": " + mVenue.getName());
         mCapacityText.setText(getString(R.string.capacity) + ": " +
-                Integer.toString(venue.getCapacity()) + getString(R.string.persons));
-        mPriceText.setText("$" + Double.toString(venue.getPrice()));
-        mVenueText.setVisibility(View.INVISIBLE);
+                Integer.toString(mVenue.getCapacity()) + getString(R.string.persons));
+        mPriceText.setText("$" + Double.toString(mVenue.getPrice()));
+        mCheckoutText.setVisibility(View.INVISIBLE);
     }
 
 
   
     // REQUIRES: None.
     // MODIFIES: this.
+    // EFFECTS: Sets up the mSimpleDateFormat, the mDatePicker and the mDatePickerDialog.
+    public void setUpCalendar() {
+        mSimpleDateFormat = new SimpleDateFormat("dd/mm/yyyy", Locale.US);
+        setUpDatePickerDialog();
+        customizeDatePicker();
+    }
+
+    // REQUIRES: None.
+    // MODIFIES: this.
     // EFFECTS: Creates a new DatePickerDialog with today's year, month, and day.
     private void setUpDatePickerDialog() {
         Calendar newCalendar = Calendar.getInstance();
-        
-        mDatePickerDialog = new DatePickerDialog(getActivity(), 
+
+        mDatePickerDialog = new DatePickerDialog(getActivity(),
                 this,
                 newCalendar.get(Calendar.YEAR),
                 newCalendar.get(Calendar.MONTH),
                 newCalendar.get(Calendar.DAY_OF_MONTH));
-        
+
+        customizeDatePicker();
     }
 
     // REQUIRES: None.
