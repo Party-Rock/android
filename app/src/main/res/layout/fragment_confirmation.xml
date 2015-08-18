@@ -60,7 +60,7 @@
                     android:gravity="center"/>
 
                 <TextView
-                    android:id="@+id/datePickerText"
+                    android:id="@+id/txt_date_picker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
