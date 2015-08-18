@@ -21,10 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/btn_height"
         android:layout_gravity="bottom|right"
-        android:background="@color/accent"
+        android:background="@android:color/transparent"
         android:clickable="true"
         android:text="Cool"
-        android:textColor="@color/white"
-        android:textSize="@dimen/abc_text_size_medium_material" />
+        android:textColor="@color/accent"
+        android:textSize="@dimen/abc_text_size_small_material" />
 
 </FrameLayout>
