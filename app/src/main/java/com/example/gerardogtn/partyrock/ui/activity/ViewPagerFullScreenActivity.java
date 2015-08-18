@@ -114,7 +114,54 @@ public class ViewPagerFullScreenActivity extends AppCompatActivity {
         ImagePagerAdapter adapter = new ImagePagerAdapter(this, infiniteList);
         mImages.setAdapter(adapter);
         mImages.setCurrentItem(mPosition);
+        setUpPageScrollAnimation();
+        setUpPageScrollListener();
 
+
+    }
+
+    private void setUpPageScrollListener() {
+        //A Page change listener is used to create Infinite scrolling and to update screen elements.
+        mImages.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                //Elements on the screen are updated according to the current position.
+                //('else' elements are used only for a smooth transition)
+                if (position != 0 & position!=mVenue.getImageUrls().size()+1) {
+                    numberTxt.setText((position) + "/" + mVenue.getImageUrls().size());
+                } else if (position==0){
+                    numberTxt.setText(mVenue.getImageUrls().size()+ "/" + mVenue.getImageUrls().size());
+                } else {
+                    numberTxt.setText(1+ "/" + mVenue.getImageUrls().size());
+                }
+                mPosition = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                //If positioned in the dummyvalues, the viewpager is redirected to the original item.
+                if (state == ViewPager.SCROLL_STATE_IDLE) { //this is triggered when the switch to a new page is complete
+                    final int lastPosition = mImages.getAdapter().getCount() - 1;
+                    if (mPosition == lastPosition) {
+                        mImages.setCurrentItem(1, false); //false so we don't animate
+                        mPosition = 1;
+                    } else if (mPosition == 0) {
+                        mImages.setCurrentItem(lastPosition - 1, false);
+                        mPosition = lastPosition - 1;
+                    }
+                }
+            }
+
+        });
+    }
+
+    private void setUpPageScrollAnimation() {
         //Add the animation effect between scrolls.
         mImages.setPageTransformer(true, new ViewPager.PageTransformer() {
             private static final float MIN_SCALE = 0.85f;
@@ -154,45 +201,6 @@ public class ViewPagerFullScreenActivity extends AppCompatActivity {
                 }
             }
 
-
-        });
-
-        //A Page change listener is used to create Infinite scrolling and to update screen elements.
-        mImages.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                //Elements on the screen are updated according to the current position.
-                //('else' elements are used only for a smooth transition)
-                if (position != 0 & position!=mVenue.getImageUrls().size()+1) {
-                    numberTxt.setText((position) + "/" + mVenue.getImageUrls().size());
-                } else if (position==0){
-                    numberTxt.setText(mVenue.getImageUrls().size()+ "/" + mVenue.getImageUrls().size());
-                } else {
-                    numberTxt.setText(1+ "/" + mVenue.getImageUrls().size());
-                }
-                mPosition = position;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                //If positioned in the dummyvalues, the viewpager is redirected to the original item.
-                if (state == ViewPager.SCROLL_STATE_IDLE) { //this is triggered when the switch to a new page is complete
-                    final int lastPosition = mImages.getAdapter().getCount() - 1;
-                    if (mPosition == lastPosition) {
-                        mImages.setCurrentItem(1, false); //false so we don't animate
-                        mPosition = 1;
-                    } else if (mPosition == 0) {
-                        mImages.setCurrentItem(lastPosition - 1, false);
-                        mPosition = lastPosition - 1;
-                    }
-                }
-            }
 
         });
     }
