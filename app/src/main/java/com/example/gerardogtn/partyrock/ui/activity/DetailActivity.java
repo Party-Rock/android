@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Space;
-import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Feature;
@@ -290,7 +289,6 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
                 //If positioned in the dummyvalues, the viewpager is redirected to the original item.
                 if (state == ViewPager.SCROLL_STATE_IDLE) { //this is triggered when the switch to a new page is complete
                     final int lastPosition = mImages.getAdapter().getCount() - 1;
-                    Toast.makeText(getApplicationContext(),""+mPosition,Toast.LENGTH_SHORT).show();
                     if (mPosition == lastPosition) {
                         mImages.setCurrentItem(1, false); //false so we don't animate
                         mPosition = 1;
