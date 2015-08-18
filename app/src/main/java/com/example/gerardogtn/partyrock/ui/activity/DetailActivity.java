@@ -266,6 +266,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         //Using the Infinite scrolling, position value in the listener must be modified to
         // (position -1) so the image is correct when selected
         adapter.setOnImageListener(this);
+        mImages.setCurrentItem(1);
         setUpPageScrollListener();
     }
 
