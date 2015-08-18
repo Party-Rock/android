@@ -44,42 +44,8 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     RecyclerView mRecyclerView;
 
     public HomeListFragment() {
-        PartyRockApiClient.getInstance().getAllVenues(this);
-
-        Feature alcoholAllowed = new Feature("alcohol", true);
-        Feature alcoholNotAllowed = new Feature("alcohol", false);
-        Feature smokeNotAllowed = new Feature("smoke", false);
-
-
-        Position positionJoselito = new Position(new LatLng(19.361704, -99.184427), "Crédito Constructor");
-
-        ArrayList<String> imagesJoselito = new ArrayList<>();
-        imagesJoselito.add("http://mlm-s1-p.mlstatic.com/excelente-casa-para-reuniones-y-fiestas-13295-MLM20075175773_042014-F.jpg");
-        imagesJoselito.add("http://mlm-s1-p.mlstatic.com/excelente-casa-para-reuniones-y-fiestas-20672-MLM20195551809_112014-F.jpg");
-
-        ArrayList<Feature> featuresJoselito = new ArrayList<>();
-        featuresJoselito.add(alcoholNotAllowed);
-        featuresJoselito.add(smokeNotAllowed);
-
-        Venue venueJoselito = new Venue("Casa Joselito", positionJoselito, imagesJoselito, 50, 1800.0);
-        venueJoselito.setFeatures(featuresJoselito);
-
-
-        Position positionMaria = new Position(new LatLng(19.366694, -99.182528), "Crédito Constructor");
-
-        ArrayList<String> imagesMaria = new ArrayList<>();
-        imagesMaria.add("http://mlm-s1-p.mlstatic.com/jardin-de-bodas-cuernavaca-19431-MLM20171605553_092014-O.jpg");
-        imagesMaria.add("http://mlm-s2-p.mlstatic.com/jardin-de-bodas-cuernavaca-19420-MLM20171605642_092014-O.jpg");
-
-        ArrayList<Feature> featuresMaria = new ArrayList<>();
-        featuresMaria.add(alcoholAllowed);
-        featuresMaria.add(smokeNotAllowed);
-        Venue venueMaria = new Venue("Jardin de bodas Maria", positionMaria, imagesMaria, 150, 6500.0);
-        venueMaria.setFeatures(featuresMaria);
-
         mVenues = new ArrayList<>();
-        mVenues.add(venueJoselito);
-        mVenues.add(venueMaria);
+        PartyRockApiClient.getInstance().getAllVenues(this);
     }
 
     public static HomeListFragment newInstance() {
@@ -104,7 +70,6 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_venue_list, container, false);
         ButterKnife.bind(this, view);
-        setUpRecycleView();
         return view;
     }
 
@@ -129,6 +94,24 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
 
     // REQUIRES: None.
     // MODIFIES: this.
+    // EFFECTS: Sets this.mVenues to venues.
+    @Override
+    public void success(List<Venue> venues, Response response) {
+        this.mVenues = venues;
+        setUpRecycleView();
+    }
+
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS: Notifies a connection error and prints the stack of the error.
+    @Override
+    public void failure(RetrofitError error) {
+        Log.e(LOG_TAG, "Error getting venues");
+        error.printStackTrace();
+    }
+
+    // REQUIRES: None.
+    // MODIFIES: this.
     // EFFECTS: Creates a vertical recycleview filled with mVenues, each view using a HomeListAdapter.
     private void setUpRecycleView() {
         Context context = getActivity();
@@ -139,16 +122,4 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         homeListAdapter.setOnItemClickListener(this);
     }
 
-    @Override
-    public void success(List<Venue> venues, Response response) {
-        for(Venue v : venues){
-            Log.i(LOG_TAG, v.getName());
-        }
-    }
-
-    @Override
-    public void failure(RetrofitError error) {
-        Log.e(LOG_TAG, "Error getting venues");
-        error.printStackTrace();
-    }
 }
