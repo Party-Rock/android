@@ -35,6 +35,13 @@
                 android:layout_marginBottom="@dimen/half_horizontal_margin"
                 android:layout_marginTop="@dimen/half_horizontal_margin"/>
 
+            <!--<android.support.v7.widget.RecyclerView-->
+                <!--android:id="@+id/venue_features"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_marginBottom="@dimen/half_horizontal_margin"-->
+                <!--android:layout_marginTop="@dimen/half_horizontal_margin"/>-->
+
             <include
                 layout="@layout/partial_lite_map"
                 android:layout_width="match_parent"

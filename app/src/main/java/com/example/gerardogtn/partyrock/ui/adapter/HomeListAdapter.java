@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Venue;
-import com.example.gerardogtn.partyrock.service.VenueEvent;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
 
 import java.math.BigDecimal;
@@ -137,7 +136,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
             adapter.setOnVenueListener(new ImagePagerAdapter.OnVenueClickListener() {
                 @Override
                 public void onVenueClick() {
-                    VenueEvent clickedVenue = new VenueEvent(mVenues.get(getLayoutPosition()));
+                    Venue clickedVenue = mVenues.get(getLayoutPosition());
                     EventBus.getDefault().postSticky(clickedVenue);
                     Intent intent = new Intent(mContext, DetailActivity.class);
                     mContext.startActivity(intent);

@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -39,8 +40,8 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     @Bind(R.id.img_venue_main)
     ImageView mMainVenueImage;
 
-    @Bind(R.id.txt_name)
-    TextView mNameText;
+    @Bind(R.id.txt_address)
+    TextView mAddressText;
 
     @Bind(R.id.txt_price)
     TextView mPriceText;
@@ -57,6 +58,8 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     private DatePicker mDatePicker;
     private DatePickerDialog mDatePickerDialog;
     private SimpleDateFormat mSimpleDateFormat;
+    private Date mDateSelected;
+    private Venue mVenue;
 
     public ConfirmationFragment() {
 
@@ -70,6 +73,13 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
         EventBus.getDefault().registerSticky(this);
         setUpCalendar();
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        EventBus.getDefault().postSticky(mVenue);
+        outState.putSerializable("lastVenue", mVenue);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -115,12 +125,12 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
                 .load(venue.getImageUrls().get(0))
                 .error(R.mipmap.ic_launcher)
                 .into(mMainVenueImage);
-        mNameText.setText(parentActivity.getString(R.string.venue) + ": " + venue.getName());
-        mCapacityText.setText(parentActivity.getString(R.string.capacity)+": " + Integer.toString(venue.getCapacity()));
-        mPriceText.setText(venue.getFormattedPrice());
-        mVenueText.setText(venue.toString());
+        mAddressText.setText(getString(R.string.address) + ": " + venue.getName());
+        mCapacityText.setText(getString(R.string.capacity) + ": " +
+                Integer.toString(venue.getCapacity())+ getString(R.string.persons));
+        mPriceText.setText("$" + Double.toString(venue.getPrice()));
+        mVenueText.setVisibility(View.INVISIBLE);
     }
-
 
     // REQUIRES: None.
     // MODIFIES: this.
@@ -151,10 +161,8 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
         long currentTime = System.currentTimeMillis();
         mDatePicker = mDatePickerDialog.getDatePicker();
         mDatePicker.setMinDate(currentTime - 1000);
-
-        long dateMax = (currentTime/90) + currentTime;
+        long dateMax = (currentTime / 90) + currentTime;
         mDatePicker.setMaxDate(dateMax);
     }
-
 
 }

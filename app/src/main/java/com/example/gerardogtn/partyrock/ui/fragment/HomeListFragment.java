@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,12 +18,12 @@ import android.widget.Toast;
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Feature;
 import com.example.gerardogtn.partyrock.data.model.Position;
-import com.example.gerardogtn.partyrock.data.model.VenuesResponse;
 import com.example.gerardogtn.partyrock.service.PartyRockApiClient;
 import com.example.gerardogtn.partyrock.ui.adapter.HomeListAdapter;
 import com.example.gerardogtn.partyrock.data.model.Venue;
-import com.example.gerardogtn.partyrock.service.VenueEvent;
+import com.example.gerardogtn.partyrock.service.SearchVenueEvent;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
+import com.example.gerardogtn.partyrock.ui.adapter.HomeListAdapter;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -39,9 +41,12 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
 
     public static final String LOG_TAG = HomeListFragment.class.getSimpleName();
     private List<Venue> mVenues;
+    private final String FTAG = "fragment_search_venue";
 
     @Bind(R.id.recycler_view_venue)
     RecyclerView mRecyclerView;
+    @Bind(R.id.FAB_Search)
+    FloatingActionButton fabSearch;
 
     public HomeListFragment() {
         mVenues = new ArrayList<>();
@@ -70,7 +75,19 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_venue_list, container, false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
+        setUpRecycleView();
+        setUpFabClick();
         return view;
+    }
+
+    private void setUpFabClick() {
+        fabSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSearchDialog();
+            }
+        });
     }
 
     @Override
@@ -86,9 +103,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     public void onVenueClick(int position) {
         Context context = getActivity();
         Venue clickedVenue = mVenues.get(position);
-        Toast.makeText(context, clickedVenue.getName() + " was clicked!", Toast.LENGTH_SHORT).show();
-        VenueEvent venueEvent = new VenueEvent(clickedVenue);
-        EventBus.getDefault().postSticky(venueEvent);
+        EventBus.getDefault().postSticky(clickedVenue);
         startActivity(new Intent(context, DetailActivity.class));
     }
 
@@ -120,6 +135,29 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         HomeListAdapter homeListAdapter = new HomeListAdapter(context, mVenues);
         mRecyclerView.setAdapter(homeListAdapter);
         homeListAdapter.setOnItemClickListener(this);
+    }
+
+    //FAB Button OnClick Method
+    private void showSearchDialog() {
+
+        FragmentManager fm = getFragmentManager();
+
+            SearchVenueFragment searchDialog = new SearchVenueFragment();
+
+            searchDialog.show(fm, FTAG);
+
+
+    }
+
+    //EventBus method to receive Search Parameters
+    public void onEvent(SearchVenueEvent searchVenueEvent) {
+
+        String location = searchVenueEvent.getLocation();
+        int price = searchVenueEvent.getPrice();
+        int capacity = searchVenueEvent.getCapacity();
+
+        //TODO: Do the query using search API and refill the RecyclerView on success.
+        Toast.makeText(getActivity(), "Search received " + location + " " + price + " " + capacity, Toast.LENGTH_SHORT).show();
     }
 
 }

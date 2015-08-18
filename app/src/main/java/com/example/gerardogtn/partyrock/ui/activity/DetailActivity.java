@@ -12,28 +12,30 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
-import com.example.gerardogtn.partyrock.ui.adapter.FeatureAdapter;
-import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapter;
+import com.example.gerardogtn.partyrock.data.model.Feature;
 import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
+import com.example.gerardogtn.partyrock.ui.adapter.FeatureAdapter;
+import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapter;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.List;
-
 /**
  * Created by gerardogtn on 8/1/15.
  */
-public class DetailActivity extends AppCompatActivity implements ImagePagerAdapter.OnImageClickListener{
+public class DetailActivity extends AppCompatActivity implements ImagePagerAdapter.OnImageClickListener {
+
+    public static final String LOG = DetailActivity.class.getSimpleName();
 
     @Bind(R.id.toolbar_home)
     Toolbar mToolbar;
@@ -55,26 +57,40 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
-        EventBus.getDefault().registerSticky(this);
+        mVenue = EventBus.getDefault().removeStickyEvent(Venue.class);
+        if (mVenue == null) {
+            rebuildVenue(savedInstanceState);
+        }
+        setUpViewPager(mVenue.getImageUrls());
+        setUpRecycleView();
         setUpToolbar();
         setUpRentButton();
         setUpMapFragment();
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        EventBus.getDefault().postSticky(mVenue);
+        outState.putSerializable("lastVenue", mVenue);
+        outState.putSerializable("venueFeatures", mVenue.getFeatures());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home, menu);
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
+        int id = item.getItemId();
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+        if (id == R.id.action_bar_share) {
+            shareIntent();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     // REQUIRES: Position is valid.
@@ -82,8 +98,22 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     // EFFECTS:  Displays via a Toast the position of the image as a list in the viewpager.
     @Override
     public void onImageClick(int position) {
-        String toastDisplay = "This is Image No." + (position + 1) + " of " + mImages.getAdapter().getCount();
-        Toast.makeText(DetailActivity.this, toastDisplay, Toast.LENGTH_SHORT).show();
+        //TODO: Implement Fullscreen Viewpager
+        EventBus.getDefault().postSticky(mVenue);
+        Intent intent = new Intent(DetailActivity.this, ViewPagerFullScreenActivity.class);
+        startActivity(intent);
+
+    }
+
+    //Method to share the Venue Party Rock's website.
+    private void shareIntent() {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        //TODO: Change link for a party rock web link.
+        String HTTPlink = mVenue.getImageUrls().get(0);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.txt_party_share));
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, HTTPlink);
+        startActivity(Intent.createChooser(sharingIntent, getString(R.string.txt_share)));
     }
 
     // REQUIRES: None.
@@ -115,7 +145,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
 
     // REQUIRES: None.
     // MODIFIES: this.
-    // EFFECTS: Adds a new marker to mMapFragment at a venue position with the mVenue name as
+    // EFFECTS: Adds a new marker to mMapFragment at a mVenue position with the mVenue name as
     // title.
     private void addVenueMarker(){
         MarkerOptions marker = new MarkerOptions().position(mVenue.getLatLng()).title(mVenue.getName());
@@ -133,7 +163,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
 
     // REQUIRES: None.
     // MODIFIES: this.
-    // EFFECTS: Sets the Toolbar title to the venue's name.
+    // EFFECTS: Sets the Toolbar title to the mVenue's name.
     private void drawVenueTitle() {
         getSupportActionBar().setTitle(mVenue.getName());
     }
@@ -141,7 +171,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS:  Draws back arrow in toolbar.
-    private void drawBackArrow(){
+    private void drawBackArrow() {
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -189,4 +219,12 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         mRentButton.setText(buttonText);
     }
 
+    private void rebuildVenue(Bundle savedInstanceState) {
+        mVenue = (Venue) savedInstanceState.getSerializable("lastVenue");
+        ArrayList<Feature> features = new ArrayList<>();
+        for (Feature f : mVenue.getFeatures()) {
+            features.add(new Feature(f.getFeatureName(), f.isAvailable()));
+        }
+        mVenue.setFeatures(features);
+    }
 }

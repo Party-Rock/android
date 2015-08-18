@@ -3,10 +3,12 @@ package com.example.gerardogtn.partyrock.data.model;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by gerardogtn on 8/10/15.
  */
-public class Position {
+public class Position implements Serializable {
 
     @SerializedName("lat")
     private double latitude;
