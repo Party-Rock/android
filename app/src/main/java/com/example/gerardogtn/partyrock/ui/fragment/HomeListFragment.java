@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Feature;
 import com.example.gerardogtn.partyrock.data.model.Position;
+import com.example.gerardogtn.partyrock.data.model.VenuesResponse;
+import com.example.gerardogtn.partyrock.service.PartyRockApiClient;
 import com.example.gerardogtn.partyrock.ui.adapter.HomeListAdapter;
 import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
@@ -27,15 +30,21 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
-public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenueClickListener {
+public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenueClickListener,
+        Callback<List<Venue>> {
 
+    public static final String LOG_TAG = HomeListFragment.class.getSimpleName();
     private List<Venue> mVenues;
 
     @Bind(R.id.recycler_view_venue)
     RecyclerView mRecyclerView;
 
     public HomeListFragment() {
+        PartyRockApiClient.getInstance().getAllVenues(this);
 
         Feature alcoholAllowed = new Feature("alcohol", true);
         Feature alcoholNotAllowed = new Feature("alcohol", false);
@@ -130,4 +139,16 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         homeListAdapter.setOnItemClickListener(this);
     }
 
+    @Override
+    public void success(List<Venue> venues, Response response) {
+        for(Venue v : venues){
+            Log.i(LOG_TAG, v.getName());
+        }
+    }
+
+    @Override
+    public void failure(RetrofitError error) {
+        Log.e(LOG_TAG, "Error getting venues");
+        error.printStackTrace();
+    }
 }
