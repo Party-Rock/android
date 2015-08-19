@@ -50,7 +50,6 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
 
     public HomeListFragment() {
         mVenues = new ArrayList<>();
-        PartyRockApiClient.getInstance().getAllVenues(this);
     }
 
     public static HomeListFragment newInstance() {
@@ -63,6 +62,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PartyRockApiClient.getInstance().getAllVenues(this);
     }
 
     @Override
