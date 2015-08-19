@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <ScrollView
@@ -23,7 +23,7 @@
                 android:layout_marginBottom="@dimen/activity_horizontal_margin"
                 android:contentDescription="@string/venue_image"
                 android:scaleType="centerCrop"
-                android:src="@drawable/house_for_show"/>
+                android:src="@drawable/house_for_show" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,26 +39,17 @@
                     android:id="@+id/txt_select_party"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:gravity="center"
                     android:text="@string/txt_party_date"
                     android:textColor="@color/primary_text"
-                    android:textSize="@dimen/abc_text_size_medium_material"
-                    android:gravity="center"/>
+                    android:textSize="@dimen/abc_text_size_medium_material" />
 
                 <TextView
+                    style="@style/text_button"
                     android:id="@+id/datePickerText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/half_vertical_margin"
-                    android:textColor="@android:color/white"
-                     android:padding="@dimen/navigation_padding_bottom"
-                    android:gravity="center"
-                    android:clickable="true"
-                    android:text="@string/date_format"
-                    android:textSize="@dimen/abc_text_size_headline_material"
-                    android:background="@drawable/style_text_border_date"
-                    />
+                    android:text="@string/date_format"/>
 
                 <TextView
                     android:id="@+id/txt_venue_description"
@@ -67,8 +58,7 @@
                     android:layout_margin="@dimen/activity_vertical_margin"
                     android:text="@string/description_sample"
                     android:textColor="@color/secondary_text"
-                    android:textSize="@dimen/abc_text_size_medium_material"
-                    />
+                    android:textSize="@dimen/abc_text_size_medium_material" />
 
 
             </LinearLayout>
@@ -120,7 +110,7 @@
     <Button
         android:id="@+id/btn_rent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/btn_height"
         android:layout_gravity="bottom|center"
         android:background="@color/accent"
         android:text="@string/rent"

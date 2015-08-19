@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -39,6 +42,8 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     RecyclerView mRecyclerView;
     @Bind(R.id.FAB_Search)
     FloatingActionButton fabSearch;
+    @Bind(R.id.toolbar_home)
+    Toolbar mToolbar;
 
     public HomeListFragment() {
 
@@ -76,6 +81,8 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         mVenues = new ArrayList<>();
         mVenues.add(venueJoselito);
         mVenues.add(venueMaria);
+        mVenues.add(venueJoselito);
+        mVenues.add(venueMaria);
     }
 
     public static HomeListFragment newInstance() {
@@ -88,6 +95,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -100,19 +108,23 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_venue_list, container, false);
         ButterKnife.bind(this, view);
+        setUpToolbar();
         EventBus.getDefault().register(this);
         setUpRecycleView(mVenues);
         setUpFabClick();
         return view;
     }
 
-    private void setUpFabClick() {
-        fabSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSearchDialog();
-            }
-        });
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_bar_search) {
+            showSearchDialog();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -130,6 +142,22 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         Venue clickedVenue = mVenues.get(position);
         EventBus.getDefault().postSticky(clickedVenue);
         startActivity(new Intent(context, DetailActivity.class));
+    }
+
+    private void setUpFabClick() {
+        fabSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSearchDialog();
+            }
+        });
+    }
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS:  Sets support action toolbar with mToolbar.
+    private void setUpToolbar() {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        mToolbar.inflateMenu(R.menu.menu_home);
     }
 
     // REQUIRES: None.

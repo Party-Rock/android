@@ -89,6 +89,8 @@ public class ImagePagerAdapter extends PagerAdapter {
     }
 
 
+
+
     // REQUIRES: position is valid.
     // MODIFIES: this.
     // EFFECTS: If the context of this activity is a HomeActivity, sets the mVenueListener. Else if
