@@ -8,7 +8,33 @@ public class ApiConstants {
 
     public static final String API_VERSION = "/v1";
 
-    public static final String PARAM_VENUES = "/venues";
+    public static final String VENUES = "/venues";
+    public static final String USERS = "/users";
+    public static final String RESERVATIONS = "/reservations";
 
-    public static final String URL_ALL_VENUES = API_VERSION + PARAM_VENUES;
+    // VENUE PARAMS
+    public static final String PARAM_NAME = "name";
+    public static final String PARAM_LAT = "lat";
+    public static final String PARAM_LONG = "long";
+    public static final String PARAM_COLONIA = "colonia";
+    public static final String PARAM_DESCRIPTION = "description";
+    public static final String PARAM_SIZE = "size";
+    public static final String PARAM_PRICE = "price";
+    public static final String PARAM_CAPACITY = "capacity";
+
+    // USER PARAMS
+    public static final String PARAM_FIRST_NAME = "fname";
+    public static final String PARAM_LAST_NAME = "lname";
+    public static final String PARAM_PASSWORD = "password";
+
+    // RESERVATION PARAMS
+    public static final String PARAM_USER_ID = "userId";
+    public static final String PARAM_OWNER_ID = "ownerId";
+    public static final String PARAM_VENUE_ID = "venueId";
+    public static final String PARAM_RENTED_DATE = "rentedDate";
+
+    public static final String URL_ALL_VENUES = API_VERSION + VENUES;
+    public static final String URL_ALL_USERS = API_VERSION + USERS;
+    public static final String URL_ALL_RESERVATIONS = API_VERSION + RESERVATIONS;
+
 }
