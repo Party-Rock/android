@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
 import com.example.gerardogtn.partyrock.ui.activity.HomeActivity;
+import com.example.gerardogtn.partyrock.ui.activity.SearchResultsActivity;
 import com.example.gerardogtn.partyrock.ui.activity.ViewPagerFullScreenActivity;
 import com.squareup.picasso.Picasso;
 
@@ -64,7 +65,7 @@ public class ImagePagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         LinearLayout layout = new LinearLayout(mContext);
-        if (mContext.getClass() == HomeActivity.class) {
+        if (mContext.getClass() == HomeActivity.class | mContext.getClass() == SearchResultsActivity.class) {
             layout = (LinearLayout) mInflater.inflate(R.layout.item_detail_image, container, false);
         } else if (mContext.getClass() == DetailActivity.class) {
             layout = (LinearLayout) mInflater.inflate(R.layout.item_detail_image_center_image, container, false);
@@ -89,14 +90,12 @@ public class ImagePagerAdapter extends PagerAdapter {
     }
 
 
-
-
     // REQUIRES: position is valid.
     // MODIFIES: this.
     // EFFECTS: If the context of this activity is a HomeActivity, sets the mVenueListener. Else if
     //          the context of this activity is a DetailActivity, sets the mImageListener.
     private void setUpListener(LinearLayout layout, final int position) {
-        if (mContext.getClass() == HomeActivity.class) {
+        if (mContext.getClass() == HomeActivity.class | mContext.getClass() == SearchResultsActivity.class) {
             layout.setOnClickListener(new LinearLayout.OnClickListener() {
                 @Override
                 public void onClick(View v) {

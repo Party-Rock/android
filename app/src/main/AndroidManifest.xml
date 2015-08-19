@@ -49,7 +49,7 @@
         </activity>
 
         <activity
-            android:name=".ui.activity.SearchVenueActivity"
+            android:name=".ui.activity.SearchResultsActivity"
             android:label="Filter venues"
             android:parentActivityName=".ui.activity.HomeActivity" >
         </activity>
@@ -57,7 +57,7 @@
         <activity
             android:name=".ui.activity.SearchLocationActivity"
             android:label="Select location"
-            android:parentActivityName=".ui.activity.SearchVenueActivity" >
+            android:parentActivityName=".ui.activity.SearchResultsActivity" >
         </activity>
         
         <activity

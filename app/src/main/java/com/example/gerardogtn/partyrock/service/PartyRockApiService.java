@@ -18,5 +18,5 @@ public interface PartyRockApiService {
     void getAllVenues(Callback<List<Venue>> callback);
 
     @GET(ApiConstants.URL_ALL_VENUES)
-    List<Venue> getSearchedVenues(@Query("colonia") String colonia, @Query("price") int price, @Query("capacity") int capacity);
+    void getSearchedVenues(@Query("colonia") String colonia, @Query("price") int price, @Query("capacity") int capacity, Callback<List<Venue>> callback);
 }

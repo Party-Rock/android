@@ -22,8 +22,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.ButterKnife;
-
 
 public class HomeActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
              GoogleApiClient.OnConnectionFailedListener {
@@ -53,7 +51,6 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         buildGoogleApiClient();
-        ButterKnife.bind(this);
         addHomeListFragment();
     }
 

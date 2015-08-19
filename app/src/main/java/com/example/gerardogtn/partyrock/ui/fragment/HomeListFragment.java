@@ -16,14 +16,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Feature;
 import com.example.gerardogtn.partyrock.data.model.Position;
 import com.example.gerardogtn.partyrock.data.model.Venue;
 import com.example.gerardogtn.partyrock.service.PartyRockApiClient;
-import com.example.gerardogtn.partyrock.service.SearchVenueEvent;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
 import com.example.gerardogtn.partyrock.ui.adapter.HomeListAdapter;
 import com.google.android.gms.maps.model.LatLng;
@@ -43,6 +41,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
 
     public static final String LOG_TAG = HomeListFragment.class.getSimpleName();
     private List<Venue> mVenues;
+    private List<Venue> searchedVenues;
     private final String FTAG = "fragment_search_venue";
 
     @Bind(R.id.recycler_view_venue)
@@ -88,7 +87,6 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         mVenues = new ArrayList<>();
         mVenues.add(venueJoselito);
         mVenues.add(venueMaria);
-       
 
 
     }
@@ -96,9 +94,35 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     public static HomeListFragment newInstance() {
         HomeListFragment fragment = new HomeListFragment();
         Bundle args = new Bundle();
-                fragment.setArguments(args);
+        fragment.setArguments(args);
         return fragment;
     }
+
+    /**
+     * Called to ask the fragment to save its current dynamic state, so it
+     * can later be reconstructed in a new instance of its process is
+     * restarted.  If a new instance of the fragment later needs to be
+     * created, the data you place in the Bundle here will be available
+     * in the Bundle given to {@link #onCreate(Bundle)},
+     * {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}, and
+     * {@link #onActivityCreated(Bundle)}.
+     * <p/>
+     * <p>This corresponds to {@link Activity#onSaveInstanceState(Bundle)
+     * Activity.onSaveInstanceState(Bundle)} and most of the discussion there
+     * applies here as well.  Note however: <em>this method may be called
+     * at any time before {@link #onDestroy()}</em>.  There are many situations
+     * where a fragment may be mostly torn down (such as when placed on the
+     * back stack with no UI showing), but its state will not be saved until
+     * its owning activity actually needs to save its state.
+     *
+     * @param outState Bundle in which to place your saved state.
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,8 +142,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         PartyRockApiClient.getInstance().getAllVenues(this);
         ButterKnife.bind(this, view);
         setUpToolbar();
-        EventBus.getDefault().register(this);
-        setUpRecycleView();
+        setUpRecycleView(mVenues);
         setUpFabClick();
         return view;
     }
@@ -140,6 +163,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     public void onDetach() {
         super.onDetach();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 
     // REQUIRES: None.
@@ -161,6 +185,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
             }
         });
     }
+
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS:  Sets support action toolbar with mToolbar.
@@ -190,11 +215,11 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Creates a vertical recycleview filled with mVenues, each view using a HomeListAdapter.
-    private void setUpRecycleView() {
+    private void setUpRecycleView(List<Venue> venues) {
         Context context = getActivity();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        HomeListAdapter homeListAdapter = new HomeListAdapter(context, mVenues);
+        HomeListAdapter homeListAdapter = new HomeListAdapter(context, venues);
         mRecyclerView.setAdapter(homeListAdapter);
         homeListAdapter.setOnItemClickListener(this);
     }
@@ -204,22 +229,13 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
 
         FragmentManager fm = getFragmentManager();
 
-            SearchVenueFragment searchDialog = new SearchVenueFragment();
+        SearchVenueFragment searchDialog = new SearchVenueFragment();
 
-            searchDialog.show(fm, FTAG);
+        searchDialog.show(fm, FTAG);
 
 
     }
 
-    //EventBus method to receive Search Parameters
-    public void onEvent(SearchVenueEvent searchVenueEvent) {
 
-        String location = searchVenueEvent.getLocation();
-        int price = searchVenueEvent.getPrice();
-        int capacity = searchVenueEvent.getCapacity();
-
-        //TODO: Do the query using search API and refill the RecyclerView on success.
-        Toast.makeText(getActivity(), "Search received " + location + " " + price + " " + capacity, Toast.LENGTH_SHORT).show();
-    }
 
 }
