@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -59,6 +60,9 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     @Bind(R.id.btn_more_features)
     Button moreFeatsButton;
 
+    @Bind(R.id.card_view_feature_button)
+    CardView moreFeatsCardView;
+
     @Bind({R.id.feature_image1, R.id.feature_image2, R.id.feature_image3, R.id.feature_image4, R.id.feature_image5})
     List<ImageView> featureIcons;
 
@@ -79,11 +83,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         if (mVenue == null) {
             rebuildVenue(savedInstanceState);
         }
-        if (savedInstanceState!=null){
-            final int scrollX = savedInstanceState.getInt(SCROLL_X);
-            final int scrollY = savedInstanceState.getInt(SCROLL_Y);
-            mNestedScrollView.scrollTo(scrollX,scrollY);
-        }
+        savedScrollState(savedInstanceState);
         setUpViewPager(mVenue.getImageUrls());
         setUpFeatures();
         setUpToolbar();
@@ -91,7 +91,6 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         setUpMapFragment();
 
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -151,6 +150,14 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
 
         return i;
     }
+    //Verifies if there was a previous state and scrolls back to the last position.
+    private void savedScrollState(Bundle savedInstanceState) {
+        if (savedInstanceState!=null){
+            final int scrollX = savedInstanceState.getInt(SCROLL_X);
+            final int scrollY = savedInstanceState.getInt(SCROLL_Y);
+            mNestedScrollView.scrollTo(scrollX, scrollY);
+        }
+    }
 
     private void rebuildVenue(Bundle savedInstanceState) {
         mVenue = (Venue) savedInstanceState.getSerializable("lastVenue");
@@ -173,6 +180,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
 
     }
 
+    //Receives true from the event, if the venue comes from the SearchResultsActivity.
     private void getParentActivityAlert() {
         searchVenueAlert= EventBus.getDefault().removeStickyEvent(Boolean.class);
         if (searchVenueAlert==null){
@@ -191,6 +199,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         startActivity(Intent.createChooser(sharingIntent, getString(R.string.txt_share)));
     }
 
+    //Checks if the venue has more than 5 features and arrange the layout accordingly.
     private void setUpFeatures() {
         if (mVenue.getFeatures().size() <= 5) {
             for (int i = 0; i < mVenue.getFeatures().size(); i++) {
@@ -206,6 +215,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
             }
             featureSpaces.get(4).setVisibility(View.VISIBLE);
             moreFeatsButton.setVisibility(View.VISIBLE);
+            //A dialogue stating how many features are not shown can also be implemented here.
             moreFeatsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -219,9 +229,15 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
                 showFeaturesDialog();
             }
         });
-
+        moreFeatsCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFeaturesDialog();
+            }
+        });
     }
 
+    //Shows the Dialog where a recycler view of the features is shown.
     private void showFeaturesDialog() {
         EventBus.getDefault().postSticky(mVenue.getFeatures());
 
@@ -233,7 +249,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
 
     }
 
-
+    //Sends the venue to the confirmation activity and opens it.
     private void setUpRentButton() {
         setRentButtonText();
         rentButton.setOnClickListener(new View.OnClickListener() {
@@ -246,9 +262,10 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         });
     }
 
+    //Shows a text in the button
     private void setRentButtonText() {
         String buttonText;
-        buttonText = "Throw your party here for: " + mVenue.getFormattedPrice();
+        buttonText = getString(R.string.rent_text)+ " " + mVenue.getFormattedPrice();
         rentButton.setText(buttonText);
     }
 

@@ -28,8 +28,7 @@ public class ConfirmationActivity extends AppCompatActivity{
         ButterKnife.bind(this);
         setUpToolbar();
         drawBackArrow();
-        if (savedInstanceState==null){
-            addHomeListFragment();}
+        addConfirmationFragment(savedInstanceState);
     }
 
 
@@ -62,10 +61,14 @@ public class ConfirmationActivity extends AppCompatActivity{
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Draws a HomeListFragment on this.mFragmentContainer
-    private void addHomeListFragment() {
+    private void addConfirmationFragment(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
         FragmentTransaction tm = getSupportFragmentManager().beginTransaction();
         ConfirmationFragment confirmationFragment= new ConfirmationFragment();
-        tm.replace(R.id.fragment_container, confirmationFragment);
-        tm.commit();
+        tm.replace(R.id.fragment_container, confirmationFragment, "confirm");
+        tm.commit();}
+        else {
+            getSupportFragmentManager().findFragmentByTag("confirm");
+        }
     }
 }

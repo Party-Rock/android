@@ -151,6 +151,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        PartyRockApiClient.getInstance().getAllVenues(this);
     }
 
     @Override
@@ -162,7 +163,6 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_venue_list, container, false);
-        PartyRockApiClient.getInstance().getAllVenues(this);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         setUpToolbar();
