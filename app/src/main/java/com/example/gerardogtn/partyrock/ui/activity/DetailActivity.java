@@ -62,6 +62,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
 
     private SupportMapFragment mMapFragment;
     private Venue mVenue;
+    private Boolean searchVenueAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
         mVenue = EventBus.getDefault().removeStickyEvent(Venue.class);
+        getParentActivityAlert();
         if (mVenue == null) {
             rebuildVenue(savedInstanceState);
         }
@@ -105,6 +107,36 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public Intent getSupportParentActivityIntent() {
+        return getParentActivityIntentImpl();
+    }
+
+    @Override
+    public Intent getParentActivityIntent() {
+        return getParentActivityIntentImpl();
+    }
+
+    private Intent getParentActivityIntentImpl() {
+        Intent i = null;
+
+        //If the venue is received from the SearchResultsActivity,
+        // a intent to make this the parent activity is created.
+        if (searchVenueAlert) {
+            i = new Intent(this, SearchResultsActivity.class);
+            // set any flags or extras that you need.
+            // If you are reusing the previous Activity (i.e. bringing it to the top
+            // without re-creating a new instance) set these flags:
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            // Extras can be added as well.
+        } else {
+            i = new Intent(this, HomeActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        }
+
+        return i;
+    }
+
     private void rebuildVenue(Bundle savedInstanceState) {
         mVenue = (Venue) savedInstanceState.getSerializable("lastVenue");
         ArrayList<Feature> features = new ArrayList<>();
@@ -124,6 +156,13 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         Intent intent = new Intent(DetailActivity.this, ViewPagerFullScreenActivity.class);
         startActivity(intent);
 
+    }
+
+    private void getParentActivityAlert() {
+        searchVenueAlert= EventBus.getDefault().removeStickyEvent(Boolean.class);
+        if (searchVenueAlert==null){
+            searchVenueAlert=false;
+        }
     }
 
     //Method to share the Venue Party Rock's website.

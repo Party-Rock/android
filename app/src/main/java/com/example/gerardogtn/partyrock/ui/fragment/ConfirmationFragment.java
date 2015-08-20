@@ -139,14 +139,12 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
         mPriceText.setText("$" + Double.toString(mVenue.getPrice()));
         mCheckoutText.setVisibility(View.INVISIBLE);
     }
-
-
   
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Sets up the mSimpleDateFormat, the mDatePicker and the mDatePickerDialog.
     public void setUpCalendar() {
-        mSimpleDateFormat = new SimpleDateFormat("dd/mm/yyyy", Locale.US);
+        mSimpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         setUpDatePickerDialog();
         customizeDatePicker();
     }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -35,8 +36,10 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class SearchResultsFragment extends Fragment implements HomeListAdapter.OnVenueClickListener {
+    private static final String BUNDLE_RECYCLER_LAYOUT = "recycler_search_layout";
     private List<Venue> searchedVenues;
     private final String FTAG = "fragment_search_venue";
+    private Parcelable mSavedRecyclerLayoutState;
 
     @Bind(R.id.recycler_view_venue)
     RecyclerView mRecyclerView;
@@ -58,8 +61,23 @@ public class SearchResultsFragment extends Fragment implements HomeListAdapter.O
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, mRecyclerView.getLayoutManager().onSaveInstanceState());
     }
 
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState != null)
+        {
+            mSavedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -94,7 +112,7 @@ public class SearchResultsFragment extends Fragment implements HomeListAdapter.O
         EventBus.getDefault().unregister(this);
     }
 
-    // REQUIRES: None.
+    // REQUIRES: Change in the HomeListAdapter to get the same effect on the ViewPager.
     // MODIFIES: None.
     // EFFECTS: When a Venue is clicked, navigate to Detail Activity with the venue's data.
     @Override
@@ -102,6 +120,8 @@ public class SearchResultsFragment extends Fragment implements HomeListAdapter.O
         Context context = getActivity();
         Venue clickedVenue = searchedVenues.get(position);
         EventBus.getDefault().postSticky(clickedVenue);
+        Boolean searchVenueAlert = true;
+        EventBus.getDefault().postSticky(searchVenueAlert);
         startActivity(new Intent(context, DetailActivity.class));
     }
 
@@ -180,6 +200,10 @@ public class SearchResultsFragment extends Fragment implements HomeListAdapter.O
                 if (venues != null) {
                     searchedVenues = venues;
                     setUpRecycleView(searchedVenues);
+                    if(mSavedRecyclerLayoutState != null)
+                    {
+                        mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+                    }
                 } else {
                     Toast.makeText(getActivity(), "Sorry, No results!", Toast.LENGTH_SHORT).show();
                 }

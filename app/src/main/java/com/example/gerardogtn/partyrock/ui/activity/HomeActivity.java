@@ -4,6 +4,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +25,7 @@ import java.util.Locale;
 
 
 public class HomeActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-             GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = HomeActivity.class.getSimpleName();
 
@@ -35,23 +36,41 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
     private boolean mResolvingError = false;
 
 
-
-
-
     @Override
     protected void onStart() {
         super.onStart();
-        if (!mResolvingError) { 
+        if (!mResolvingError) {
             mGoogleApiClient.connect();
         }
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_home);
         buildGoogleApiClient();
-        addHomeListFragment();
+        addHomeListFragment(savedInstanceState);
+    }
+
+    /**
+     * This is the same as {@link #onSaveInstanceState} but is called for activities
+     * created with the attribute {@link android.R.attr#persistableMode} set to
+     * <code>persistAcrossReboots</code>. The {@link PersistableBundle} passed
+     * in will be saved and presented in {@link #onCreate(Bundle, PersistableBundle)}
+     * the first time that this activity is restarted following the next device reboot.
+     *
+     * @param outState           Bundle in which to place your saved state.
+     * @param outPersistentState State which will be saved across reboots.
+     * @see #onSaveInstanceState(Bundle)
+     * @see #onCreate
+     * @see #onRestoreInstanceState(Bundle, PersistableBundle)
+     * @see #onPause
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     @Override
@@ -92,10 +111,10 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
         try {
-            List<Address> addresses= geocoder.getFromLocation(mLastLocation.getLatitude(),
-                    mLastLocation.getLongitude(),1);
+            List<Address> addresses = geocoder.getFromLocation(mLastLocation.getLatitude(),
+                    mLastLocation.getLongitude(), 1);
             String address = addresses.get(0).getSubLocality();
-            Snackbar.make(getCurrentFocus(),address,Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getCurrentFocus(), address, Snackbar.LENGTH_LONG).show();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -114,16 +133,19 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
 
-
-
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Draws a HomeListFragment on this.mFragmentContainer
-    private void addHomeListFragment() {
-        FragmentTransaction tm = getSupportFragmentManager().beginTransaction();
-        HomeListFragment homeListFragment = HomeListFragment.newInstance();
-        tm.replace(R.id.fragment_container, homeListFragment);
-        tm.commit();
+    private void addHomeListFragment(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            FragmentTransaction tm = getSupportFragmentManager().beginTransaction();
+            HomeListFragment homeListFragment = HomeListFragment.newInstance();
+            tm.replace(R.id.fragment_container, homeListFragment, "home");
+            tm.commit();
+        } else {
+            getSupportFragmentManager().findFragmentByTag("home");
+        }
+
     }
 
     // REQUIRES: None.

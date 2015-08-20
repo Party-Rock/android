@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -40,9 +41,10 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         Callback<List<Venue>> {
 
     public static final String LOG_TAG = HomeListFragment.class.getSimpleName();
+    private static final String BUNDLE_RECYCLER_LAYOUT ="recycler_layout";
     private List<Venue> mVenues;
-    private List<Venue> searchedVenues;
     private final String FTAG = "fragment_search_venue";
+    private Parcelable mSavedRecyclerLayoutState;
 
     @Bind(R.id.recycler_view_venue)
     RecyclerView mRecyclerView;
@@ -120,14 +122,35 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, mRecyclerView.getLayoutManager().onSaveInstanceState());
     }
 
+    /**
+     * Called when all saved state has been restored into the view hierarchy
+     * of the fragment.  This can be used to do initialization based on saved
+     * state that you are letting the view hierarchy track itself, such as
+     * whether check box widgets are currently checked.  This is called
+     * after {@link #onActivityCreated(Bundle)} and before
+     * {@link #onStart()}.
+     *
+     * @param savedInstanceState If the fragment is being re-created from
+     *                           a previous saved state, this is the state.
+     */
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState != null)
+        {
+            mSavedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+        }
+    }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        setRetainInstance(true);
     }
 
     @Override
@@ -141,6 +164,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         View view = inflater.inflate(R.layout.fragment_venue_list, container, false);
         PartyRockApiClient.getInstance().getAllVenues(this);
         ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
         setUpToolbar();
         setUpRecycleView(mVenues);
         setUpFabClick();
@@ -163,10 +187,9 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     public void onDetach() {
         super.onDetach();
         ButterKnife.unbind(this);
-        EventBus.getDefault().unregister(this);
     }
 
-    // REQUIRES: None.
+    // REQUIRES: Change in the HomeListAdapter to get the same effect on the ViewPager.
     // MODIFIES: None.
     // EFFECTS: When a Venue is clicked, navigate to Detail Activity with the venue's data.
     @Override
@@ -200,7 +223,10 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     @Override
     public void success(List<Venue> venues, Response response) {
         this.mVenues.addAll(venues);
-
+        if(mSavedRecyclerLayoutState != null)
+        {
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+        }
     }
 
     // REQUIRES: None.
