@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -37,6 +38,8 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
 
     public static final String LOG = DetailActivity.class.getSimpleName();
     private static final String FTAG = "feats";
+    private static final String SCROLL_X = "scroll_position_x";
+    private static final String SCROLL_Y = "scroll_position_y";
 
     @Bind(R.id.toolbar_home)
     Toolbar mToolbar;
@@ -44,6 +47,8 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     @Bind(R.id.venue_images)
     ViewPager mImages;
 
+    @Bind(R.id.nested_scroll_view)
+    NestedScrollView mNestedScrollView;
 
     @Bind(R.id.btn_rent)
     Button rentButton;
@@ -74,11 +79,17 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         if (mVenue == null) {
             rebuildVenue(savedInstanceState);
         }
+        if (savedInstanceState!=null){
+            final int scrollX = savedInstanceState.getInt(SCROLL_X);
+            final int scrollY = savedInstanceState.getInt(SCROLL_Y);
+            mNestedScrollView.scrollTo(scrollX,scrollY);
+        }
         setUpViewPager(mVenue.getImageUrls());
         setUpFeatures();
         setUpToolbar();
         setUpRentButton();
         setUpMapFragment();
+
     }
 
 
@@ -87,8 +98,12 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         EventBus.getDefault().postSticky(mVenue);
         outState.putSerializable("lastVenue", mVenue);
         outState.putSerializable("venueFeatures", mVenue.getFeatures());
+        outState.putInt(SCROLL_X, mNestedScrollView.getScrollX());
+        outState.putInt(SCROLL_Y, mNestedScrollView.getScrollY());
         super.onSaveInstanceState(outState);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
