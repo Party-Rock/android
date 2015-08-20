@@ -3,8 +3,11 @@ package com.example.gerardogtn.partyrock.ui.fragment;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +19,9 @@ import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Venue;
+import com.example.gerardogtn.partyrock.service.PartyRockApiClient;
 import com.example.gerardogtn.partyrock.service.VenueEvent;
+import com.example.gerardogtn.partyrock.util.ApiConstants;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -28,11 +33,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ConfirmationFragment extends Fragment implements DatePickerDialog.OnDateSetListener{
+public class ConfirmationFragment extends Fragment implements DatePickerDialog.OnDateSetListener,
+        Callback<Response>{
+
+    public static final String LOG_TAG = ConfirmationFragment.class.getSimpleName();
 
     @Bind(R.id.btn_rent)
     Button mRentButton;
@@ -95,9 +106,30 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
         mDatePickerText.setText(mSimpleDateFormat.format(newDate.getTime()));
     }
 
+    @Override
+    public void success(Response response, Response response2) {
+        Log.i(LOG_TAG, "Reservation was posted successfully");
+    }
+
+    @Override
+    public void failure(RetrofitError error) {
+        Log.e(LOG_TAG, "Posting reservation failed.");
+        error.printStackTrace();
+    }
+
     @OnClick(R.id.btn_rent)
     public void onClickRentButton(){
-        Toast.makeText(getActivity(), "Venue rented!", Toast.LENGTH_SHORT).show();
+        if (mDateSelected != null) {
+            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+            String userId = preferences.getString(ApiConstants.PARAM_USER_ID, "");
+            String ownerId = preferences.getString(ApiConstants.PARAM_OWNER_ID, "");
+            PartyRockApiClient.getInstance().postReservation(userId,
+                    ownerId,
+                    mVenue.getId(),
+                    mDateSelected.toString(),
+                    this);
+            Toast.makeText(getActivity(), "Venue rented!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     // REQUIRES: None.
@@ -164,5 +196,4 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
         long dateMax = (currentTime / 90) + currentTime;
         mDatePicker.setMaxDate(dateMax);
     }
-
 }
