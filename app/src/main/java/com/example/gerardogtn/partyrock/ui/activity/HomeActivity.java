@@ -1,8 +1,11 @@
 package com.example.gerardogtn.partyrock.ui.activity;
 
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +21,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -31,8 +38,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
     private Location mLastLocation;
     private boolean mResolvingError = false;
 
-    @Bind(R.id.toolbar_home)
-    Toolbar mToolbar;
+
 
 
     @Override
@@ -50,7 +56,6 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
         setContentView(R.layout.activity_home);
         buildGoogleApiClient();
         ButterKnife.bind(this);
-        setUpToolbar();
         addHomeListFragment();
     }
 
@@ -84,8 +89,21 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
                     String.valueOf(mLastLocation.getLongitude());
 
             Toast.makeText(this, position, Toast.LENGTH_LONG).show();
+
         } else {
             Log.e(TAG, "Location was null.");
+        }
+
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+        try {
+            List<Address> addresses= geocoder.getFromLocation(mLastLocation.getLatitude(),
+                    mLastLocation.getLongitude(),1);
+            String address = addresses.get(0).getSubLocality();
+            Snackbar.make(getCurrentFocus(),address,Snackbar.LENGTH_LONG).show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -97,14 +115,10 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Toast.makeText(this, "Failed to get location", Toast.LENGTH_LONG).show();
+
     }
 
-    // REQUIRES: None.
-    // MODIFIES: this.
-    // EFFECTS:  Sets support action toolbar with mToolbar.
-    private void setUpToolbar() {
-        setSupportActionBar(mToolbar);
-    }
+
 
 
     // REQUIRES: None.

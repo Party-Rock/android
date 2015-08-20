@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
-    <include layout="@layout/partial_toolbar"/>
-
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical"
             android:paddingStart="@dimen/activity_horizontal_margin"
             android:paddingEnd="@dimen/activity_horizontal_margin">
@@ -23,43 +23,158 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/venue_images"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginBottom="@dimen/half_horizontal_margin"
-                android:layout_marginTop="@dimen/half_horizontal_margin"/>
+                android:layout_height="250dp"
+                android:layout_marginBottom="@dimen/half_horizontal_margin" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/venue_features"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_view_features_title"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_gravity="center|center"
-                android:layout_marginBottom="@dimen/half_horizontal_margin"
-                android:layout_marginTop="@dimen/half_horizontal_margin"/>
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                card_view:cardCornerRadius="4dp"
+                card_view:cardElevation="4dp">
 
-            <!--<android.support.v7.widget.RecyclerView-->
-                <!--android:id="@+id/venue_features"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:layout_marginBottom="@dimen/half_horizontal_margin"-->
-                <!--android:layout_marginTop="@dimen/half_horizontal_margin"/>-->
+                <TextView
+                    android:id="@+id/txt_features"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:text="Features &amp; Rules"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="@dimen/abc_text_size_medium_material" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="-4dp"
+                card_view:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <include
+                        android:id="@+id/feature_space1"
+                        layout="@layout/partial_space_features"
+                        android:visibility="visible" />
+
+                    <include
+                        android:id="@+id/feature_image1"
+                        layout="@layout/item_icon_feature"
+                        android:visibility="visible" />
+
+                    <include
+                        android:id="@+id/feature_space2"
+                        layout="@layout/partial_space_features" />
+
+                    <include
+                        android:id="@+id/feature_image2"
+                        layout="@layout/item_icon_feature" />
+
+                    <include
+                        android:id="@+id/feature_space3"
+                        layout="@layout/partial_space_features" />
+
+                    <include
+                        android:id="@+id/feature_image3"
+                        layout="@layout/item_icon_feature" />
+
+                    <include
+                        android:id="@+id/feature_space4"
+                        layout="@layout/partial_space_features" />
+
+                    <include
+                        android:id="@+id/feature_image4"
+                        layout="@layout/item_icon_feature" />
+
+                    <include
+                        android:id="@+id/feature_space5"
+                        layout="@layout/partial_space_features" />
+
+                    <include
+                        android:id="@+id/feature_image5"
+                        layout="@layout/item_icon_feature" />
+
+                    <Button
+                        android:id="@+id/btn_more_features"
+                        style="@style/text_button"
+                        android:layout_width="@dimen/notification_large_icon_width"
+                        android:layout_height="@dimen/notification_large_icon_width"
+                        android:layout_margin="0dp"
+                        android:text="+..."
+                        android:textSize="@dimen/abc_text_size_small_material"
+                        android:visibility="gone" />
+
+                    <include
+                        layout="@layout/partial_space_features"
+                        android:visibility="visible" />
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_view_feature_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="-4dp"
+                card_view:cardCornerRadius="4dp"
+                card_view:cardElevation="4dp">
+
+                <Button
+                    android:id="@+id/btn_features"
+                    style="@style/text_button"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:text="Check details"
+                    android:textAllCaps="false" />
+            </android.support.v7.widget.CardView>
+
 
             <include
                 layout="@layout/partial_lite_map"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:layout_marginBottom="@dimen/half_horizontal_margin"
-                android:layout_marginTop="@dimen/half_horizontal_margin"/>
+                android:layout_marginBottom="@dimen/btn_height"
+                android:layout_marginTop="@dimen/half_horizontal_margin" />
 
         </LinearLayout>
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <include layout="@layout/partial_toolbar" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <Button
         android:id="@+id/btn_rent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/btn_height"
         android:layout_gravity="bottom"
         android:background="@color/accent"
         android:text="@string/rent"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white" />
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

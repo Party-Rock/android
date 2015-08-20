@@ -5,8 +5,10 @@
     tools:context=".HomeActivity">
 
     <item
-        android:id="@+id/action_bar_share"
-        android:title="@string/share"
+        android:id="@+id/action_bar_search"
+        android:title="@string/search"
         app:showAsAction="ifRoom"
-        android:visible="false"/>
+        android:visible="true"
+        android:icon="@mipmap/ic_search"/>
+
 </menu>

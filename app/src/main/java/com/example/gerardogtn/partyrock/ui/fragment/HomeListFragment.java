@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -45,11 +48,50 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
 
     @Bind(R.id.recycler_view_venue)
     RecyclerView mRecyclerView;
+
     @Bind(R.id.FAB_Search)
     FloatingActionButton fabSearch;
 
+    @Bind(R.id.toolbar_home)
+    Toolbar mToolbar;
+
     public HomeListFragment() {
+        Feature alcoholAllowed = new Feature("alcohol", true);
+        Feature alcoholNotAllowed = new Feature("alcohol", false);
+        Feature smokeNotAllowed = new Feature("smoke", false);
+
+
+        Position positionJoselito = new Position(new LatLng(19.361704, -99.184427), "Crédito Constructor");
+
+        ArrayList<String> imagesJoselito = new ArrayList<>();
+        imagesJoselito.add("http://mlm-s1-p.mlstatic.com/excelente-casa-para-reuniones-y-fiestas-13295-MLM20075175773_042014-F.jpg");
+        imagesJoselito.add("http://mlm-s1-p.mlstatic.com/excelente-casa-para-reuniones-y-fiestas-20672-MLM20195551809_112014-F.jpg");
+
+        ArrayList<Feature> featuresJoselito = new ArrayList<>();
+        featuresJoselito.add(alcoholNotAllowed);
+        featuresJoselito.add(smokeNotAllowed);
+
+        Venue venueJoselito = new Venue("Casa Joselito", positionJoselito, imagesJoselito, 50, 1800.0);
+        venueJoselito.setFeatures(featuresJoselito);
+
+
+        Position positionMaria = new Position(new LatLng(19.366694, -99.182528), "Crédito Constructor");
+
+        ArrayList<String> imagesMaria = new ArrayList<>();
+        imagesMaria.add("http://mlm-s1-p.mlstatic.com/jardin-de-bodas-cuernavaca-19431-MLM20171605553_092014-O.jpg");
+        imagesMaria.add("http://mlm-s2-p.mlstatic.com/jardin-de-bodas-cuernavaca-19420-MLM20171605642_092014-O.jpg");
+
+        ArrayList<Feature> featuresMaria = new ArrayList<>();
+        featuresMaria.add(alcoholAllowed);
+        featuresMaria.add(smokeNotAllowed);
+        Venue venueMaria = new Venue("Jardin de bodas Maria", positionMaria, imagesMaria, 150, 6500.0);
+        venueMaria.setFeatures(featuresMaria);
+
         mVenues = new ArrayList<>();
+        mVenues.add(venueJoselito);
+        mVenues.add(venueMaria);
+        mVenues.add(venueJoselito);
+        mVenues.add(venueMaria);
     }
 
     public static HomeListFragment newInstance() {
@@ -62,7 +104,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PartyRockApiClient.getInstance().getAllVenues(this);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -74,20 +116,25 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_venue_list, container, false);
+        PartyRockApiClient.getInstance().getAllVenues(this);
         ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
-        setUpRecycleView();
+        setHasOptionsMenu(true);
+        setUpToolbar();
         setUpFabClick();
+        setUpRecycleView();
         return view;
     }
 
-    private void setUpFabClick() {
-        fabSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSearchDialog();
-            }
-        });
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_bar_search) {
+            showSearchDialog();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -107,13 +154,28 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         startActivity(new Intent(context, DetailActivity.class));
     }
 
+    private void setUpFabClick() {
+        fabSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSearchDialog();
+            }
+        });
+    }
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS:  Sets support action toolbar with mToolbar.
+    private void setUpToolbar() {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        mToolbar.inflateMenu(R.menu.menu_home);
+    }
+
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Sets this.mVenues to venues.
     @Override
     public void success(List<Venue> venues, Response response) {
-        this.mVenues = venues;
-        setUpRecycleView();
+        this.mVenues.addAll(venues);
     }
 
     // REQUIRES: None.
@@ -139,14 +201,9 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
 
     //FAB Button OnClick Method
     private void showSearchDialog() {
-
         FragmentManager fm = getFragmentManager();
-
-            SearchVenueFragment searchDialog = new SearchVenueFragment();
-
-            searchDialog.show(fm, FTAG);
-
-
+        SearchVenueFragment searchDialog = new SearchVenueFragment();
+        searchDialog.show(fm, FTAG);
     }
 
     //EventBus method to receive Search Parameters

@@ -81,7 +81,10 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_confirmation, container, false);
         ButterKnife.bind(this, view);
-        EventBus.getDefault().registerSticky(this);
+        mVenue = EventBus.getDefault().removeStickyEvent(Venue.class);
+        if (mVenue == null) {
+            mVenue = (Venue) savedInstanceState.getSerializable("lastVenue");
+        }
         setUpCalendar();
         return view;
     }
@@ -103,7 +106,16 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         Calendar newDate = Calendar.getInstance();
         newDate.set(year, monthOfYear, dayOfMonth);
+        mDateSelected = newDate.getTime();
         mDatePickerText.setText(mSimpleDateFormat.format(newDate.getTime()));
+        mDatePickerText.setText(mSimpleDateFormat.format(mDateSelected));
+                mVenueText.setVisibility(View.VISIBLE);
+                mVenueText.setText(getString(R.string.date_alert) + " " +
+                        (mSimpleDateFormat.format(mDateSelected)) + ". "
+                        + getString(R.string.TOS_alert));
+
+
+
     }
 
     @Override
@@ -129,6 +141,8 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
                     mDateSelected.toString(),
                     this);
             Toast.makeText(getActivity(), "Venue rented!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), "Please, select a date first.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -145,22 +159,21 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     // EFFECTS: When a venue is received via EventBus, the fields are filled with the venue's data.
     public void onEvent(VenueEvent clickedVenue){
         Venue venue = clickedVenue.getVenue();
-        setUpLayout(venue);
+        setUpLayout();
     }
 
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Display the venue data in this.fields
-    public void setUpLayout(Venue venue) {
-        Activity parentActivity = getActivity();
+    public void setUpLayout() {
         Picasso.with(getActivity())
-                .load(venue.getImageUrls().get(0))
+                .load(mVenue.getImageUrls().get(0))
                 .error(R.mipmap.ic_launcher)
                 .into(mMainVenueImage);
-        mAddressText.setText(getString(R.string.address) + ": " + venue.getName());
+        mAddressText.setText(getString(R.string.address) + ": " + mVenue.getName());
         mCapacityText.setText(getString(R.string.capacity) + ": " +
-                Integer.toString(venue.getCapacity())+ getString(R.string.persons));
-        mPriceText.setText("$" + Double.toString(venue.getPrice()));
+                Integer.toString(mVenue.getCapacity()) + getString(R.string.persons));
+        mPriceText.setText("$" + Double.toString(mVenue.getPrice()));
         mVenueText.setVisibility(View.INVISIBLE);
     }
 
