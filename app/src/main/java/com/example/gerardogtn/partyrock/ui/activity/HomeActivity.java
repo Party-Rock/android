@@ -1,50 +1,47 @@
 package com.example.gerardogtn.partyrock.ui.activity;
 
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.style.TtsSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.ui.fragment.HomeListFragment;
+import com.example.gerardogtn.partyrock.util.ApiConstants;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-
-import java.text.BreakIterator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
 public class HomeActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-             GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = HomeActivity.class.getSimpleName();
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
-
     private boolean mResolvingError = false;
 
     @Bind(R.id.toolbar_home)
     Toolbar mToolbar;
 
 
-
     @Override
     protected void onStart() {
         super.onStart();
-        if (!mResolvingError) { 
+        if (!mResolvingError) {
             mGoogleApiClient.connect();
         }
+        setUpSharedPreferences();
     }
 
     @Override
@@ -118,6 +115,17 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
         HomeListFragment homeListFragment = HomeListFragment.newInstance();
         tm.replace(R.id.fragment_container, homeListFragment);
         tm.commit();
+    }
+
+    // REQUIRES: None.
+    // MODIFIES: SharedPreferences.
+    // EFFECTS:  Stores an ownerId and userId for demo purposes.
+    private void setUpSharedPreferences() {
+        SharedPreferences preferences = this.getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(ApiConstants.PARAM_USER_ID, "55d511c73a37da7b01000007");
+        editor.putString(ApiConstants.PARAM_OWNER_ID, "55d50bce3a37da7b01000006");
+        editor.commit();
     }
 
     // REQUIRES: None.
