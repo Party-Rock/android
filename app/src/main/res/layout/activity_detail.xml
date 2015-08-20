@@ -25,6 +25,29 @@
                 android:layout_height="250dp"
                 android:layout_marginBottom="@dimen/half_horizontal_margin" />
 
+            <TextView
+                android:id="@+id/txt_description_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/description_title"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/abc_text_size_medium_material" />
+
+            <TextView
+                android:id="@+id/txt_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:gravity="left"
+                android:text="Description"
+                android:textColor="@color/secondary_text" />
+
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/card_view_features_title"
                 android:layout_width="match_parent"
@@ -43,8 +66,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/activity_horizontal_margin"
-                    android:text="Features &amp; Rules"
-                    android:textColor="@color/secondary_text"
+                    android:text="@string/features_title_text"
+                    android:textColor="@color/primary_text"
                     android:textSize="@dimen/abc_text_size_medium_material" />
             </android.support.v7.widget.CardView>
 
@@ -144,10 +167,23 @@
                     android:id="@+id/btn_features"
                     style="@style/text_button"
                     android:layout_margin="@dimen/activity_horizontal_margin"
-                    android:text="Check details"
+                    android:text="@string/features_detail_text_button"
                     android:textAllCaps="false" />
             </android.support.v7.widget.CardView>
 
+            <TextView
+                android:id="@+id/txt_description_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/location_title_text"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/abc_text_size_medium_material" />
 
             <include
                 layout="@layout/partial_lite_map"

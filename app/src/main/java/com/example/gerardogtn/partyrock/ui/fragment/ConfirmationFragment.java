@@ -59,6 +59,7 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     private SimpleDateFormat mSimpleDateFormat;
     private Date mDateSelected;
     private Venue mVenue;
+    private String mAddress;
 
     public ConfirmationFragment() {
 
@@ -68,6 +69,11 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        mVenue = EventBus.getDefault().removeStickyEvent(Venue.class);
+        mAddress=EventBus.getDefault().removeStickyEvent(String.class);
+        if (mAddress==null){
+            mAddress="Location not available";
+        }
     }
 
     @Override
@@ -75,9 +81,12 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_confirmation, container, false);
         ButterKnife.bind(this, view);
-        mVenue = EventBus.getDefault().removeStickyEvent(Venue.class);
-        if (mVenue == null) {
+
+        if (mVenue == null  && savedInstanceState!=null) {
             mVenue = (Venue) savedInstanceState.getSerializable("lastVenue");
+        }
+        if (mAddress==null && savedInstanceState!=null){
+            mAddress = savedInstanceState.getString("address");
         }
         setUpCalendar();
         setUpLayout();
@@ -88,6 +97,7 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     public void onSaveInstanceState(Bundle outState) {
         EventBus.getDefault().postSticky(mVenue);
         outState.putSerializable("lastVenue", mVenue);
+        outState.putString("address", mAddress);
         super.onSaveInstanceState(outState);
     }
 
@@ -139,7 +149,7 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
                 .load(mVenue.getImageUrls().get(0))
                 .error(R.mipmap.ic_launcher)
                 .into(mMainVenueImage);
-        mAddressText.setText(getString(R.string.address) + ": " + mVenue.getName());
+        mAddressText.setText(getString(R.string.address) + ": " + mAddress);
         mCapacityText.setText(getString(R.string.capacity) + ": " +
                 Integer.toString(mVenue.getCapacity()) + getString(R.string.persons));
         mPriceText.setText("$" + Double.toString(mVenue.getPrice()));

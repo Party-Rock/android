@@ -45,4 +45,8 @@
     <string name="search">Search</string>
     <string name="get_out_text">Not for me</string>
     <string name="ok_text">Cool</string>
+    <string name="features_detail_text_button">Check details</string>
+    <string name="description_title">Description</string>
+    <string name="features_title_text"><![CDATA[Features & Rules]]></string>
+    <string name="location_title_text">Location</string>
 </resources>

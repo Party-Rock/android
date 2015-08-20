@@ -15,10 +15,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Space;
+import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Feature;
 import com.example.gerardogtn.partyrock.data.model.Venue;
+import com.example.gerardogtn.partyrock.service.GeocoderEvent;
+import com.example.gerardogtn.partyrock.service.GeocoderTask;
 import com.example.gerardogtn.partyrock.ui.adapter.ImagePagerAdapter;
 import com.example.gerardogtn.partyrock.ui.fragment.FeaturesFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,6 +47,12 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
 
     @Bind(R.id.toolbar_home)
     Toolbar mToolbar;
+
+    @Bind(R.id.txt_address)
+    TextView mTxtAddress;
+
+    @Bind(R.id.txt_description)
+    TextView mTxtDescription;
 
     @Bind(R.id.venue_images)
     ViewPager mImages;
@@ -72,6 +81,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     private SupportMapFragment mMapFragment;
     private Venue mVenue;
     private Boolean searchVenueAlert;
+    private String mAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,16 +89,19 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
         mVenue = EventBus.getDefault().removeStickyEvent(Venue.class);
-        getParentActivityAlert();
         if (mVenue == null) {
             rebuildVenue(savedInstanceState);
         }
+        decodeAddress(savedInstanceState);
+        getParentActivityAlert();
         savedScrollState(savedInstanceState);
         setUpViewPager(mVenue.getImageUrls());
+        setUpDescription();
         setUpFeatures();
         setUpToolbar();
         setUpRentButton();
         setUpMapFragment();
+        setUpAddressTxt();
 
     }
 
@@ -99,9 +112,11 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         outState.putSerializable("venueFeatures", mVenue.getFeatures());
         outState.putInt(SCROLL_X, mNestedScrollView.getScrollX());
         outState.putInt(SCROLL_Y, mNestedScrollView.getScrollY());
+        if (mAddress!=null) {
+            outState.putString("address", mAddress);
+        }
         super.onSaveInstanceState(outState);
     }
-
 
 
     @Override
@@ -119,6 +134,12 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -150,9 +171,10 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
 
         return i;
     }
+
     //Verifies if there was a previous state and scrolls back to the last position.
     private void savedScrollState(Bundle savedInstanceState) {
-        if (savedInstanceState!=null){
+        if (savedInstanceState != null) {
             final int scrollX = savedInstanceState.getInt(SCROLL_X);
             final int scrollY = savedInstanceState.getInt(SCROLL_Y);
             mNestedScrollView.scrollTo(scrollX, scrollY);
@@ -174,17 +196,50 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     @Override
     public void onImageClick(int position) {
         EventBus.getDefault().postSticky(mVenue);
-        EventBus.getDefault().postSticky(position-1);
+        EventBus.getDefault().postSticky(position - 1);
         Intent intent = new Intent(DetailActivity.this, ViewPagerFullScreenActivity.class);
         startActivity(intent);
 
     }
 
+    private void setUpDescription() {
+        StringBuffer res = new StringBuffer();
+
+        String[] strArr = mVenue.getmDescription().toLowerCase().split("/. ");
+        for (String str : strArr) {
+            char[] stringArray = str.trim().toCharArray();
+            stringArray[0] = Character.toUpperCase(stringArray[0]);
+            str = new String(stringArray);
+
+            res.append(str).append(". ");
+        }
+        mTxtDescription.setText(res.toString().trim());
+    }
+
+
+    //Ontins the address from lat,lng values
+    private void decodeAddress(Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
+        if (savedInstanceState != null) {
+            mAddress = savedInstanceState.getString("address");
+        }
+        if (mAddress==null) {
+            new GeocoderTask(this).execute(new Double[]{mVenue.getPosition().getLatitude(),
+                    mVenue.getPosition().getLongitude()});
+        }
+    }
+
+    private void setUpAddressTxt() {
+        if (mAddress!=null){
+        mTxtAddress.setVisibility(View.VISIBLE);
+        mTxtAddress.setText(mAddress);}
+    }
+
     //Receives true from the event, if the venue comes from the SearchResultsActivity.
     private void getParentActivityAlert() {
-        searchVenueAlert= EventBus.getDefault().removeStickyEvent(Boolean.class);
-        if (searchVenueAlert==null){
-            searchVenueAlert=false;
+        searchVenueAlert = EventBus.getDefault().removeStickyEvent(Boolean.class);
+        if (searchVenueAlert == null) {
+            searchVenueAlert = false;
         }
     }
 
@@ -256,6 +311,8 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().postSticky(mVenue);
+                if (mAddress!=null){
+                EventBus.getDefault().postSticky(mAddress);}
                 Intent intent = new Intent(DetailActivity.this, ConfirmationActivity.class);
                 startActivity(intent);
             }
@@ -265,7 +322,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     //Shows a text in the button
     private void setRentButtonText() {
         String buttonText;
-        buttonText = getString(R.string.rent_text)+ " " + mVenue.getFormattedPrice();
+        buttonText = getString(R.string.rent_text) + " " + mVenue.getFormattedPrice();
         rentButton.setText(buttonText);
     }
 
@@ -353,7 +410,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
 
             @Override
             public void onPageSelected(int position) {
-                mPosition=position;
+                mPosition = position;
             }
 
             @Override
@@ -374,5 +431,10 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         });
     }
 
+    // Called in a separate thread
+    public void onEvent(GeocoderEvent addressEvent) {
+        mAddress = addressEvent.getAddress();
+        setUpAddressTxt();
+    }
 
 }

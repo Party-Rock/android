@@ -72,6 +72,14 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
 
         Venue venueJoselito = new Venue("Casa Joselito", positionJoselito, imagesJoselito, 50, 1800.0);
         venueJoselito.setFeatures(featuresJoselito);
+        venueJoselito.setmDescription("SE RENTA CASA PARA REUNIONES & FIESTAS BIEN UBICADA A 5 SEMAFOROS " +
+                "DE TAXQUEÑA EL COSTO DEPENDE DEL NUMERO DE PERSONAS QUE INGRESAN A LA CASA, A CADA" +
+                " ESPACIO LE CABEN CIERTO NUMERO DE PERSONAS, EN LA PARTE EXTERIOR SE ENCUENTRA UN JARDIN " +
+                "PARA TREINTA O SESENTA PERSONAS, EN EL INTERIOR DEL INMUEBLE TIENE CAPACIDAD HASTA DE 70PERSONAS," +
+                " DOS AREAS DE LA CASA CAPACIDAD MAXIMA 120PERSONAS.PUEDES RENTAR EL AREA MAS CONVENIENTE " +
+                "PARA TU EVENTO, LA RENTA ES POR 5 HORAS CON OPCION A 10 HORAS, TURNOS MATUTINOS," +
+                " VESPERTINOS Y EVENTOS NOCTURNOS, INCLUYE ACCESO A LA COCINA Y A UN BAÑO. PREGUNTA " +
+                "POR NUESTRA LISTA DE PRECIOS.");
 
 
         Position positionMaria = new Position(new LatLng(19.366694, -99.182528), "Crédito Constructor");
@@ -85,6 +93,10 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         featuresMaria.add(smokeNotAllowed);
         Venue venueMaria = new Venue("Jardin de bodas Maria", positionMaria, imagesMaria, 150, 6500.0);
         venueMaria.setFeatures(featuresMaria);
+        venueMaria.setmDescription("SE PUEDEN REALIZAR REUNIONES FAMILIARES, DE NEGOCIOS, " +
+                "CARNES ASADAS, PIJAMADAS, HAWAIIANADAS, DESPEDIDAS, GRADUACIONES, BODAS," +
+                " TORNABODAS, MINIBODAS, MACROBODAS, DIVORCIADAS, XV AÑOS, COMUNIONES Y " +
+                "PRESENTACIONES O CUALQUIER ANIVERSARIO O FESTEJO.");
 
         mVenues = new ArrayList<>();
         mVenues.add(venueJoselito);
