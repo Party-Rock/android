@@ -24,10 +24,12 @@ import com.example.gerardogtn.partyrock.service.VenueEvent;
 import com.example.gerardogtn.partyrock.util.ApiConstants;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -113,9 +115,6 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
                 mVenueText.setText(getString(R.string.date_alert) + " " +
                         (mSimpleDateFormat.format(mDateSelected)) + ". "
                         + getString(R.string.TOS_alert));
-
-
-
     }
 
     @Override
@@ -132,14 +131,13 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     @OnClick(R.id.btn_rent)
     public void onClickRentButton(){
         if (mDateSelected != null) {
-            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-            String userId = preferences.getString(ApiConstants.PARAM_USER_ID, "");
-            String ownerId = preferences.getString(ApiConstants.PARAM_OWNER_ID, "");
-            PartyRockApiClient.getInstance().postReservation(userId,
-                    ownerId,
-                    mVenue.getId(),
-                    mDateSelected.toString(),
-                    this);
+            TimeZone tz = TimeZone.getTimeZone("UTC");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            df.setTimeZone(tz);
+            String dateIso = df.format(mDateSelected);
+            postReservation(dateIso);
+            postRentedDate(dateIso);
+
             Toast.makeText(getActivity(), "Venue rented!", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getActivity(), "Please, select a date first.", Toast.LENGTH_SHORT).show();
@@ -181,7 +179,7 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     // MODIFIES: this.
     // EFFECTS: Sets up the mSimpleDateFormat, the mDatePicker and the mDatePickerDialog.
     public void setUpCalendar() {
-        mSimpleDateFormat = new SimpleDateFormat("dd/mm/yyyy", Locale.US);
+        mSimpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         setUpDatePickerDialog();
         customizeDatePicker();
     }
@@ -208,5 +206,42 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
         mDatePicker.setMinDate(currentTime - 1000);
         long dateMax = (currentTime / 90) + currentTime;
         mDatePicker.setMaxDate(dateMax);
+    }
+
+    // REQUIRES: dateIso is a valid date format.
+    // MODIFIES: database.
+    // EFFECTS: Post a reservation to the reservation database.
+    private void postReservation(String dateIso) {
+        SharedPreferences preferences = getActivity()
+                .getSharedPreferences(getString(R.string.shared_preferences)
+                        , Context.MODE_PRIVATE);
+
+        String userId = preferences.getString(ApiConstants.PARAM_USER_ID, "");
+        String ownerId = preferences.getString(ApiConstants.PARAM_OWNER_ID, "");
+        PartyRockApiClient.getInstance().postReservation(userId,
+                ownerId,
+                mVenue.getId(),
+                dateIso,
+                this);
+    }
+
+    // REQUIRES: dateIso is a valid date.
+    // MODIFIES: database.
+    // EFFECTS:  Posts a rentedDate to the venue.renteddate[] in the database.
+    private void postRentedDate(String dateIso) {
+        PartyRockApiClient.getInstance().addRentedDate(mVenue.getId(),
+                dateIso,
+                new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                        Log.i(LOG_TAG, "Patch rent date successful.");
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e(LOG_TAG, "Unable to path rent date.");
+                        error.printStackTrace();
+                    }
+                });
     }
 }
