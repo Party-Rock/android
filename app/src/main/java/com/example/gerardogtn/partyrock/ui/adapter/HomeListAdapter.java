@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Venue;
-import com.example.gerardogtn.partyrock.service.VenueEvent;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
+import com.example.gerardogtn.partyrock.ui.activity.SearchResultsActivity;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -26,7 +26,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by gerardogtn on 8/1/15.
  */
-public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeListViewHolder>{
+public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeListViewHolder> {
 
     private Context mContext;
     private List<Venue> mVenues = new ArrayList<>();
@@ -97,7 +97,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
 
         @Override
         public void onClick(View v) {
-            if (listener != null){
+            if (listener != null) {
                 listener.onVenueClick(getLayoutPosition());
             }
         }
@@ -120,8 +120,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         // MODIFIES: this.
         // EFFECTS:  Represents and visualizes venue data with views.
         public void setData(Venue venue) {
-            mCapacity.setText(""+ Integer.toString(venue.getCapacity()));
-            mPrice.setText("$"+Double.toString(round(venue.getPrice(), 2)));
+            mCapacity.setText("" + Integer.toString(venue.getCapacity()));
+            mPrice.setText(venue.getFormattedPrice());
             mImageUrls = venue.getImageUrls();
             setUpViewPager(venue.getImageUrls());
         }
@@ -137,9 +137,13 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
             adapter.setOnVenueListener(new ImagePagerAdapter.OnVenueClickListener() {
                 @Override
                 public void onVenueClick() {
-                    VenueEvent clickedVenue = new VenueEvent(mVenues.get(getLayoutPosition()));
+                    Venue clickedVenue = mVenues.get(getLayoutPosition());
                     EventBus.getDefault().postSticky(clickedVenue);
                     Intent intent = new Intent(mContext, DetailActivity.class);
+                    if (mContext.getClass() == SearchResultsActivity.class) {
+                        Boolean searchVenueAlert = true;
+                        EventBus.getDefault().postSticky(searchVenueAlert);
+                    }
                     mContext.startActivity(intent);
                 }
             });

@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Feature;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +20,14 @@ import butterknife.ButterKnife;
 /**
  * Created by Emilio on 05/08/2015.
  */
-public class FeatureRecyclerViewAdapter extends RecyclerView.Adapter<FeatureRecyclerViewAdapter.FeatureViewHolder> {
-    private Context mContext;
+public class FeatureAdapter extends RecyclerView.Adapter<FeatureAdapter.FeatureViewHolder> {
     private List<Feature> mFeatures = new ArrayList<>();
     private LayoutInflater mInflater;
 
 
-    public FeatureRecyclerViewAdapter(Context context, List<Feature> features) {
+    public FeatureAdapter(Context context, List<Feature> features) {
         this.mFeatures = features;
         mInflater = LayoutInflater.from(context);
-        mContext = context;
     }
 
 
@@ -60,10 +57,10 @@ public class FeatureRecyclerViewAdapter extends RecyclerView.Adapter<FeatureRecy
     public class FeatureViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.feature_image)
-        ImageView mFeatureIcon;
+        ImageView mIcon;
 
         @Bind(R.id.feature_text)
-        TextView mFeatureText;
+        TextView mText;
 
         public FeatureViewHolder(View itemView) {
             super(itemView);
@@ -73,15 +70,9 @@ public class FeatureRecyclerViewAdapter extends RecyclerView.Adapter<FeatureRecy
         // REQUIRES: None.
         // MODIFIES: this.
         // EFFECTS:  Represents and visualizes venue data with views.
-        public void setData(Feature mFeature) {
-            //Es necesario cambiar la clase de Feature para que contenga titulo y una imagen.
-
-            mFeatureText.setText(mFeature.toString());
-
-            Picasso.with(mContext)
-                    .load(mFeature.toString())
-                    .error(R.mipmap.ic_launcher)
-                    .into(mFeatureIcon);
+        public void setData(Feature feature) {
+            mText.setText(feature.getDescription());
+            mIcon.setImageResource(feature.getImageResource());
         }
     }
 }

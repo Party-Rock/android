@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <ScrollView
@@ -16,16 +16,14 @@
             android:padding="@dimen/activity_horizontal_margin">
 
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/img_venue_main"
                 android:layout_width="@dimen/size_confitmation_image"
                 android:layout_height="@dimen/size_confitmation_image"
                 android:layout_marginBottom="@dimen/activity_horizontal_margin"
                 android:contentDescription="@string/venue_image"
                 android:scaleType="centerCrop"
-                android:src="@drawable/house_for_show"
-                app:border_color="#FF000000"
-                app:border_width="2dp" />
+                android:src="@drawable/house_for_show"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -34,45 +32,33 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/img_venue_main"
                 android:layout_marginBottom="@dimen/btn_height"
-                android:orientation="vertical"
-                android:padding="@dimen/activity_horizontal_margin">
+                android:orientation="vertical">
 
-
-                <TextView
-                    android:id="@+id/txt_venue_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/style_text_border"
-                    android:padding="5dp"
-                    android:text="@string/description_sample"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/txt_select_party"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:padding="5dp"
+                    android:gravity="center"
                     android:text="@string/txt_party_date"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="@dimen/abc_text_size_small_material"
-                    android:gravity="center"/>
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/abc_text_size_medium_material" />
 
                 <TextView
-                    android:id="@+id/datePickerText"
-                    android:layout_width="wrap_content"
+                    style="@style/text_button"
+                    android:id="@+id/txt_date_picker"
+                    android:text="@string/date_format"/>
+
+                <TextView
+                    android:id="@+id/txt_checkout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/half_vertical_margin"
-                    android:textColor="@android:color/white"
-                    android:elevation="@dimen/fab_elevation"
-                    android:padding="@dimen/navigation_padding_bottom"
-                    android:gravity="center"
-                    android:clickable="true"
-                    android:text="@string/date_format"
-                    android:textSize="@dimen/abc_text_size_headline_material"
-                    android:background="@drawable/style_text_border_date" />
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:text="@string/description_sample"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="@dimen/abc_text_size_medium_material" />
 
 
             </LinearLayout>
@@ -87,35 +73,33 @@
                 android:paddingStart="@dimen/abc_control_padding_material">
 
                 <TextView
-                    android:id="@+id/txt_name"
+                    android:id="@+id/txt_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:padding="5dp"
-                    android:text="Name"
+                    android:text="@string/Address"
                     android:textColor="@color/primary_text"
-                    android:textSize="@dimen/abc_text_size_large_material" />
+                    android:textSize="@dimen/abc_text_size_small_material" />
 
                 <TextView
                     android:id="@+id/txt_price"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:ems="10"
                     android:padding="5dp"
                     android:text="@string/price"
-                    android:textColor="@color/primary_text"
+                    android:textColor="@color/secondary_text"
                     android:textSize="@dimen/abc_text_size_medium_material" />
 
                 <TextView
                     android:id="@+id/txt_capacity"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:ems="10"
                     android:padding="5dp"
-                    android:text="@string/people"
-                    android:textColor="#000"
+                    android:text="@string/capacity"
+                    android:textColor="@color/secondary_text"
                     android:textSize="@dimen/abc_text_size_medium_material" />
             </LinearLayout>
 
@@ -126,9 +110,9 @@
     <Button
         android:id="@+id/btn_rent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/btn_height"
         android:layout_gravity="bottom|center"
-        android:background="@color/green"
+        android:background="@color/accent"
         android:text="@string/rent"
         android:textColor="@color/white" />
 

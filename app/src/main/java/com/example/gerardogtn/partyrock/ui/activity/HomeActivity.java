@@ -1,36 +1,69 @@
 package com.example.gerardogtn.partyrock.ui.activity;
 
+
+import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.gerardogtn.partyrock.R;
+import com.example.gerardogtn.partyrock.service.GoogleApiEvent;
+import com.example.gerardogtn.partyrock.service.GoogleApiServiceTask;
 import com.example.gerardogtn.partyrock.ui.fragment.HomeListFragment;
+import com.example.gerardogtn.partyrock.util.ApiConstants;
+
+import de.greenrobot.event.EventBus;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
+import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar_home)
-    Toolbar mToolbar;
+
+    public static final String TAG = HomeActivity.class.getSimpleName();
+
+    private Location mLastLocation;
+    private boolean mResolvingError = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        ButterKnife.bind(this);
-        setUpToolbar();
-        addHomeListFragment();
+        EventBus.getDefault().register(this);
+        if (mLastLocation == null) {
+            new GoogleApiServiceTask(this).execute();
+            setContentView(R.layout.activity_home);
+            addHomeListFragment(savedInstanceState);
+        }
+    }
+
+    /**
+     * This is the same as {@link #onSaveInstanceState} but is called for activities
+     * created with the attribute {@link android.R.attr#persistableMode} set to
+     * <code>persistAcrossReboots</code>. The {@link PersistableBundle} passed
+     * in will be saved and presented in {@link #onCreate(Bundle, PersistableBundle)}
+     * the first time that this activity is restarted following the next device reboot.
+     *
+     * @param outState           Bundle in which to place your saved state.
+     * @param outPersistentState State which will be saved across reboots.
+     * @see #onSaveInstanceState(Bundle)
+     * @see #onCreate
+     * @see #onRestoreInstanceState(Bundle, PersistableBundle)
+     * @see #onPause
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
@@ -40,21 +73,30 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // REQUIRES: None.
-    // MODIFIES: this.
-    // EFFECTS:  Sets support action toolbar with mToolbar.
-    private void setUpToolbar() {
-        setSupportActionBar(mToolbar);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Draws a HomeListFragment on this.mFragmentContainer
-    private void addHomeListFragment() {
-        FragmentTransaction tm = getSupportFragmentManager().beginTransaction();
-        HomeListFragment homeListFragment = HomeListFragment.newInstance();
-        tm.replace(R.id.fragment_container, homeListFragment);
-        tm.commit();
+
+    private void addHomeListFragment(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            FragmentTransaction tm = getSupportFragmentManager().beginTransaction();
+            HomeListFragment homeListFragment = HomeListFragment.newInstance();
+            tm.replace(R.id.fragment_container, homeListFragment, "home");
+            tm.commit();
+        } else {
+            getSupportFragmentManager().findFragmentByTag("home");
+        }
+
+    }
+
+    public void onEvent(GoogleApiEvent locationEvent) {
+        mLastLocation = locationEvent.getLocation();
     }
 
 }

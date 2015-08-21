@@ -1,107 +1,148 @@
 package com.example.gerardogtn.partyrock.data.model;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Created by Emilio on 29/07/2015.
  */
-public class Venue {
+public class Venue implements Serializable {
 
-    private int capacity;
-    private double price;
-    private double size;
-    private double ratingAverage;
-    private String name;
-    private LatLng latLng;
-    private ArrayList<String> imageUrls;
-    private ArrayList<Integer> rating;
-    private ArrayList<Feature> features;
+    @SerializedName("capacity")
+    private int mCapacity;
+
+    @SerializedName("price")
+    private double mPrice;
+
+    @SerializedName("size")
+    private double mSize;
+
+    @SerializedName("name")
+    private String mName;
+
+    @SerializedName("description")
+    private String mDescription;
+
+    @SerializedName("_id")
+    private String mId;
+
+    @SerializedName("position")
+    private Position mPosition;
+
+    @SerializedName("imageURL")
+    private ArrayList<String> mImageUrls;
+
+    @SerializedName("rentedDate")
+    private ArrayList<Date> mDatesReserved;
+
+    @SerializedName("features")
+    private ArrayList<Feature> mFeatures;
 
     public Venue() {
-        imageUrls =new ArrayList<>();
-        features=new ArrayList<>();
-        rating=new ArrayList<>();
+        mImageUrls =new ArrayList<>();
+        mFeatures =new ArrayList<>();
     }
 
-    public Venue(String name, LatLng latLng, ArrayList<String> imageUrls, int capacity, double price) {
-        this.name = name;
-        this.latLng = latLng;
-        this.imageUrls = imageUrls;
-        this.capacity = capacity;
-        this.price = price;
+    public Venue(String name, Position position, ArrayList<String> imageUrls, int capacity, double price) {
+        this.mName = name;
+        this.mImageUrls = imageUrls;
+        this.mPosition = position;
+        this.mCapacity = capacity;
+        this.mPrice = price;
+    }
+
+    public String getmDescription() {
+        return mDescription;
+    }
+
+    public void setmDescription(String mDescription) {
+        this.mDescription = mDescription;
     }
 
     public int getCapacity() {
-        return capacity;
+        return mCapacity;
     }
 
     public void setCapacity(int capacity) {
-        this.capacity = capacity;
+        this.mCapacity = capacity;
     }
 
     public double getPrice() {
-        return price;
+        return mPrice;
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        this.mPrice = price;
+    }
+
+    public String getFormattedPrice(){
+        return (NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(this.mPrice));
     }
 
     public double getSize() {
-        return size;
+        return mSize;
     }
 
     public void setSize(double size) {
-        this.size = size;
-    }
-
-    public double getRatingAverage() {
-        return ratingAverage;
-    }
-
-    public void setRatingAverage(double ratingAverage) {
-        this.ratingAverage = ratingAverage;
+        this.mSize = size;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String mName) {
+        this.mName = mName;
+    }
+
+    public String getId(){
+        return this.mId;
+    }
+
+    public void setId(String id){
+        this.mId = id;
     }
 
     public LatLng getLatLng() {
-        return latLng;
-    }
-
-    public void setLatLng(LatLng latLng) {
-        this.latLng = latLng;
+        return new LatLng(mPosition.getLatitude(), mPosition.getLongitude());
     }
 
     public ArrayList<String> getImageUrls() {
-        return imageUrls;
+        return mImageUrls;
     }
 
     public void setImageUrls(ArrayList<String> imageUrls) {
-        this.imageUrls = imageUrls;
+        this.mImageUrls = imageUrls;
     }
 
-    public ArrayList<Integer> getRating() {
-        return rating;
+    public ArrayList<Date> getDatesReserved(){
+        return this.mDatesReserved;
     }
 
-    public void setRating(ArrayList<Integer> rating) {
-        this.rating = rating;
+    public void setDatesReserved(ArrayList<Date> dates){
+        this.mDatesReserved = dates;
     }
 
     public ArrayList<Feature> getFeatures() {
-        return features;
+        return mFeatures;
     }
 
     public void setFeatures(ArrayList<Feature> features) {
-        this.features = features;
+        this.mFeatures = features;
+    }
+
+    public Position getPosition() {
+        return mPosition;
+    }
+
+    public void setPosition(Position position) {
+        this.mPosition = position;
     }
 
 }

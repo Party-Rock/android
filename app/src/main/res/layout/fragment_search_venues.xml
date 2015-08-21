@@ -1,83 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingEnd="30dp"
-        android:paddingStart="30dp">
+        android:layout_marginBottom="@dimen/btn_height">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/activity_vertical_margin"
+            android:paddingStart="@dimen/activity_vertical_margin">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin">
-
-            <EditText
-                android:id="@+id/search_bar"
+            <TextView
+                android:id="@+id/txt_address"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/style_text_border"
-                android:ems="10"
-                android:hint="@string/location_hint_text"
-                android:inputType="textAutoComplete"
+                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:padding="5dp"
-                android:singleLine="true"
-                android:textColor="#000"
-                android:textColorHighlight="#fff"
-                android:textColorHint="#000"
-                android:textSize="24sp" />
+                android:text="Pimp your party!"
+                android:textColor="@color/secondary_text"
+                android:textSize="@dimen/abc_text_size_large_material" />
 
-        </android.support.design.widget.TextInputLayout>
 
-        <TextView
-            android:id="@+id/text_view_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:padding="5dp"
-            android:text="@string/price"
-            android:textSize="24sp" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin">
 
-        <SeekBar
-            android:id="@+id/price_slider"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:max="25000"/>
+                <EditText
+                    android:id="@+id/search_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/style_text_border"
+                    android:ems="10"
+                    android:hint="@string/location_hint_text"
+                    android:inputType="textAutoComplete"
+                    android:paddingLeft="@dimen/abc_dialog_list_padding_vertical_material"
+                    android:paddingStart="@dimen/abc_dialog_list_padding_vertical_material"
 
-        <TextView
-            android:id="@+id/text_view_room"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:padding="5dp"
-            android:text="@string/people"
-            android:textSize="24sp" />
+                    android:singleLine="true"
+                    android:textColor="#000"
+                    android:textColorHighlight="#fff"
+                    android:textColorHint="#000"
+                    android:textSize="24sp"
+                    tools:targetApi="jelly_bean_mr1" />
 
-        <SeekBar
-            android:id="@+id/people_slider"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+            </android.support.design.widget.TextInputLayout>
 
-    </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_view_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:padding="@dimen/abc_dialog_list_padding_vertical_material"
+                android:text="@string/price_text"
+                android:textSize="@dimen/abc_text_size_medium_material" />
+
+            <SeekBar
+                android:id="@+id/price_slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/abc_action_bar_overflow_padding_start_material"
+                android:progressTint="@color/accent"
+                android:thumbTint="@color/accent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/money_less"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_coins" />
+
+
+                <TextView
+                    android:id="@+id/text_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/price"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="@dimen/abc_text_size_large_material" />
+
+
+                <ImageView
+                    android:id="@+id/money_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_money" />
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/text_view_room"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/abc_dialog_list_padding_vertical_material"
+                android:text="@string/capacity_search_text"
+                android:textSize="@dimen/abc_text_size_medium_material" />
+
+            <SeekBar
+                android:id="@+id/people_slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/abc_action_bar_overflow_padding_start_material"
+                android:progressTint="@color/accent"
+                android:thumbTint="@color/accent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/people_less"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_people_few" />
+
+
+                <TextView
+                    android:id="@+id/text_room"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/capacity"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="@dimen/abc_text_size_large_material" />
+
+
+                <ImageView
+                    android:id="@+id/people_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_people_black" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <Button
-        android:id="@+id/btn_rent"
+        android:id="@+id/btn_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:background="@color/green"
+        android:background="@color/accent"
         android:text="@string/search_text"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:paddingEnd="@dimen/abc_action_bar_overflow_padding_start_material"
+        android:gravity="top|right"
+        android:background="@android:color/transparent"
+        android:textSize="@dimen/abc_text_size_headline_material"
+        android:text="X"
+        android:textColor="@color/accent" />
 
 </FrameLayout>

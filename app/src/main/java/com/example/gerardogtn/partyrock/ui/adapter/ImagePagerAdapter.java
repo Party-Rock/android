@@ -1,10 +1,7 @@
 package com.example.gerardogtn.partyrock.ui.adapter;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +11,8 @@ import android.widget.LinearLayout;
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
 import com.example.gerardogtn.partyrock.ui.activity.HomeActivity;
-import com.example.gerardogtn.partyrock.ui.fragment.HomeListFragment;
+import com.example.gerardogtn.partyrock.ui.activity.SearchResultsActivity;
+import com.example.gerardogtn.partyrock.ui.activity.ViewPagerFullScreenActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -66,7 +64,15 @@ public class ImagePagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        LinearLayout layout = (LinearLayout) mInflater.inflate(R.layout.item_detail_image, container, false);
+        LinearLayout layout = new LinearLayout(mContext);
+        if (mContext.getClass() == HomeActivity.class | mContext.getClass() == SearchResultsActivity.class) {
+            layout = (LinearLayout) mInflater.inflate(R.layout.item_detail_image, container, false);
+        } else if (mContext.getClass() == DetailActivity.class) {
+            layout = (LinearLayout) mInflater.inflate(R.layout.item_detail_image_center_image, container, false);
+        } else if (mContext.getClass() == ViewPagerFullScreenActivity.class) {
+            layout = (LinearLayout) mInflater.inflate(R.layout.item_detail_image_with_zoom, container, false);
+        }
+
         setUpListener(layout, position);
         ButterKnife.bind(this, layout);
         Picasso.with(mContext)
@@ -80,7 +86,7 @@ public class ImagePagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        ((ViewPager) container).removeView((View) object);
+        container.removeView((View) object);
     }
 
 
@@ -89,7 +95,7 @@ public class ImagePagerAdapter extends PagerAdapter {
     // EFFECTS: If the context of this activity is a HomeActivity, sets the mVenueListener. Else if
     //          the context of this activity is a DetailActivity, sets the mImageListener.
     private void setUpListener(LinearLayout layout, final int position) {
-        if (mContext.getClass() == HomeActivity.class) {
+        if (mContext.getClass() == HomeActivity.class | mContext.getClass() == SearchResultsActivity.class) {
             layout.setOnClickListener(new LinearLayout.OnClickListener() {
                 @Override
                 public void onClick(View v) {

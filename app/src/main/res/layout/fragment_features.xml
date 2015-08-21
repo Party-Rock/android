@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+   >
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/venue_features"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/features_height_size"
+        android:paddingStart="@dimen/abc_dialog_padding_material"
+        android:paddingLeft="@dimen/abc_dialog_padding_material"
+        android:paddingEnd="@dimen/abc_dialog_padding_material"
+        android:paddingRight="@dimen/abc_dialog_padding_material"
+        android:layout_marginBottom="@dimen/btn_height"
+        tools:targetApi="jelly_bean_mr1" />
+
+    <Button
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/btn_height"
+        android:layout_gravity="bottom|end"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:text="@string/ok_text"
+        android:textColor="@color/accent"
+        android:textSize="@dimen/abc_text_size_small_material" />
+
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/btn_height"
+        android:layout_gravity="bottom|start"
+        android:paddingStart="@dimen/abc_text_size_small_material"
+        android:paddingLeft="@dimen/abc_text_size_small_material"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:text="@string/get_out_text"
+        android:textColor="@color/primary"
+        android:textSize="@dimen/abc_text_size_small_material"
+        tools:targetApi="jelly_bean_mr1" />
+
+</FrameLayout>
