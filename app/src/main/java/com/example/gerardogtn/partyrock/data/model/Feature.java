@@ -13,11 +13,21 @@ public class Feature implements Serializable {
 
     public static final String KEY_ALCOHOL = "alcohol";
     public static final String KEY_SMOKE = "smoke";
+    public static final String KEY_BBQ = "bbq";
+    public static final String KEY_TOILET = "toilet";
+    public static final String KEY_SECURITY = "security";
+    public static final String KEY_TV = "tv";
+    public static final String KEY_WIFI = "wifi";
 
     public static final String DESCRIPTION_ALLOWED_ALCOHOL = "Drinking alcohol is allowed.";
     public static final String DESCRIPTION_ALLOWED_SMOKE = "Smoking is allowed.";
     public static final String DESCRIPTION_NALLOWED_ALCOHOL = "Drinking alcohol is NOT allowed.";
     public static final String DESCRIPTION_NALLOWED_SMOKE = "Smoking is NOT allowed.";
+    public static final String DESCRIPTION_ALLOWED_BBQ = "BBQ Available";
+    public static final String DESCRIPTION_ALLOWED_SECURITY = "Security available.";
+    public static final String DESCRIPTION_ALLOWED_TV = "TV available";
+    public static final String DESCRIPTION_ALLOWED_WIFI = "WiFi available.";
+    public static final String DESCRIPTION_ALLOWED_TOILET = "Toilets available.";
 
     private static HashMap<String, Integer> sFeatureIconsAllowed = new HashMap<>();
     private static HashMap<String, Integer> sFeatureIconsNotAllowed = new HashMap<>();
@@ -70,6 +80,11 @@ public class Feature implements Serializable {
     private static void setUpAllowedFeatureIcons(){
         sFeatureIconsAllowed.put(KEY_ALCOHOL, R.mipmap.alcohol);
         sFeatureIconsAllowed.put(KEY_SMOKE, R.mipmap.smoke);
+        sFeatureIconsAllowed.put(KEY_BBQ, R.mipmap.bbq);
+        sFeatureIconsAllowed.put(KEY_TOILET, R.mipmap.toilet);
+        sFeatureIconsAllowed.put(KEY_WIFI, R.mipmap.wifi);
+        sFeatureIconsAllowed.put(KEY_SECURITY, R.mipmap.security);
+        sFeatureIconsAllowed.put(KEY_TV, R.mipmap.tv);
     }
 
     private static void setUpNotAllowedFeatureIcons(){
@@ -80,6 +95,11 @@ public class Feature implements Serializable {
     private static void setUpAllowedFeatureDescriptions(){
         sFeatureDescriptionAllowed.put(KEY_ALCOHOL, DESCRIPTION_ALLOWED_ALCOHOL);
         sFeatureDescriptionAllowed.put(KEY_SMOKE, DESCRIPTION_ALLOWED_SMOKE);
+        sFeatureDescriptionAllowed.put(KEY_BBQ, DESCRIPTION_ALLOWED_BBQ);
+        sFeatureDescriptionAllowed.put(KEY_TOILET, DESCRIPTION_ALLOWED_TOILET);
+        sFeatureDescriptionAllowed.put(KEY_TV, DESCRIPTION_ALLOWED_TV);
+        sFeatureDescriptionAllowed.put(KEY_WIFI, DESCRIPTION_ALLOWED_WIFI);
+        sFeatureDescriptionAllowed.put(KEY_SECURITY, DESCRIPTION_ALLOWED_SECURITY);
     }
 
     private static void setUpNotAllowedFeatureDescriptions(){

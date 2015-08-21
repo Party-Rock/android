@@ -133,10 +133,10 @@
                     <Button
                         android:id="@+id/btn_more_features"
                         style="@style/text_button"
-                        android:layout_width="@dimen/notification_large_icon_width"
-                        android:layout_height="@dimen/notification_large_icon_width"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_margin="0dp"
-                        android:text="+..."
+                        android:text="and more"
                         android:textSize="@dimen/abc_text_size_small_material"
                         android:visibility="gone" />
 
