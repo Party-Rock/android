@@ -13,7 +13,9 @@ import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
+import retrofit.http.PATCH;
 import retrofit.http.POST;
+import retrofit.http.Path;
 
 /**
  * Created by gerardogtn on 8/18/15.
@@ -37,5 +39,11 @@ public interface PartyRockApiService {
                          @Field(ApiConstants.PARAM_VENUE_ID) String venueId,
                          @Field(ApiConstants.PARAM_RENTED_DATE) String dateIso,
                          Callback<Response> responseCallback);
+
+    @FormUrlEncoded
+    @PATCH(ApiConstants.URL_PATCH_VENUE_RENTED_DATES)
+    void addRentedDate(@Path("venueId") String venueId,
+                       @Field(ApiConstants.PARAM_RENTED_DATE) String rentedDate,
+                       Callback<Response> responseCallback);
 
 }
