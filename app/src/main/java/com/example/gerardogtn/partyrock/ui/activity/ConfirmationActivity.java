@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.ui.fragment.ConfirmationFragment;
+import com.example.gerardogtn.partyrock.util.ApiConstants;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -16,7 +17,7 @@ import butterknife.ButterKnife;
 /**
  * Created by gerardogtn on 8/1/15.
  */
-public class ConfirmationActivity extends AppCompatActivity{
+public class ConfirmationActivity extends AppCompatActivity {
 
     @Bind(R.id.toolbar_home)
     Toolbar mToolbar;
@@ -47,7 +48,7 @@ public class ConfirmationActivity extends AppCompatActivity{
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS:  Draws back arrow in toolbar.
-    private void drawBackArrow(){
+    private void drawBackArrow() {
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -63,10 +64,10 @@ public class ConfirmationActivity extends AppCompatActivity{
     // EFFECTS: Draws a HomeListFragment on this.mFragmentContainer
     private void addConfirmationFragment(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-        FragmentTransaction tm = getSupportFragmentManager().beginTransaction();
-        ConfirmationFragment confirmationFragment= new ConfirmationFragment();
-        tm.replace(R.id.fragment_container, confirmationFragment, "confirm");
-        tm.commit();}
+            FragmentTransaction tm = getSupportFragmentManager().beginTransaction();
+            ConfirmationFragment confirmationFragment= new ConfirmationFragment();
+            tm.replace(R.id.fragment_container, confirmationFragment, "confirm");
+            tm.commit();}
         else {
             getSupportFragmentManager().findFragmentByTag("confirm");
         }

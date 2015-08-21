@@ -48,7 +48,7 @@
 
                 <TextView
                     style="@style/text_button"
-                    android:id="@+id/datePickerText"
+                    android:id="@+id/txt_date_picker"
                     android:text="@string/date_format"/>
 
                 <TextView

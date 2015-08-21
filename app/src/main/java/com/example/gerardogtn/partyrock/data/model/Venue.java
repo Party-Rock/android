@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -36,6 +37,9 @@ public class Venue implements Serializable {
 
     @SerializedName("imageURL")
     private ArrayList<String> mImageUrls;
+
+    @SerializedName("rentedDate")
+    private ArrayList<Date> mDatesReserved;
 
     @SerializedName("features")
     private ArrayList<Feature> mFeatures;
@@ -115,6 +119,14 @@ public class Venue implements Serializable {
 
     public void setImageUrls(ArrayList<String> imageUrls) {
         this.mImageUrls = imageUrls;
+    }
+
+    public ArrayList<Date> getDatesReserved(){
+        return this.mDatesReserved;
+    }
+
+    public void setDatesReserved(ArrayList<Date> dates){
+        this.mDatesReserved = dates;
     }
 
     public ArrayList<Feature> getFeatures() {

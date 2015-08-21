@@ -3,8 +3,11 @@ package com.example.gerardogtn.partyrock.ui.fragment;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,22 +19,33 @@ import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Venue;
+import com.example.gerardogtn.partyrock.service.PartyRockApiClient;
+import com.example.gerardogtn.partyrock.service.VenueEvent;
+import com.example.gerardogtn.partyrock.util.ApiConstants;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ConfirmationFragment extends Fragment implements DatePickerDialog.OnDateSetListener{
+public class ConfirmationFragment extends Fragment implements DatePickerDialog.OnDateSetListener,
+        Callback<Response>{
+
+    public static final String LOG_TAG = ConfirmationFragment.class.getSimpleName();
 
     @Bind(R.id.btn_rent)
     Button mRentButton;
@@ -51,7 +65,7 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     @Bind(R.id.txt_checkout)
     TextView mCheckoutText;
 
-    @Bind(R.id.datePickerText)
+    @Bind(R.id.txt_date_picker)
     TextView mDatePickerText;
 
     private DatePicker mDatePicker;
@@ -89,6 +103,7 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
         }else if (mAddress==null) {
             mAddress="Location not available";
         }
+
         setUpCalendar();
         setUpLayout();
         return view;
@@ -112,41 +127,57 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         Calendar newDate = Calendar.getInstance();
         newDate.set(year, monthOfYear, dayOfMonth);
-        mDateSelected=newDate.getTime();
+        mDateSelected = newDate.getTime();
+        mDatePickerText.setText(mSimpleDateFormat.format(newDate.getTime()));
         mDatePickerText.setText(mSimpleDateFormat.format(mDateSelected));
         mCheckoutText.setVisibility(View.VISIBLE);
         mCheckoutText.setText(getString(R.string.date_alert) + " " +
-                (mSimpleDateFormat.format(mDateSelected)) + ". "
-                + getString(R.string.TOS_alert));
+                        (mSimpleDateFormat.format(mDateSelected)) + ". "
+                        + getString(R.string.TOS_alert));
+    }
+
+    @Override
+    public void success(Response response, Response response2) {
+        Log.i(LOG_TAG, "Reservation was posted successfully");
+    }
+
+    @Override
+    public void failure(RetrofitError error) {
+        Log.e(LOG_TAG, "Posting reservation failed.");
+        error.printStackTrace();
     }
 
     @OnClick(R.id.btn_rent)
     public void onClickRentButton(){
+
         if (mDateSelected == null) {
             Toast.makeText(getActivity(), "Please, select a date first.", Toast.LENGTH_SHORT).show();
         } else {
+            TimeZone tz = TimeZone.getTimeZone("UTC");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            df.setTimeZone(tz);
+            String dateIso = df.format(mDateSelected);
+            postReservation(dateIso);
+            postRentedDate(dateIso);
             Toast.makeText(getActivity(), "Venue rented!", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Shows the date picker dialog.
-    @OnClick(R.id.datePickerText)
+    @OnClick(R.id.txt_date_picker)
     public void onClickDatePicker(){
         mDatePickerDialog.show();
-
-
     }
-
-    
 
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Display the venue data in this.fields
     public void setUpLayout() {
         Activity parentActivity = getActivity();
-        Picasso.with(getActivity())
+        Picasso.with(parentActivity)
                 .load(mVenue.getImageUrls().get(0))
                 .error(R.mipmap.ic_launcher)
                 .into(mMainVenueImage);
@@ -156,7 +187,7 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
         mPriceText.setText("$" + Double.toString(mVenue.getPrice()));
         mCheckoutText.setVisibility(View.INVISIBLE);
     }
-  
+
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Sets up the mSimpleDateFormat, the mDatePicker and the mDatePickerDialog.
@@ -192,4 +223,40 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
         mDatePicker.setMaxDate(dateMax);
     }
 
+    // REQUIRES: dateIso is a valid date format.
+    // MODIFIES: database.
+    // EFFECTS: Post a reservation to the reservation database.
+    private void postReservation(String dateIso) {
+        SharedPreferences preferences = getActivity()
+                .getSharedPreferences(getString(R.string.shared_preferences)
+                        , Context.MODE_PRIVATE);
+
+        String userId = preferences.getString(ApiConstants.PARAM_USER_ID, "");
+        String ownerId = preferences.getString(ApiConstants.PARAM_OWNER_ID, "");
+        PartyRockApiClient.getInstance().postReservation(userId,
+                ownerId,
+                mVenue.getId(),
+                dateIso,
+                this);
+    }
+
+    // REQUIRES: dateIso is a valid date.
+    // MODIFIES: database.
+    // EFFECTS:  Posts a rentedDate to the venue.renteddate[] in the database.
+    private void postRentedDate(String dateIso) {
+        PartyRockApiClient.getInstance().addRentedDate(mVenue.getId(),
+                dateIso,
+                new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                        Log.i(LOG_TAG, "Patch rent date successful.");
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e(LOG_TAG, "Unable to path rent date.");
+                        error.printStackTrace();
+                    }
+                });
+    }
 }

@@ -61,22 +61,22 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     NestedScrollView mNestedScrollView;
 
     @Bind(R.id.btn_rent)
-    Button rentButton;
+    Button mRentButton;
 
     @Bind(R.id.btn_features)
-    Button featButton;
+    Button mFeatureButton;
 
     @Bind(R.id.btn_more_features)
-    Button moreFeatsButton;
+    Button mMoreFeaturesButton;
 
     @Bind(R.id.card_view_feature_button)
-    CardView moreFeatsCardView;
+    CardView mFeaturesCardView;
 
     @Bind({R.id.feature_image1, R.id.feature_image2, R.id.feature_image3, R.id.feature_image4, R.id.feature_image5})
-    List<ImageView> featureIcons;
+    List<ImageView> mFeatureIcons;
 
     @Bind({R.id.feature_space1, R.id.feature_space2, R.id.feature_space3, R.id.feature_space4, R.id.feature_space5})
-    List<Space> featureSpaces;
+    List<Space> mFeatureSpaces;
 
     private SupportMapFragment mMapFragment;
     private Venue mVenue;
@@ -268,33 +268,33 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     private void setUpFeatures() {
         if (mVenue.getFeatures().size() <= 5) {
             for (int i = 0; i < mVenue.getFeatures().size(); i++) {
-                featureIcons.get(i).setVisibility(View.VISIBLE);
-                featureIcons.get(i).setImageResource(mVenue.getFeatures().get(i).getImageResource());
-                featureSpaces.get(i).setVisibility(View.VISIBLE);
+                mFeatureIcons.get(i).setVisibility(View.VISIBLE);
+                mFeatureIcons.get(i).setImageResource(mVenue.getFeatures().get(i).getImageResource());
+                mFeatureSpaces.get(i).setVisibility(View.VISIBLE);
             }
         } else {
             for (int i = 0; i < 4; i++) {
-                featureIcons.get(i).setVisibility(View.VISIBLE);
-                featureIcons.get(i).setImageResource(mVenue.getFeatures().get(i).getImageResource());
-                featureSpaces.get(i).setVisibility(View.VISIBLE);
+                mFeatureIcons.get(i).setVisibility(View.VISIBLE);
+                mFeatureIcons.get(i).setImageResource(mVenue.getFeatures().get(i).getImageResource());
+                mFeatureSpaces.get(i).setVisibility(View.VISIBLE);
             }
-            featureSpaces.get(4).setVisibility(View.VISIBLE);
-            moreFeatsButton.setVisibility(View.VISIBLE);
+            mFeatureSpaces.get(4).setVisibility(View.VISIBLE);
+            mMoreFeaturesButton.setVisibility(View.VISIBLE);
             //A dialogue stating how many features are not shown can also be implemented here.
-            moreFeatsButton.setOnClickListener(new View.OnClickListener() {
+            mMoreFeaturesButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showFeaturesDialog();
                 }
             });
         }
-        featButton.setOnClickListener(new View.OnClickListener() {
+        mFeatureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showFeaturesDialog();
             }
         });
-        moreFeatsCardView.setOnClickListener(new View.OnClickListener() {
+        mFeaturesCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showFeaturesDialog();
@@ -305,36 +305,9 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     //Shows the Dialog where a recycler view of the features is shown.
     private void showFeaturesDialog() {
         EventBus.getDefault().postSticky(mVenue.getFeatures());
-
         FragmentManager fm = getSupportFragmentManager();
-
         FeaturesFragment featuresFragment = new FeaturesFragment();
-
         featuresFragment.show(fm, FTAG);
-
-    }
-
-    //Sends the venue to the confirmation activity and opens it.
-    private void setUpRentButton() {
-        setRentButtonText();
-        rentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().postSticky(mVenue);
-                if (mAddress != null) {
-                    EventBus.getDefault().postSticky(mAddress);
-                }
-                Intent intent = new Intent(DetailActivity.this, ConfirmationActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    //Shows a text in the button
-    private void setRentButtonText() {
-        String buttonText;
-        buttonText = getString(R.string.rent_text) + " " + mVenue.getFormattedPrice();
-        rentButton.setText(buttonText);
     }
 
 
@@ -407,6 +380,33 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         adapter.setOnImageListener(this);
         mImages.setCurrentItem(1);
         setUpPageScrollListener();
+    }
+
+
+    // REQUIRES: None.
+    // MODIFIES: this.
+    // EFFECTS: Sets the button display text and sets up the Intent for navigating to ConfirmationActivity.
+    private void setUpRentButton() {
+        setRentButtonText();
+        mRentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().postSticky(mVenue);
+                if (mAddress != null) {
+                    EventBus.getDefault().postSticky(mAddress);
+                }
+                Intent intent = new Intent(DetailActivity.this, ConfirmationActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+
+    //Shows a text in the button
+    private void setRentButtonText() {
+        String buttonText;
+        buttonText = getString(R.string.rent_text) + " " + mVenue.getFormattedPrice();
+        mRentButton.setText(buttonText);
     }
 
     private void setUpPageScrollListener() {

@@ -48,13 +48,14 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
 
     @Bind(R.id.recycler_view_venue)
     RecyclerView mRecyclerView;
+
     @Bind(R.id.FAB_Search)
     FloatingActionButton fabSearch;
+
     @Bind(R.id.toolbar_home)
     Toolbar mToolbar;
 
     public HomeListFragment() {
-
         Feature alcoholAllowed = new Feature("alcohol", true);
         Feature alcoholNotAllowed = new Feature("alcohol", false);
         Feature smokeNotAllowed = new Feature("smoke", false);
@@ -72,14 +73,6 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
 
         Venue venueJoselito = new Venue("Casa Joselito", positionJoselito, imagesJoselito, 50, 1800.0);
         venueJoselito.setFeatures(featuresJoselito);
-        venueJoselito.setmDescription("SE RENTA CASA PARA REUNIONES & FIESTAS BIEN UBICADA A 5 SEMAFOROS " +
-                "DE TAXQUEÑA EL COSTO DEPENDE DEL NUMERO DE PERSONAS QUE INGRESAN A LA CASA, A CADA" +
-                " ESPACIO LE CABEN CIERTO NUMERO DE PERSONAS, EN LA PARTE EXTERIOR SE ENCUENTRA UN JARDIN " +
-                "PARA TREINTA O SESENTA PERSONAS, EN EL INTERIOR DEL INMUEBLE TIENE CAPACIDAD HASTA DE 70PERSONAS," +
-                " DOS AREAS DE LA CASA CAPACIDAD MAXIMA 120PERSONAS.PUEDES RENTAR EL AREA MAS CONVENIENTE " +
-                "PARA TU EVENTO, LA RENTA ES POR 5 HORAS CON OPCION A 10 HORAS, TURNOS MATUTINOS," +
-                " VESPERTINOS Y EVENTOS NOCTURNOS, INCLUYE ACCESO A LA COCINA Y A UN BAÑO. PREGUNTA " +
-                "POR NUESTRA LISTA DE PRECIOS.");
 
 
         Position positionMaria = new Position(new LatLng(19.366694, -99.182528), "Crédito Constructor");
@@ -93,16 +86,10 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         featuresMaria.add(smokeNotAllowed);
         Venue venueMaria = new Venue("Jardin de bodas Maria", positionMaria, imagesMaria, 150, 6500.0);
         venueMaria.setFeatures(featuresMaria);
-        venueMaria.setmDescription("SE PUEDEN REALIZAR REUNIONES FAMILIARES, DE NEGOCIOS, " +
-                "CARNES ASADAS, PIJAMADAS, HAWAIIANADAS, DESPEDIDAS, GRADUACIONES, BODAS," +
-                " TORNABODAS, MINIBODAS, MACROBODAS, DIVORCIADAS, XV AÑOS, COMUNIONES Y " +
-                "PRESENTACIONES O CUALQUIER ANIVERSARIO O FESTEJO.");
 
         mVenues = new ArrayList<>();
         mVenues.add(venueJoselito);
         mVenues.add(venueMaria);
-
-
     }
 
     public static HomeListFragment newInstance() {
@@ -112,42 +99,12 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         return fragment;
     }
 
-    /**
-     * Called to ask the fragment to save its current dynamic state, so it
-     * can later be reconstructed in a new instance of its process is
-     * restarted.  If a new instance of the fragment later needs to be
-     * created, the data you place in the Bundle here will be available
-     * in the Bundle given to {@link #onCreate(Bundle)},
-     * {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}, and
-     * {@link #onActivityCreated(Bundle)}.
-     * <p/>
-     * <p>This corresponds to {@link Activity#onSaveInstanceState(Bundle)
-     * Activity.onSaveInstanceState(Bundle)} and most of the discussion there
-     * applies here as well.  Note however: <em>this method may be called
-     * at any time before {@link #onDestroy()}</em>.  There are many situations
-     * where a fragment may be mostly torn down (such as when placed on the
-     * back stack with no UI showing), but its state will not be saved until
-     * its owning activity actually needs to save its state.
-     *
-     * @param outState Bundle in which to place your saved state.
-     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, mRecyclerView.getLayoutManager().onSaveInstanceState());
     }
 
-    /**
-     * Called when all saved state has been restored into the view hierarchy
-     * of the fragment.  This can be used to do initialization based on saved
-     * state that you are letting the view hierarchy track itself, such as
-     * whether check box widgets are currently checked.  This is called
-     * after {@link #onActivityCreated(Bundle)} and before
-     * {@link #onStart()}.
-     *
-     * @param savedInstanceState If the fragment is being re-created from
-     *                           a previous saved state, this is the state.
-     */
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
@@ -175,11 +132,12 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_venue_list, container, false);
+        PartyRockApiClient.getInstance().getAllVenues(this);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         setUpToolbar();
-        setUpRecycleView(mVenues);
         setUpFabClick();
+        setUpRecycleView();
         return view;
     }
 
@@ -235,8 +193,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     @Override
     public void success(List<Venue> venues, Response response) {
         this.mVenues.addAll(venues);
-        if(mSavedRecyclerLayoutState != null)
-        {
+        if(mSavedRecyclerLayoutState != null){
             mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
         }
     }
@@ -253,25 +210,20 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Creates a vertical recycleview filled with mVenues, each view using a HomeListAdapter.
-    private void setUpRecycleView(List<Venue> venues) {
+    private void setUpRecycleView() {
         Context context = getActivity();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        HomeListAdapter homeListAdapter = new HomeListAdapter(context, venues);
+        HomeListAdapter homeListAdapter = new HomeListAdapter(context, mVenues);
         mRecyclerView.setAdapter(homeListAdapter);
         homeListAdapter.setOnItemClickListener(this);
     }
 
     //FAB Button OnClick Method
     private void showSearchDialog() {
-
         FragmentManager fm = getFragmentManager();
-
         SearchVenueFragment searchDialog = new SearchVenueFragment();
-
         searchDialog.show(fm, FTAG);
-
-
     }
 
 

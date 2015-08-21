@@ -1,10 +1,14 @@
 package com.example.gerardogtn.partyrock.ui.activity;
 
+
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -12,27 +16,31 @@ import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.service.GoogleApiEvent;
 import com.example.gerardogtn.partyrock.service.GoogleApiServiceTask;
 import com.example.gerardogtn.partyrock.ui.fragment.HomeListFragment;
+import com.example.gerardogtn.partyrock.util.ApiConstants;
 
 import de.greenrobot.event.EventBus;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.ButterKnife;
 
-public class HomeActivity extends AppCompatActivity{
+public class HomeActivity extends AppCompatActivity {
+
 
     public static final String TAG = HomeActivity.class.getSimpleName();
 
     private Location mLastLocation;
-
-
+    private boolean mResolvingError = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        if (mLastLocation==null){
+        if (mLastLocation == null) {
             new GoogleApiServiceTask(this).execute();
+            setContentView(R.layout.activity_home);
+            addHomeListFragment(savedInstanceState);
         }
-        setContentView(R.layout.activity_home);
-        addHomeListFragment(savedInstanceState);
     }
 
     /**
@@ -71,10 +79,10 @@ public class HomeActivity extends AppCompatActivity{
         EventBus.getDefault().unregister(this);
     }
 
-
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Draws a HomeListFragment on this.mFragmentContainer
+
     private void addHomeListFragment(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             FragmentTransaction tm = getSupportFragmentManager().beginTransaction();
@@ -89,7 +97,6 @@ public class HomeActivity extends AppCompatActivity{
 
     public void onEvent(GoogleApiEvent locationEvent) {
         mLastLocation = locationEvent.getLocation();
-
     }
 
 }
