@@ -12,6 +12,9 @@ public class ApiConstants {
     public static final String USERS = "/users";
     public static final String RESERVATIONS = "/reservations";
 
+
+    public static final String VALUE_RENTED_DATE = "/rented";
+
     // VENUE PARAMS
     public static final String PARAM_NAME = "name";
     public static final String PARAM_LAT = "lat";
@@ -33,8 +36,12 @@ public class ApiConstants {
     public static final String PARAM_VENUE_ID = "venueId";
     public static final String PARAM_RENTED_DATE = "rentedDate";
 
+    public static final String PATH_VENUE_ID = "/{venueId}";
+
     public static final String URL_ALL_VENUES = API_VERSION + VENUES;
     public static final String URL_ALL_USERS = API_VERSION + USERS;
     public static final String URL_ALL_RESERVATIONS = API_VERSION + RESERVATIONS;
+    public static final String URL_PATCH_VENUE_RENTED_DATES = API_VERSION + VENUES+ VALUE_RENTED_DATE
+            + PATH_VENUE_ID;
 
 }
