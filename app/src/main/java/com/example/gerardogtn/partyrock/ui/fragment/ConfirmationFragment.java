@@ -71,9 +71,7 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
         setRetainInstance(true);
         mVenue = EventBus.getDefault().removeStickyEvent(Venue.class);
         mAddress=EventBus.getDefault().removeStickyEvent(String.class);
-        if (mAddress==null){
-            mAddress="Location not available";
-        }
+
     }
 
     @Override
@@ -84,9 +82,12 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
 
         if (mVenue == null  && savedInstanceState!=null) {
             mVenue = (Venue) savedInstanceState.getSerializable("lastVenue");
+            EventBus.getDefault().postSticky(mVenue);
         }
         if (mAddress==null && savedInstanceState!=null){
             mAddress = savedInstanceState.getString("address");
+        }else if (mAddress==null) {
+            mAddress="Location not available";
         }
         setUpCalendar();
         setUpLayout();

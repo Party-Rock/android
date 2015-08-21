@@ -88,10 +88,7 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
-        mVenue = EventBus.getDefault().removeStickyEvent(Venue.class);
-        if (mVenue == null) {
-            rebuildVenue(savedInstanceState);
-        }
+        receiveVenue(savedInstanceState);
         decodeAddress(savedInstanceState);
         getParentActivityAlert();
         savedScrollState(savedInstanceState);
@@ -109,10 +106,9 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     protected void onSaveInstanceState(Bundle outState) {
         EventBus.getDefault().postSticky(mVenue);
         outState.putSerializable("lastVenue", mVenue);
-        outState.putSerializable("venueFeatures", mVenue.getFeatures());
         outState.putInt(SCROLL_X, mNestedScrollView.getScrollX());
         outState.putInt(SCROLL_Y, mNestedScrollView.getScrollY());
-        if (mAddress!=null) {
+        if (mAddress != null) {
             outState.putString("address", mAddress);
         }
         super.onSaveInstanceState(outState);
@@ -150,6 +146,31 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
     @Override
     public Intent getParentActivityIntent() {
         return getParentActivityIntentImpl();
+    }
+
+    // REQUIRES: Position is valid.
+    // MODIFIES: None.
+    // EFFECTS:  Opens ViewPagerFullScreenActivity on Image selected.
+    @Override
+    public void onImageClick(int position) {
+        EventBus.getDefault().postSticky(mVenue);
+        EventBus.getDefault().postSticky(position - 1);
+        Intent intent = new Intent(DetailActivity.this, ViewPagerFullScreenActivity.class);
+        startActivity(intent);
+
+    }
+
+    //Receives Venue and makes sure feature hash map is set
+    private void receiveVenue(Bundle savedInstanceState) {
+        mVenue = EventBus.getDefault().removeStickyEvent(Venue.class);
+        if (mVenue == null) {
+            rebuildVenue(savedInstanceState);
+        }
+        ArrayList<Feature> features = new ArrayList<>();
+        for (Feature f : mVenue.getFeatures()) {
+            features.add(new Feature(f.getFeatureName(), f.isAvailable()));
+        }
+        mVenue.setFeatures(features);
     }
 
     private Intent getParentActivityIntentImpl() {
@@ -190,18 +211,6 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         mVenue.setFeatures(features);
     }
 
-    // REQUIRES: Position is valid.
-    // MODIFIES: None.
-    // EFFECTS:  Opens ViewPagerFullScreenActivity on Image selected.
-    @Override
-    public void onImageClick(int position) {
-        EventBus.getDefault().postSticky(mVenue);
-        EventBus.getDefault().postSticky(position - 1);
-        Intent intent = new Intent(DetailActivity.this, ViewPagerFullScreenActivity.class);
-        startActivity(intent);
-
-    }
-
     private void setUpDescription() {
         StringBuffer res = new StringBuffer();
 
@@ -223,16 +232,17 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         if (savedInstanceState != null) {
             mAddress = savedInstanceState.getString("address");
         }
-        if (mAddress==null) {
+        if (mAddress == null) {
             new GeocoderTask(this).execute(new Double[]{mVenue.getPosition().getLatitude(),
                     mVenue.getPosition().getLongitude()});
         }
     }
 
     private void setUpAddressTxt() {
-        if (mAddress!=null){
-        mTxtAddress.setVisibility(View.VISIBLE);
-        mTxtAddress.setText(mAddress);}
+        if (mAddress != null) {
+            mTxtAddress.setVisibility(View.VISIBLE);
+            mTxtAddress.setText(mAddress);
+        }
     }
 
     //Receives true from the event, if the venue comes from the SearchResultsActivity.
@@ -311,8 +321,9 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().postSticky(mVenue);
-                if (mAddress!=null){
-                EventBus.getDefault().postSticky(mAddress);}
+                if (mAddress != null) {
+                    EventBus.getDefault().postSticky(mAddress);
+                }
                 Intent intent = new Intent(DetailActivity.this, ConfirmationActivity.class);
                 startActivity(intent);
             }
