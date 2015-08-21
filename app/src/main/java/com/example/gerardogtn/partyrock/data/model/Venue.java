@@ -26,6 +26,9 @@ public class Venue implements Serializable {
     @SerializedName("name")
     private String mName;
 
+    @SerializedName("description")
+    private String mDescription;
+
     @SerializedName("_id")
     private String mId;
 
@@ -52,6 +55,14 @@ public class Venue implements Serializable {
         this.mPosition = position;
         this.mCapacity = capacity;
         this.mPrice = price;
+    }
+
+    public String getmDescription() {
+        return mDescription;
+    }
+
+    public void setmDescription(String mDescription) {
+        this.mDescription = mDescription;
     }
 
     public int getCapacity() {

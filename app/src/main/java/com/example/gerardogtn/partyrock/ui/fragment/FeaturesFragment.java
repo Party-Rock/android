@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -28,13 +29,14 @@ import de.greenrobot.event.EventBus;
 public class FeaturesFragment extends DialogFragment {
     @Bind(R.id.btn_close)
     Button mCloseButton;
+    @Bind(R.id.btn_back)
+    Button mGoBackButton;
 
     @Bind(R.id.venue_features)
     RecyclerView mFeatureRecyclerView;
 
 
     private ArrayList<Feature> mFeatures;
-
 
 
     public FeaturesFragment() {
@@ -47,13 +49,13 @@ public class FeaturesFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         View view = inflater.inflate(R.layout.fragment_features, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         mFeatures = (ArrayList<Feature>) EventBus.getDefault().removeStickyEvent(ArrayList.class);
-        if (mFeatures==null){
+        if (mFeatures == null) {
             getDialog().dismiss();
         }
         setUpRecycleView();
-        setUpButton();
+
         return view;
     }
 
@@ -63,15 +65,14 @@ public class FeaturesFragment extends DialogFragment {
         super.onSaveInstanceState(outState);
     }
 
+    @OnClick(R.id.btn_close)
+    public void closeButton() {
+        getDialog().dismiss();
+    }
 
-    private void setUpButton() {
-        mCloseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDialog().dismiss();
-            }
-        });
-
+    @OnClick(R.id.btn_back)
+    public void goBackButton() {
+        getActivity().finish();
     }
 
 
@@ -81,8 +82,6 @@ public class FeaturesFragment extends DialogFragment {
         FeatureAdapter featureViewAdapter = new FeatureAdapter(getActivity(), mFeatures);
         mFeatureRecyclerView.setAdapter(featureViewAdapter);
     }
-
-
 
 
 }

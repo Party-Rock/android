@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.gerardogtn.partyrock.R;
@@ -30,17 +29,9 @@ public class ConfirmationActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setUpToolbar();
         drawBackArrow();
-        if (savedInstanceState == null) {
-            addHomeListFragment();
-        }
+        addConfirmationFragment(savedInstanceState);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -71,10 +62,14 @@ public class ConfirmationActivity extends AppCompatActivity {
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS: Draws a HomeListFragment on this.mFragmentContainer
-    private void addHomeListFragment() {
-        FragmentTransaction tm = getSupportFragmentManager().beginTransaction();
-        ConfirmationFragment confirmationFragment = new ConfirmationFragment();
-        tm.replace(R.id.fragment_container, confirmationFragment);
-        tm.commit();
+    private void addConfirmationFragment(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            FragmentTransaction tm = getSupportFragmentManager().beginTransaction();
+            ConfirmationFragment confirmationFragment= new ConfirmationFragment();
+            tm.replace(R.id.fragment_container, confirmationFragment, "confirm");
+            tm.commit();}
+        else {
+            getSupportFragmentManager().findFragmentByTag("confirm");
+        }
     }
 }

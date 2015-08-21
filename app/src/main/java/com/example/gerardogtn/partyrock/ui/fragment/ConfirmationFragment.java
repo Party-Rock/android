@@ -62,8 +62,8 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     @Bind(R.id.txt_capacity)
     TextView mCapacityText;
 
-    @Bind(R.id.txt_venue_description)
-    TextView mVenueText;
+    @Bind(R.id.txt_checkout)
+    TextView mCheckoutText;
 
     @Bind(R.id.txt_date_picker)
     TextView mDatePickerText;
@@ -73,8 +73,18 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     private SimpleDateFormat mSimpleDateFormat;
     private Date mDateSelected;
     private Venue mVenue;
+    private String mAddress;
 
     public ConfirmationFragment() {
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        mVenue = EventBus.getDefault().removeStickyEvent(Venue.class);
+        mAddress=EventBus.getDefault().removeStickyEvent(String.class);
 
     }
 
@@ -83,11 +93,19 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_confirmation, container, false);
         ButterKnife.bind(this, view);
-        mVenue = EventBus.getDefault().removeStickyEvent(Venue.class);
-        if (mVenue == null) {
+
+        if (mVenue == null  && savedInstanceState!=null) {
             mVenue = (Venue) savedInstanceState.getSerializable("lastVenue");
+            EventBus.getDefault().postSticky(mVenue);
         }
+        if (mAddress==null && savedInstanceState!=null){
+            mAddress = savedInstanceState.getString("address");
+        }else if (mAddress==null) {
+            mAddress="Location not available";
+        }
+
         setUpCalendar();
+        setUpLayout();
         return view;
     }
 
@@ -95,12 +113,13 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
     public void onSaveInstanceState(Bundle outState) {
         EventBus.getDefault().postSticky(mVenue);
         outState.putSerializable("lastVenue", mVenue);
+        outState.putString("address", mAddress);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onDetach() {
-        EventBus.getDefault().unregister(this);
+        ButterKnife.unbind(this);
         super.onDetach();
     }
 
@@ -111,8 +130,8 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
         mDateSelected = newDate.getTime();
         mDatePickerText.setText(mSimpleDateFormat.format(newDate.getTime()));
         mDatePickerText.setText(mSimpleDateFormat.format(mDateSelected));
-                mVenueText.setVisibility(View.VISIBLE);
-                mVenueText.setText(getString(R.string.date_alert) + " " +
+        mCheckoutText.setVisibility(View.VISIBLE);
+        mCheckoutText.setText(getString(R.string.date_alert) + " " +
                         (mSimpleDateFormat.format(mDateSelected)) + ". "
                         + getString(R.string.TOS_alert));
     }
@@ -130,18 +149,19 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
 
     @OnClick(R.id.btn_rent)
     public void onClickRentButton(){
-        if (mDateSelected != null) {
+
+        if (mDateSelected == null) {
+            Toast.makeText(getActivity(), "Please, select a date first.", Toast.LENGTH_SHORT).show();
+        } else {
             TimeZone tz = TimeZone.getTimeZone("UTC");
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             df.setTimeZone(tz);
             String dateIso = df.format(mDateSelected);
             postReservation(dateIso);
             postRentedDate(dateIso);
-
             Toast.makeText(getActivity(), "Venue rented!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getActivity(), "Please, select a date first.", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     // REQUIRES: None.
@@ -154,25 +174,18 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
 
     // REQUIRES: None.
     // MODIFIES: this.
-    // EFFECTS: When a venue is received via EventBus, the fields are filled with the venue's data.
-    public void onEvent(VenueEvent clickedVenue){
-        Venue venue = clickedVenue.getVenue();
-        setUpLayout();
-    }
-
-    // REQUIRES: None.
-    // MODIFIES: this.
     // EFFECTS: Display the venue data in this.fields
     public void setUpLayout() {
-        Picasso.with(getActivity())
+        Activity parentActivity = getActivity();
+        Picasso.with(parentActivity)
                 .load(mVenue.getImageUrls().get(0))
                 .error(R.mipmap.ic_launcher)
                 .into(mMainVenueImage);
-        mAddressText.setText(getString(R.string.address) + ": " + mVenue.getName());
+        mAddressText.setText(getString(R.string.address) + ": " + mAddress);
         mCapacityText.setText(getString(R.string.capacity) + ": " +
                 Integer.toString(mVenue.getCapacity()) + getString(R.string.persons));
         mPriceText.setText("$" + Double.toString(mVenue.getPrice()));
-        mVenueText.setVisibility(View.INVISIBLE);
+        mCheckoutText.setVisibility(View.INVISIBLE);
     }
 
     // REQUIRES: None.
@@ -195,6 +208,8 @@ public class ConfirmationFragment extends Fragment implements DatePickerDialog.O
                 newCalendar.get(Calendar.YEAR),
                 newCalendar.get(Calendar.MONTH),
                 newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        customizeDatePicker();
     }
 
     // REQUIRES: None.

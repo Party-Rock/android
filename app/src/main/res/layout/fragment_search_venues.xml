@@ -23,7 +23,7 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="Pimp your party!"
-                android:textColor="@color/accent"
+                android:textColor="@color/secondary_text"
                 android:textSize="@dimen/abc_text_size_large_material" />
 
 
@@ -172,5 +172,17 @@
         android:background="@color/accent"
         android:text="@string/search_text"
         android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:paddingEnd="@dimen/abc_action_bar_overflow_padding_start_material"
+        android:gravity="top|right"
+        android:background="@android:color/transparent"
+        android:textSize="@dimen/abc_text_size_headline_material"
+        android:text="X"
+        android:textColor="@color/accent" />
 
 </FrameLayout>

@@ -4,27 +4,25 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.data.model.Feature;
 import com.example.gerardogtn.partyrock.data.model.Position;
-import com.example.gerardogtn.partyrock.service.PartyRockApiClient;
-import com.example.gerardogtn.partyrock.ui.adapter.HomeListAdapter;
 import com.example.gerardogtn.partyrock.data.model.Venue;
-import com.example.gerardogtn.partyrock.service.SearchVenueEvent;
+import com.example.gerardogtn.partyrock.service.PartyRockApiClient;
 import com.example.gerardogtn.partyrock.ui.activity.DetailActivity;
 import com.example.gerardogtn.partyrock.ui.adapter.HomeListAdapter;
 import com.google.android.gms.maps.model.LatLng;
@@ -43,8 +41,10 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         Callback<List<Venue>> {
 
     public static final String LOG_TAG = HomeListFragment.class.getSimpleName();
+    private static final String BUNDLE_RECYCLER_LAYOUT ="recycler_layout";
     private List<Venue> mVenues;
     private final String FTAG = "fragment_search_venue";
+    private Parcelable mSavedRecyclerLayoutState;
 
     @Bind(R.id.recycler_view_venue)
     RecyclerView mRecyclerView;
@@ -90,8 +90,6 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         mVenues = new ArrayList<>();
         mVenues.add(venueJoselito);
         mVenues.add(venueMaria);
-        mVenues.add(venueJoselito);
-        mVenues.add(venueMaria);
     }
 
     public static HomeListFragment newInstance() {
@@ -102,9 +100,27 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, mRecyclerView.getLayoutManager().onSaveInstanceState());
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState != null)
+        {
+            mSavedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+        }
+    }
+
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        setRetainInstance(true);
+        PartyRockApiClient.getInstance().getAllVenues(this);
     }
 
     @Override
@@ -143,7 +159,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         ButterKnife.unbind(this);
     }
 
-    // REQUIRES: None.
+    // REQUIRES: Change in the HomeListAdapter to get the same effect on the ViewPager.
     // MODIFIES: None.
     // EFFECTS: When a Venue is clicked, navigate to Detail Activity with the venue's data.
     @Override
@@ -162,6 +178,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
             }
         });
     }
+
     // REQUIRES: None.
     // MODIFIES: this.
     // EFFECTS:  Sets support action toolbar with mToolbar.
@@ -176,6 +193,9 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     @Override
     public void success(List<Venue> venues, Response response) {
         this.mVenues.addAll(venues);
+        if(mSavedRecyclerLayoutState != null){
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+        }
     }
 
     // REQUIRES: None.
@@ -206,15 +226,6 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         searchDialog.show(fm, FTAG);
     }
 
-    //EventBus method to receive Search Parameters
-    public void onEvent(SearchVenueEvent searchVenueEvent) {
 
-        String location = searchVenueEvent.getLocation();
-        int price = searchVenueEvent.getPrice();
-        int capacity = searchVenueEvent.getCapacity();
-
-        //TODO: Do the query using search API and refill the RecyclerView on success.
-        Toast.makeText(getActivity(), "Search received " + location + " " + price + " " + capacity, Toast.LENGTH_SHORT).show();
-    }
 
 }

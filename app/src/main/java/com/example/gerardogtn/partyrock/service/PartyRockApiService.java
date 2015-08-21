@@ -16,6 +16,7 @@ import retrofit.http.GET;
 import retrofit.http.PATCH;
 import retrofit.http.POST;
 import retrofit.http.Path;
+import retrofit.http.Query;
 
 /**
  * Created by gerardogtn on 8/18/15.
@@ -24,6 +25,9 @@ public interface PartyRockApiService {
 
     @GET(ApiConstants.URL_ALL_VENUES)
     void getAllVenues(Callback<List<Venue>> callback);
+
+    @GET(ApiConstants.URL_ALL_VENUES)
+    void getSearchedVenues(@Query("colonia") String colonia, @Query("price") int price, @Query("capacity") int capacity, Callback<List<Venue>> callback);
 
     @FormUrlEncoded
     @POST(ApiConstants.URL_ALL_USERS)
