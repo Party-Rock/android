@@ -90,21 +90,22 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
 
             Toast.makeText(this, position, Toast.LENGTH_LONG).show();
 
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+            try {
+                List<Address> addresses= geocoder.getFromLocation(mLastLocation.getLatitude(),
+                        mLastLocation.getLongitude(),1);
+                String address = addresses.get(0).getSubLocality();
+                Snackbar.make(getCurrentFocus(),address,Snackbar.LENGTH_LONG).show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         } else {
             Log.e(TAG, "Location was null.");
         }
 
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-
-        try {
-            List<Address> addresses= geocoder.getFromLocation(mLastLocation.getLatitude(),
-                    mLastLocation.getLongitude(),1);
-            String address = addresses.get(0).getSubLocality();
-            Snackbar.make(getCurrentFocus(),address,Snackbar.LENGTH_LONG).show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -135,7 +136,8 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.C
     // MODIFIES: SharedPreferences.
     // EFFECTS:  Stores an ownerId and userId for demo purposes.
     private void setUpSharedPreferences() {
-        SharedPreferences preferences = this.getPreferences(MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(getString(R.string.shared_preferences)
+                , MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(ApiConstants.PARAM_USER_ID, "55d511c73a37da7b01000007");
         editor.putString(ApiConstants.PARAM_OWNER_ID, "55d50bce3a37da7b01000006");
