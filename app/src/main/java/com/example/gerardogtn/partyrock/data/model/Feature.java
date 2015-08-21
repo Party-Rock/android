@@ -1,6 +1,7 @@
 package com.example.gerardogtn.partyrock.data.model;
 
 import com.example.gerardogtn.partyrock.R;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -25,7 +26,11 @@ public class Feature implements Serializable {
     private static HashMap<String, String> sFeatureDescriptionNotAllowed = new HashMap<>();
 
     private String tag;
+
+    @SerializedName("feature")
     private String mFeatureName;
+
+    @SerializedName("option")
     private boolean mIsAvailable;
 
     public Feature(){

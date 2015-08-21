@@ -4,6 +4,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="Rent">Rent</string>
+    <string name="rent_text">Throw your party here for: </string>
     <string name="location_hint_text">Where is this happening?</string>
     <string name="price">Price</string>
     <string name="price_text">I\'m not paying more than</string>
@@ -42,4 +43,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Address">Address</string>
     <string name="search">Search</string>
+    <string name="get_out_text">Not for me</string>
+    <string name="ok_text">Cool</string>
+    <string name="features_detail_text_button">Check details</string>
+    <string name="description_title">Description</string>
+    <string name="features_title_text"><![CDATA[Features & Rules]]></string>
+    <string name="location_title_text">Location</string>
 </resources>

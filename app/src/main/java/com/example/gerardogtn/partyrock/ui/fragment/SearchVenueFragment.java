@@ -1,6 +1,7 @@
 package com.example.gerardogtn.partyrock.ui.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -16,10 +17,12 @@ import android.widget.TextView;
 
 import com.example.gerardogtn.partyrock.R;
 import com.example.gerardogtn.partyrock.service.SearchVenueEvent;
+import com.example.gerardogtn.partyrock.ui.activity.SearchResultsActivity;
 import com.example.gerardogtn.partyrock.ui.adapter.ClickRepeatListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -28,6 +31,8 @@ import de.greenrobot.event.EventBus;
 public class SearchVenueFragment extends DialogFragment {
     @Bind(R.id.btn_search)
     Button mSearchButton;
+    @Bind(R.id.btn_close)
+    Button mCloseButton;
     @Bind(R.id.people_slider)
     SeekBar mSeekBarPeople;
     @Bind(R.id.price_slider)
@@ -56,9 +61,9 @@ public class SearchVenueFragment extends DialogFragment {
 
     //Arbitrary values for initial progress and max values on Seekbars.
     private int mPriceProgress = 2000;
-    private final int mMaxPrice=20000;
+    private final int mMaxPrice = 20000;
     private int mPeopleProgress = 50;
-    private final int mMaxPeople=400;
+    private final int mMaxPeople = 400;
 
 
     public SearchVenueFragment() {
@@ -71,37 +76,39 @@ public class SearchVenueFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         View view = inflater.inflate(R.layout.fragment_search_venues, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         EventBus.getDefault().registerSticky(this);
         setUpPriceSlider();
         setUpPeopleSlider();
-        searchOnClickEvent();
+
 
         return view;
     }
 
-    private void searchOnClickEvent() {
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mLocation = mEditTextSearch.getText().toString();
-                SearchVenueEvent searchVenueEvent = new SearchVenueEvent(mLocation, mPriceProgress, mPeopleProgress);
-                EventBus.getDefault().post(searchVenueEvent);
-                EventBus.getDefault().postSticky(searchVenueEvent);
-                getDialog().dismiss();
-            }
-        });
+    @OnClick(R.id.btn_close)
+    public void onClickClsoeButton() {
+        getDialog().dismiss();
+    }
 
+    @OnClick(R.id.btn_search)
+    public void searchOnClickEvent() {
+        mLocation = mEditTextSearch.getText().toString();
+        SearchVenueEvent searchVenueEvent = new SearchVenueEvent(mLocation, mPriceProgress, mPeopleProgress);
+        EventBus.getDefault().post(searchVenueEvent);
+        EventBus.getDefault().postSticky(searchVenueEvent);
+        startActivity(new Intent(getActivity(), SearchResultsActivity.class));
+
+        getDialog().dismiss();
     }
 
     //EventBus method to save Search Parameters
-    public void onEvent(SearchVenueEvent searchVenueEvent){
+    public void onEvent(SearchVenueEvent searchVenueEvent) {
         String location = searchVenueEvent.getLocation();
         int price = searchVenueEvent.getPrice();
         int capacity = searchVenueEvent.getCapacity();
-        mLocation=location;
-        mPriceProgress=price;
-        mPeopleProgress=capacity;
+        mLocation = location;
+        mPriceProgress = price;
+        mPeopleProgress = capacity;
 
         mEditTextSearch.setText(location);
     }
@@ -115,12 +122,12 @@ public class SearchVenueFragment extends DialogFragment {
         mSeekBarPrice.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mTxtPrice.setText("$"+progress);
-                mPriceProgress=progress;
+                mTxtPrice.setText("$" + progress);
+                mPriceProgress = progress;
                 //Change text value if price is maxed
-                if (progress==mMaxPrice){
+                if (progress == mMaxPrice) {
                     mTxtViewPrice.setText(R.string.alt_price_text);
-                } else{
+                } else {
                     mTxtViewPrice.setText(R.string.price_text);
                 }
             }
@@ -186,12 +193,14 @@ public class SearchVenueFragment extends DialogFragment {
 
         //Images OnClick listeners
         //People Increase
-        mMorePeopleImg.setOnTouchListener(new ClickRepeatListener(400, 100, new View.OnClickListener(){
+        mMorePeopleImg.setOnTouchListener(new ClickRepeatListener(400, 100, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mPeopleProgress<mMaxPeople-10){
-                    mSeekBarPeople.setProgress(mPeopleProgress+=10);}
-                else{mSeekBarPeople.setProgress(mMaxPeople);}
+                if (mPeopleProgress < mMaxPeople - 10) {
+                    mSeekBarPeople.setProgress(mPeopleProgress += 10);
+                } else {
+                    mSeekBarPeople.setProgress(mMaxPeople);
+                }
             }
         }));
         //People Decrease
