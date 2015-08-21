@@ -431,7 +431,6 @@ public class DetailActivity extends AppCompatActivity implements ImagePagerAdapt
         });
     }
 
-    // Called in a separate thread
     public void onEvent(GeocoderEvent addressEvent) {
         mAddress = addressEvent.getAddress();
         setUpAddressTxt();
