@@ -114,8 +114,8 @@ public class ViewPagerFullScreenActivity extends AppCompatActivity {
         ImagePagerAdapter adapter = new ImagePagerAdapter(this, infiniteList);
         mImages.setAdapter(adapter);
         mImages.setCurrentItem(mPosition);
-        setUpPageScrollAnimation();
         setUpPageScrollListener();
+//        setUpPageScrollAnimation();
 
 
     }
@@ -160,7 +160,7 @@ public class ViewPagerFullScreenActivity extends AppCompatActivity {
 
         });
     }
-
+//TODO: Fix ScrollAnimation bug with infinite ViewPager
     private void setUpPageScrollAnimation() {
         //Add the animation effect between scrolls.
         mImages.setPageTransformer(true, new ViewPager.PageTransformer() {

@@ -77,7 +77,7 @@
         <item name="android:clickable">true</item>
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
         <item name="android:gravity">center</item>
-        <item name="android:padding">@dimen/navigation_padding_bottom</item>
+        <item name="android:padding">@dimen/design_navigation_padding_bottom</item>
         <item name="android:textColor">@color/accent</item>
         <item name="android:textSize">@dimen/abc_text_size_medium_material</item>
 
