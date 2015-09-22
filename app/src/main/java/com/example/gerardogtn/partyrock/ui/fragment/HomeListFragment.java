@@ -1,6 +1,5 @@
 package com.example.gerardogtn.partyrock.ui.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -123,7 +122,9 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         if(savedInstanceState != null)
         {
             mSavedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+            if (mSavedRecyclerLayoutState!=null){
             mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+            }
         }
     }
 
@@ -136,15 +137,9 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_venue_list, container, false);
-        PartyRockApiClient.getInstance().getAllVenues(this);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         setUpToolbar();
@@ -152,7 +147,6 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
         setUpRecycleView();
         return view;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -205,6 +199,7 @@ public class HomeListFragment extends Fragment implements HomeListAdapter.OnVenu
     @Override
     public void success(List<Venue> venues, Response response) {
         this.mVenues.addAll(venues);
+
         if(mSavedRecyclerLayoutState != null){
             mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
         }
